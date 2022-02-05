@@ -1,4 +1,4 @@
-package com.detection.diseases.maize.ui.home;
+package com.detection.diseases.maize.ui.account;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.detection.diseases.maize.R;
 
-public class HomeFragment extends Fragment {
+public class AccountFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private AccountPresenter accountPresenter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        accountPresenter =
+                new ViewModelProvider(this).get(AccountPresenter.class);
+        View root = inflater.inflate(R.layout.fragment_account, container, false);
+        final TextView textView = root.findViewById(R.id.text_notifications);
+        accountPresenter.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

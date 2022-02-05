@@ -1,14 +1,14 @@
-package com.detection.diseases.maize.ui.home;
+package com.detection.diseases.maize.ui.crops;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class CropsPresenter extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public CropsPresenter() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }
