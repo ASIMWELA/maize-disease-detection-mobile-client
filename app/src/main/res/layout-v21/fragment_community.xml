@@ -2,13 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fg_community_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.community.CommunityFragment">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/fg_community_nsc_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="62dp"
@@ -29,8 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginBottom="0dp" />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -61,9 +59,9 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
+        app:srcCompat="@drawable/ic_baseline_more_vert_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/divider"

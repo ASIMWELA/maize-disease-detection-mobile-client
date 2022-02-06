@@ -1,23 +1,45 @@
 package com.detection.diseases.maize.ui.community;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import android.content.Context;
+import android.widget.Toast;
 
-public class CommunityPresenter extends ViewModel implements CommunityContract.Presenter {
-    private MutableLiveData<String> mText;
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.detection.diseases.maize.commons.AppConstants;
+import com.detection.diseases.maize.commons.VolleyController;
 
-    public CommunityPresenter() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
-    }
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
-    public LiveData<String> getText() {
-        return mText;
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class CommunityPresenter  implements CommunityContract.Presenter {
+    CommunityContract.View view;
+    Context context;
+
+    public CommunityPresenter(CommunityContract.View view, Context context) {
+        this.view = view;
+        this.context = context;
     }
 
     @Override
-    public void getCommunityIssues() {
-
+    public void getCommunityIssues(int page, int totalPages) {
+        if(page > totalPages){
+            Toast.makeText(context, "That's all the issues", Toast.LENGTH_SHORT).show();
+            view.hideLoading();
+        }else {
+            view.showLoading();
+            JsonObjectRequest serviceCategoriesRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                AppConstants.BASE_API_URL + "/community/issues?page="+page+"&size=10",
+                null,
+                response -> {
+                    view.hideLoading();
+                    view.onResponse(response);
+                }, error -> {
+            view.hideLoading();
+            view.onError(error);
+        });
+        VolleyController.getInstance(context).addToRequestQueue(serviceCategoriesRequest);
+        }
     }
 }

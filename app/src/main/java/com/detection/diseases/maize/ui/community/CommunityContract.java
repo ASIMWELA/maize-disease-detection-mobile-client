@@ -1,19 +1,18 @@
 package com.detection.diseases.maize.ui.community;
 
-import androidx.lifecycle.LiveData;
-
 import com.android.volley.VolleyError;
 
-import java.util.List;
+import org.json.JSONObject;
 
 public interface CommunityContract {
     interface View{
-        void onGetIssuesSuccess(LiveData<List<String>> issues);
-        void onGetIssuesError(VolleyError volleyError);
+        void onError(VolleyError volleyError);
         void onViewDestroyed();
-        void onGetNextPageIssues();
+        void onResponse(JSONObject response);
+        void showLoading();
+        void hideLoading();
     }
     interface Presenter{
-        void getCommunityIssues();
+        void getCommunityIssues(int page, int totalPages);
     }
 }
