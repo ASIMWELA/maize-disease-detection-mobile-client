@@ -23,14 +23,14 @@ public class CommunityPresenter  implements CommunityContract.Presenter {
 
     @Override
     public void getCommunityIssues(int page, int totalPages) {
-        if(page > totalPages){
+        if(page > totalPages || (totalPages-page == 0)){
             Toast.makeText(context, "That's all the issues", Toast.LENGTH_SHORT).show();
             view.hideLoading();
         }else {
             view.showLoading();
             JsonObjectRequest serviceCategoriesRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                AppConstants.BASE_API_URL + "/community/issues?page="+page+"&size=10",
+                AppConstants.BASE_API_URL + "/community/issues?page="+page+"&size=3",
                 null,
                 response -> {
                     view.hideLoading();

@@ -20,16 +20,8 @@ public class CropsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        cropsPresenter =
-                new ViewModelProvider(this).get(CropsPresenter.class);
         View root = inflater.inflate(R.layout.fragment_crops, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        cropsPresenter.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+
         return root;
     }
 }

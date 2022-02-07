@@ -1,6 +1,7 @@
 package com.detection.diseases.maize.ui.community;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.detection.diseases.maize.R;
@@ -33,6 +35,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         return new IssuesViewHolder(view);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull IssuesViewHolder holder, int position) {
         Issue issue = issues.get(position);
@@ -43,10 +46,16 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         holder.tvIssueNumberOfAnswers.setText(issue.getIssueAnswers());
         holder.tvIssueLikes.setText(issue.getIssueLikes());
         holder.tvIssueDislikes.setText(issue.getIssueDislikes());
-        Picasso.get().load(issue.getImageAvatarUrl()).into(holder.ivIssueImage);
+        if(issue.getImageAvatarUrl() != null){
+            holder.ivIssueImage.setClipToOutline(true);
+            Picasso.get().load(issue.getImageAvatarUrl()).fit().centerCrop().into(holder.ivIssueImage);
+        }else {
+            holder.ivIssueImage.setVisibility(View.GONE);
+        }
         if(issue.getIssueStatus().equals(IssueStatus.RESOLVED.name())){
             holder.cpIssueStatus.setVisibility(View.VISIBLE);
         }
+        holder.ivIssueCreator.setImageResource(R.drawable.ic_baseline_person_24);
     }
     @Override
     public int getItemCount() {
