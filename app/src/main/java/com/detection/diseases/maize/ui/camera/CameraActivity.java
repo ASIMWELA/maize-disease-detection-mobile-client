@@ -1,9 +1,11 @@
 package com.detection.diseases.maize.ui.camera;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.camera2.internal.annotation.CameraExecutor;
+import androidx.camera.core.Camera;
 import androidx.camera.core.CameraProvider;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
@@ -11,24 +13,30 @@ import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Process;
+import android.provider.MediaStore;
 import android.util.Size;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.detection.diseases.maize.R;
+import com.detection.diseases.maize.commons.RealPathUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.squareup.picasso.Picasso;
 
@@ -45,13 +53,16 @@ import java.util.concurrent.Executors;
 import lombok.SneakyThrows;
 
 public class CameraActivity extends AppCompatActivity implements CameraActivityContract.View {
+    private static final int SELECT_IMAGE_CODE = 2;
     private PreviewView cameraPreview;
-    private ImageView ivCaptureImage, sendImage, ivLoadGallery, ivShowHint, previewCapturedImage;
+    private ImageView ivCaptureImage, ivLoadGallery, ivShowHint, previewCapturedImage;
+    private ImageButton sendImage;
     private ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture;
     private ImageCapture imageCapture;
     private CameraActivityPresenter cameraActivityPresenter;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
-    Uri captureImageUrl = null;
+    String captureImageUrl = null;
+    private ConstraintLayout sendOveray;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -65,7 +76,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
         if (checkAndRequestPermissions()) {
             cameraProviderListenableFuture = ProcessCameraProvider.getInstance(this);
-            cameraProviderListenableFuture.addListener(()->{
+            cameraProviderListenableFuture.addListener(() -> {
                 ProcessCameraProvider cameraProvider = null;
                 try {
                     cameraProvider = cameraProviderListenableFuture.get();
@@ -79,9 +90,12 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         } else {
             ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
-        ivCaptureImage.setOnClickListener(view -> cameraActivityPresenter.capturePictureBtnClicked());
+        ivCaptureImage.setOnClickListener(v -> cameraActivityPresenter.capturePictureBtnClicked());
 
-        sendImage.setOnClickListener((v)->cameraActivityPresenter.uploadFile(new File(captureImageUrl.getPath())));
+        sendImage.setOnClickListener(v -> cameraActivityPresenter.uploadFile(new File(captureImageUrl)));
+
+        ivLoadGallery.setOnClickListener(v -> cameraActivityPresenter.loadGalleyBtnClicked());
+
     }
 
     @SneakyThrows
@@ -121,6 +135,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         sendImage = findViewById(R.id.camera_activity_send_image);
         cameraProviderListenableFuture = ProcessCameraProvider.getInstance(this);
         previewCapturedImage = findViewById(R.id.iv_camera_preview_capture_image);
+        sendOveray = findViewById(R.id.camera_activity_overalay);
 
     }
 
@@ -142,9 +157,8 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                       // Toast.makeText(CameraActivity.this, "Image saved", Toast.LENGTH_SHORT).show();
-                        captureImageUrl = outputFileResults.getSavedUri();
-                        Picasso.get().load(captureImageUrl).fit().into(previewCapturedImage);
+                        captureImageUrl = outputFileResults.getSavedUri().getPath();
+                        Picasso.get().load(outputFileResults.getSavedUri()).fit().into(previewCapturedImage);
                         previewCapturedImage.setVisibility(View.VISIBLE);
                         ivCaptureImage.setVisibility(View.GONE);
                         ivLoadGallery.setVisibility(View.GONE);
@@ -170,7 +184,10 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     @Override
     public void loadGalley() {
-
+        Intent selectImage = new Intent();
+        selectImage.setType("image/*");
+        selectImage.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(selectImage, SELECT_IMAGE_CODE);
     }
 
     @SuppressLint("RestrictedApi")
@@ -192,17 +209,16 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
         cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
 
-
     }
 
     @Override
     public void showProgressBar() {
-
+        sendOveray.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
-
+        sendOveray.setVisibility(View.GONE);
     }
 
     @Override
@@ -248,10 +264,36 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     @Override
     public void onBackPressed() {
-        if(previewCapturedImage.getVisibility() == View.VISIBLE){
+        if (previewCapturedImage.getVisibility() == View.VISIBLE) {
             previewCapturedImage.setVisibility(View.GONE);
-        }else {
+            sendImage.setVisibility(View.GONE);
+            ivCaptureImage.setVisibility(View.VISIBLE);
+            ivShowHint.setVisibility(View.VISIBLE);
+            ivLoadGallery.setVisibility(View.VISIBLE);
+        } else {
             finish();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_IMAGE_CODE && resultCode == RESULT_OK && data != null) {
+            Uri galleyUri = data.getData();
+            Picasso.get().load(galleyUri).fit().into(previewCapturedImage);
+            previewCapturedImage.setVisibility(View.VISIBLE);
+            ivCaptureImage.setVisibility(View.GONE);
+            ivLoadGallery.setVisibility(View.GONE);
+            ivShowHint.setVisibility(View.GONE);
+            sendImage.setVisibility(View.VISIBLE);
+            if (Build.VERSION.SDK_INT < 19) {
+                captureImageUrl = RealPathUtil.getRealPathFromURI_API11to18(this, galleyUri);
+            } else {
+                captureImageUrl = RealPathUtil.getRealPathFromURI_API19(this, galleyUri);
+            }
+
+        }
+
+    }
+
 }
