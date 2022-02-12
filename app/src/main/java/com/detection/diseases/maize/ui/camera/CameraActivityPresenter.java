@@ -7,6 +7,7 @@ import android.util.Base64;
 import androidx.annotation.RequiresApi;
 
 import com.detection.diseases.maize.commons.AppConstants;
+import com.detection.diseases.maize.commons.HttpAsyncHelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -47,14 +48,12 @@ public class CameraActivityPresenter implements CameraActivityContract.Presenter
     @Override
     public void uploadFile(File file) {
         RequestParams params = new RequestParams();
-        AsyncHttpClient client = new AsyncHttpClient();
+        AsyncHttpClient client = HttpAsyncHelper.getInstance(context).getHttpClient();
         try {
             params.put("image", file);
         } catch(FileNotFoundException e) {
             e.printStackTrace();
         }
-        client.setTimeout(70000);
-        client.setResponseTimeout(70000);
        // client.addHeader("Content-Type", "multipart/form-data");
         client.post(AppConstants.BASE_API_URL+"/model/detect", params, new AsyncHttpResponseHandler() {
             @Override
@@ -76,6 +75,7 @@ public class CameraActivityPresenter implements CameraActivityContract.Presenter
                 view.onUploadError(new String(responseBody, StandardCharsets.UTF_8));
             }
         });
+
     }
 
 

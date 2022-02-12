@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.commons.AppConstants;
+import com.detection.diseases.maize.commons.HttpAsyncHelper;
 import com.detection.diseases.maize.commons.RealPathUtil;
 import com.detection.diseases.maize.ui.modelresults.ModelResultsActivity;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -274,6 +275,9 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
             ivCaptureImage.setVisibility(View.VISIBLE);
             ivShowHint.setVisibility(View.VISIBLE);
             ivLoadGallery.setVisibility(View.VISIBLE);
+            sendOveray.setVisibility(View.GONE);
+            HttpAsyncHelper.getInstance(this).getHttpClient().cancelRequests(this, true);
+
         } else {
             finish();
         }
