@@ -36,7 +36,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.detection.diseases.maize.R;
+import com.detection.diseases.maize.commons.AppConstants;
 import com.detection.diseases.maize.commons.RealPathUtil;
+import com.detection.diseases.maize.ui.modelresults.ModelResultsActivity;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.squareup.picasso.Picasso;
 
@@ -223,8 +225,10 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     @Override
     public void onUploadSucess(String response) {
-        Toast.makeText(this, "Sucess: " + response, Toast.LENGTH_SHORT).show();
-
+       Intent intent = new Intent(this, ModelResultsActivity.class);
+       intent.putExtra(AppConstants.MODEL_RESULTS, response);
+       startActivity(intent);
+       finish();
     }
 
     @Override
