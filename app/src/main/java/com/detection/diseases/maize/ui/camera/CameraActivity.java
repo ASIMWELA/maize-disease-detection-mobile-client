@@ -88,6 +88,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                assert cameraProvider != null;
                 startCamera(cameraProvider);
             }, getExecutor());
         } else {
@@ -106,25 +107,23 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_ID_MULTIPLE_PERMISSIONS:
-                if (ContextCompat.checkSelfPermission(CameraActivity.this,
-                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "The app need access to camera", Toast.LENGTH_SHORT)
-                            .show();
-                    finish();
-                } else if (ContextCompat.checkSelfPermission(CameraActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(),
-                            "The app need access to storage",
-                            Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    ProcessCameraProvider cameraProvider = cameraProviderListenableFuture.get();
-                    startCamera(cameraProvider);
-                }
-                break;
+        if (requestCode == REQUEST_ID_MULTIPLE_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(CameraActivity.this,
+                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),
+                        "The app need access to camera", Toast.LENGTH_SHORT)
+                        .show();
+                finish();
+            } else if (ContextCompat.checkSelfPermission(CameraActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(getApplicationContext(),
+                        "The app need access to storage",
+                        Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                ProcessCameraProvider cameraProvider = cameraProviderListenableFuture.get();
+                startCamera(cameraProvider);
+            }
         }
 
     }
@@ -226,10 +225,10 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     @Override
     public void onUploadSucess(String response) {
-       Intent intent = new Intent(this, ModelResultsActivity.class);
-       intent.putExtra(AppConstants.MODEL_RESULTS, response);
-       startActivity(intent);
-       finish();
+        Intent intent = new Intent(this, ModelResultsActivity.class);
+        intent.putExtra(AppConstants.MODEL_RESULTS, response);
+        startActivity(intent);
+        finish();
     }
 
     @Override

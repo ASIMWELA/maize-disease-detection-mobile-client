@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaizeDiseaseDetection">
-        <activity android:name=".ui.modelresults.ModelResultsActivity"></activity>
+        <activity android:name=".ui.signup.SignUpActivity"></activity>
+        <activity android:name=".ui.modelresults.ModelResultsActivity" />
         <activity android:name=".ui.camera.CameraActivity" />
         <activity
             android:name=".MainActivity"
