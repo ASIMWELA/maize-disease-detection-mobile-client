@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.detection.diseases.maize.R;
-import com.detection.diseases.maize.commons.AppConstants;
+import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.ui.modelresults.model.ModelResults;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.detection.diseases.maize.commons;
+package com.detection.diseases.maize.helpers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

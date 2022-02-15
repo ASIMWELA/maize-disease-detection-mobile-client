@@ -1,4 +1,4 @@
-package com.detection.diseases.maize.commons;
+package com.detection.diseases.maize.helpers;
 
 import android.text.Editable;
 import android.text.TextWatcher;

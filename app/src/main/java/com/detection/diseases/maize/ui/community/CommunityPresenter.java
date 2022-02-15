@@ -5,8 +5,8 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.detection.diseases.maize.commons.AppConstants;
-import com.detection.diseases.maize.commons.VolleyController;
+import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.VolleyController;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

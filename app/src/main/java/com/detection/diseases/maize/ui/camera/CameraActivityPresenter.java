@@ -2,12 +2,11 @@ package com.detection.diseases.maize.ui.camera;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
-import com.detection.diseases.maize.commons.AppConstants;
-import com.detection.diseases.maize.commons.HttpAsyncHelper;
+import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.HttpAsyncHelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -72,7 +71,12 @@ public class CameraActivityPresenter implements CameraActivityContract.Presenter
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 view.hideProgressBar();
-                view.onUploadError(new String(responseBody, StandardCharsets.UTF_8));
+                if(responseBody !=null){
+                    view.onUploadError(new String(responseBody, StandardCharsets.UTF_8));
+                }else {
+                    view.onUploadError("Server failed to process your request");
+                }
+
             }
         });
 

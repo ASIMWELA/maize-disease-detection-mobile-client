@@ -1,9 +1,11 @@
 package com.detection.diseases.maize.ui.account;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.detection.diseases.maize.R;
+import com.detection.diseases.maize.ui.signup.SignUpActivity;
 
 public class AccountFragment extends Fragment {
 
@@ -20,15 +23,13 @@ public class AccountFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        accountPresenter =
-                new ViewModelProvider(this).get(AccountPresenter.class);
+
         View root = inflater.inflate(R.layout.fragment_account, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        accountPresenter.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
+
+        Button btn = root.findViewById(R.id.btn_opn_sing_up);
+        btn.setOnClickListener(v->{
+            Intent i = new Intent(requireActivity(), SignUpActivity.class);
+            startActivity(i);
         });
         return root;
     }

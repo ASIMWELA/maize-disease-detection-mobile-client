@@ -4,9 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.camera2.internal.annotation.CameraExecutor;
-import androidx.camera.core.Camera;
-import androidx.camera.core.CameraProvider;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
@@ -22,13 +19,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Process;
-import android.provider.MediaStore;
 import android.util.Size;
 import android.view.View;
 import android.widget.ImageButton;
@@ -36,22 +30,19 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.detection.diseases.maize.R;
-import com.detection.diseases.maize.commons.AppConstants;
-import com.detection.diseases.maize.commons.HttpAsyncHelper;
-import com.detection.diseases.maize.commons.RealPathUtil;
+import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.HttpAsyncHelper;
+import com.detection.diseases.maize.helpers.RealPathUtil;
 import com.detection.diseases.maize.ui.modelresults.ModelResultsActivity;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import lombok.SneakyThrows;
 
@@ -215,11 +206,13 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     @Override
     public void showProgressBar() {
+        sendImage.setClickable(false);
         sendOveray.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgressBar() {
+        sendImage.setClickable(true);
         sendOveray.setVisibility(View.GONE);
     }
 

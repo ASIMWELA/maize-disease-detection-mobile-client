@@ -4,12 +4,10 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.detection.diseases.maize.commons.AppConstants;
-import com.detection.diseases.maize.commons.VolleyController;
+import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.VolleyController;
 
 import org.json.JSONObject;
-
-import lombok.Builder;
 
 public class SignUpPresenter implements SignupContract.Presenter {
     private final Context context;
@@ -27,7 +25,7 @@ public class SignUpPresenter implements SignupContract.Presenter {
 
             JsonObjectRequest signupRequest = new JsonObjectRequest(
                     Request.Method.POST,
-                    AppConstants.BASE_API_URL,
+                    AppConstants.BASE_API_URL+"/users",
                     data,
                     response -> {
                         view.hideLoadingProgress();
