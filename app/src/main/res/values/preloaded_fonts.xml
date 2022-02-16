@@ -2,6 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/aldrich</item>
+        <item>@font/alike_angular</item>
         <item>@font/allerta</item>
         <item>@font/cabin_sketch</item>
         <item>@font/cousine</item>

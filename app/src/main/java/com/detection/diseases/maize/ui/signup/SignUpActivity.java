@@ -17,6 +17,7 @@ import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.ChangeEditTextDrawables;
 import com.detection.diseases.maize.helpers.TextValidator;
 import com.google.android.material.chip.Chip;
+import com.kusu.loadingbutton.LoadingButton;
 
 import org.json.JSONObject;
 
@@ -24,9 +25,8 @@ import lombok.SneakyThrows;
 
 public class SignUpActivity extends AppCompatActivity implements SignupContract.View {
     private EditText edFirstName, edLastName, edEmail, edPassword;
-    private ProgressBar pgShowProgress;
     private Chip backButton;
-    private AppCompatButton btnSendRequest;
+    private LoadingButton btnSendRequest;
     private String email, firstName, lastName, password;
     private SignUpPresenter signUpPresenter;
     private JSONObject data;
@@ -48,7 +48,6 @@ public class SignUpActivity extends AppCompatActivity implements SignupContract.
         edFirstName = findViewById(R.id.sign_up_tv_first_name);
         edLastName = findViewById(R.id.sign_up_tv_last_name);
         edPassword = findViewById(R.id.sign_up_tv_password);
-        pgShowProgress = findViewById(R.id.sign_up_progress_bar);
         backButton = findViewById(R.id.sign_up_cp_back);
         btnSendRequest = findViewById(R.id.sign_up_activity_btn_submit);
     }
@@ -84,16 +83,16 @@ public class SignUpActivity extends AppCompatActivity implements SignupContract.
             public void validate() {
                 if (!edFirstName.getText().toString().isEmpty()) {
                     if (edFirstName.getText().toString().trim().length() < 3) {
-                        ChangeEditTextDrawables.changeToErrorDrawable(edFirstName, R.drawable.ic_baseline_person_24, getApplicationContext());
+                        ChangeEditTextDrawables.changeToErrorDrawable(edFirstName, R.drawable.ic_baseline_person_first_name_24, getApplicationContext());
                         edFirstName.setError("first name too short");
                         firstName = null;
                     } else {
-                        ChangeEditTextDrawables.changeToNormalDrawable(edFirstName, R.drawable.ic_baseline_person_24, getApplicationContext());
+                        ChangeEditTextDrawables.changeToNormalDrawable(edFirstName, R.drawable.ic_baseline_person_first_name_24, getApplicationContext());
                         firstName = edFirstName.getText().toString().trim();
                         data.put("firstName", firstName);
                     }
                 }else {
-                    ChangeEditTextDrawables.changeToNormalDrawable(edFirstName, R.drawable.ic_baseline_person_24, getApplicationContext());
+                    ChangeEditTextDrawables.changeToNormalDrawable(edFirstName, R.drawable.ic_baseline_person_first_name_24, getApplicationContext());
                     edFirstName.setError(null);
                 }
 
@@ -161,14 +160,14 @@ public class SignUpActivity extends AppCompatActivity implements SignupContract.
 
     @Override
     public void showLoadingProgress() {
-        btnSendRequest.setClickable(false);
-        pgShowProgress.setVisibility(View.VISIBLE);
+        btnSendRequest.setEnabled(false);
+        btnSendRequest.showLoading();
     }
 
     @Override
     public void hideLoadingProgress() {
-        btnSendRequest.setClickable(true);
-        pgShowProgress.setVisibility(View.GONE);
+        btnSendRequest.setEnabled(true);
+        btnSendRequest.hideLoading();
     }
 
     @Override

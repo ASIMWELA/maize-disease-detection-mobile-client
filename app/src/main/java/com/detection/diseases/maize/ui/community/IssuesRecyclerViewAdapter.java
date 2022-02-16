@@ -1,6 +1,9 @@
 package com.detection.diseases.maize.ui.community;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,9 @@ import com.detection.diseases.maize.ui.community.payload.Issue;
 import com.google.android.material.chip.Chip;
 import com.squareup.picasso.Picasso;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 import lombok.AccessLevel;
@@ -35,6 +41,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         return new IssuesViewHolder(view);
     }
 
+    @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull IssuesViewHolder holder, int position) {

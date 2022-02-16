@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fg_community_root_view"
     android:layout_width="match_parent"
+    android:background="@color/colorOnSecondary"
     android:layout_height="match_parent"
     tools:context=".ui.community.CommunityFragment">
 
@@ -22,8 +23,9 @@
         android:id="@+id/fg_community_nsc_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="45dp"
+        android:background="@color/colorOnSecondary"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +36,7 @@
             android:id="@+id/fg_community_vv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorOnSecondary"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -41,7 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
-                android:layout_marginBottom="0dp" />
+                android:layout_marginBottom="0dp"
+                android:background="@color/colorOnSecondary" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -51,15 +55,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
         android:background="@drawable/input_rounded_corners"
         android:drawableLeft="@drawable/ic_baseline_search_24"
         android:drawablePadding="2dp"
         android:ems="10"
-        android:hint="Seacrh an issue"
+        android:hint="Search an issue"
         android:inputType="textPersonName"
         android:padding="@dimen/input_vertical_padding"
         app:layout_constraintEnd_toStartOf="@+id/fg_community_om"

@@ -21,7 +21,7 @@ public class ChangeEditTextDrawables {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void changeToNormalDrawable(EditText editText, int id, Context context){
         Drawable drawable = context.getResources().getDrawable(id);
-        drawable.setTint(context.getResources().getColor(R.color.design_default_color_primary));
+        drawable.setTint(context.getResources().getColor(R.color.teal_700));
         editText.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         editText.setBackgroundResource(R.drawable.input_rounded_corners);
     }

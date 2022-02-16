@@ -76,28 +76,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_question_mark_24" />
 
-<!--        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--            android:id="@+id/camera_activity_send_image"-->
-<!--            android:layout_width="70dp"-->
-<!--            android:layout_height="70dp"-->
-<!--            android:background="@color/white"-->
-<!--            android:tint="@color/teal_700"-->
-<!--            android:visibility="gone"-->
-<!--            app:civ_border_color="@color/white"-->
-<!--            app:civ_circle_background_color="@color/white"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:srcCompat="@drawable/ic_baseline_check_24"-->
-<!--            tools:visibility="visible" />-->
 
         <ImageButton
             android:id="@+id/camera_activity_send_image"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="@drawable/round_btn_bg"
-            android:tint="@color/teal_700"
+            android:tint="@color/white"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

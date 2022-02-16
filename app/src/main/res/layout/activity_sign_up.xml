@@ -114,8 +114,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_email" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/sign_up_activity_btn_submit"
+    <com.kusu.loadingbutton.LoadingButton
+    android:id="@+id/sign_up_activity_btn_submit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -123,19 +123,25 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        app:lb_buttonColor = "@color/teal_700"
+        android:textColor="@color/white"
         android:text="Submit"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_password" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_password"
+        app:lb_cornerRadius="32dp"
+        app:lb_isShadowEnable="false" />
+
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Account"
+        android:text="Join the community"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="@color/teal_700"
         app:layout_constraintBottom_toTopOf="@+id/divider4"
         app:layout_constraintStart_toEndOf="@+id/sign_up_cp_back"
         app:layout_constraintTop_toTopOf="parent" />
@@ -151,17 +157,5 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_cp_back" />
-
-    <ProgressBar
-        android:id="@+id/sign_up_progress_bar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="@dimen/progres_bar_height_width"
-        android:layout_height="@dimen/progres_bar_height_width"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_activity_btn_submit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

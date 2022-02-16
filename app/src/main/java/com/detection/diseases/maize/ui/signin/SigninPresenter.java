@@ -1,14 +1,14 @@
-package com.detection.diseases.maize.ui.account;
+package com.detection.diseases.maize.ui.signin;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class AccountPresenter extends ViewModel {
+public class SigninPresenter extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public AccountPresenter() {
+    public SigninPresenter() {
         mText = new MutableLiveData<>();
         mText.setValue("This is notifications fragment");
     }
