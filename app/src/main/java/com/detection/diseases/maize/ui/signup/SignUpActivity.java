@@ -155,7 +155,7 @@ public class SignUpActivity extends AppCompatActivity implements SignupContract.
 
     @Override
     public void onValidationError() {
-
+        Toast.makeText(this, "Validation errors", Toast.LENGTH_SHORT).show();
     }
 
     @Override

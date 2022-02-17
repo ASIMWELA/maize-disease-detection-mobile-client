@@ -7,6 +7,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.community.CommunityFragment">
 
+    <com.google.android.material.chip.Chip
+        android:id="@+id/community_chip_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:background="@drawable/round_btn_bg"
+        app:chipBackgroundColor="@color/white"
+        app:chipEndPadding="2dp"
+        app:chipIcon="@drawable/ic_baseline_arrow_back_24"
+        app:chipIconSize="40dp"
+        app:chipStartPadding="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/fg_community_tv_no_issues"
         android:layout_width="wrap_content"
@@ -50,20 +65,17 @@
         android:id="@+id/fg_community_search_issue_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="6dp"
-        android:layout_marginRight="6dp"
         android:background="@drawable/input_rounded_corners"
         android:drawableLeft="@drawable/ic_baseline_search_24"
         android:drawablePadding="2dp"
         android:ems="10"
-        android:hint="Seacrh an issue"
+        android:hint="Search an issue"
         android:inputType="textPersonName"
         android:padding="@dimen/input_vertical_padding"
         app:layout_constraintEnd_toStartOf="@+id/fg_community_om"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/community_chip_back"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

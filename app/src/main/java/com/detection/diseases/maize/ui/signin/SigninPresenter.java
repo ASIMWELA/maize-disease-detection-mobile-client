@@ -1,19 +1,53 @@
 package com.detection.diseases.maize.ui.signin;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SigninPresenter extends ViewModel {
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.VolleyController;
 
-    private MutableLiveData<String> mText;
+import org.json.JSONObject;
 
-    public SigninPresenter() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+public class SigninPresenter implements SigninContract.Presenter {
+
+    private final SigninContract.View view;
+    private final Context context;
+
+    public SigninPresenter(SigninContract.View view, Context context) {
+        this.view = view;
+        this.context = context;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    @Override
+    public void sendSignRequest(JSONObject data) {
+        if (view.validateInput()) {
+            view.showLoading();
+            JsonObjectRequest singInRequest = new JsonObjectRequest(
+                    Request.Method.POST,
+                    AppConstants.BASE_API_URL + "/auth/login",
+                    data,
+                    response -> {
+                        view.hideLoading();
+                        view.onSigninSucess(response);
+                    },
+                    error -> {
+                        view.hideLoading();
+                        view.onsigninError(error);
+                    });
+            VolleyController.getInstance(context).addToRequestQueue(singInRequest);
+        } else {
+            view.onValidationError();
+        }
+
+    }
+
+    @Override
+    public void initInputValidation() {
+        view.validateInput();
     }
 }
