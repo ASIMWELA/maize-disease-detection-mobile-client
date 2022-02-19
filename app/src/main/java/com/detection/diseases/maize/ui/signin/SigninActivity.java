@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.VolleyError;
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.ChangeEditTextDrawables;
+import com.detection.diseases.maize.helpers.FlagErrors;
 import com.detection.diseases.maize.helpers.TextValidator;
 import com.detection.diseases.maize.ui.signup.SignUpActivity;
 import com.google.android.material.chip.Chip;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
 
 import lombok.SneakyThrows;
 
-public class SigninActivity extends Fragment implements SigninContract.View{
+public class SigninActivity extends Fragment implements SigninContract.View {
 
     private SigninPresenter signinPresenter;
     private EditText edPassword, edEmail;
@@ -33,6 +33,7 @@ public class SigninActivity extends Fragment implements SigninContract.View{
     private TextView tvOpenSignUp;
     private LoadingButton btnSendLoginRequest;
     private String email, password;
+    private FlagErrors flagErrors;
     JSONObject data = new JSONObject();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -40,21 +41,22 @@ public class SigninActivity extends Fragment implements SigninContract.View{
         View root = inflater.inflate(R.layout.fragment_signin, container, false);
         initViews(root);
         signinPresenter = new SigninPresenter(this, requireContext());
+        flagErrors = new FlagErrors(requireContext(), requireActivity());
 
-        cpBbacArrow.setOnClickListener(v->{
+        cpBbacArrow.setOnClickListener(v -> {
             requireActivity().onBackPressed();
         });
 
-        tvOpenSignUp.setOnClickListener(v->{
+        tvOpenSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), SignUpActivity.class);
             startActivity(intent);
         });
         signinPresenter.initInputValidation();
-        btnSendLoginRequest.setOnClickListener(v->signinPresenter.sendSignRequest(data));
+        btnSendLoginRequest.setOnClickListener(v -> signinPresenter.sendSignRequest(data));
         return root;
     }
 
-    private void initViews(View view){
+    private void initViews(View view) {
         edEmail = view.findViewById(R.id.sign_in_activity_email);
         edPassword = view.findViewById(R.id.sign_in_tv_password);
         cpBbacArrow = view.findViewById(R.id.sign_in_cp_back);
@@ -78,7 +80,7 @@ public class SigninActivity extends Fragment implements SigninContract.View{
                         password = edPassword.getText().toString().trim();
                         data.put("password", password);
                     }
-                }else{
+                } else {
                     ChangeEditTextDrawables.changeToNormalDrawable(edPassword, R.drawable.ic_baseline_lock_24, requireContext());
                     edPassword.setError(null);
                 }
@@ -91,34 +93,34 @@ public class SigninActivity extends Fragment implements SigninContract.View{
             public void validate() {
                 if (!edEmail.getText().toString().isEmpty()) {
                     String emailRegex = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-                    if(!edEmail.getText().toString().matches(emailRegex)){
+                    if (!edEmail.getText().toString().matches(emailRegex)) {
                         ChangeEditTextDrawables.changeToErrorDrawable(edEmail, R.drawable.ic_baseline_email_24, requireContext());
                         edEmail.setError("Valid email required");
                         email = null;
-                    }else {
+                    } else {
                         ChangeEditTextDrawables.changeToNormalDrawable(edEmail, R.drawable.ic_baseline_email_24, requireContext());
                         email = edEmail.getText().toString().trim();
                         data.put("email", email);
                     }
-                }else {
+                } else {
                     ChangeEditTextDrawables.changeToNormalDrawable(edEmail, R.drawable.ic_baseline_email_24, requireContext());
                     edEmail.setError(null);
                 }
             }
         });
 
-        return email !=null
+        return email != null
                 && password != null;
     }
 
     @Override
     public void onSigninSucess(JSONObject response) {
-        Toast.makeText(requireContext(), "SUCESS:  "+response.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(), "SUCESS:  " + response.toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onsigninError(VolleyError error) {
-        Toast.makeText(requireContext(), "Error : "+error.toString(), Toast.LENGTH_SHORT).show();
+        flagErrors.flagApiError(error);
     }
 
     @Override
