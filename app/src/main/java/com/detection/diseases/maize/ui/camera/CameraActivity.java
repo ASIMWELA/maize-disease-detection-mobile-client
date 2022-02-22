@@ -268,8 +268,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
             ivShowHint.setVisibility(View.VISIBLE);
             ivLoadGallery.setVisibility(View.VISIBLE);
             sendOveray.setVisibility(View.GONE);
-            HttpAsyncHelper.getInstance(this).getHttpClient().cancelRequests(this, true);
-
+            HttpAsyncHelper.getInstance(this).getHttpClient().cancelRequestsByTAG(AppConstants.POST_IMAGE_TAG_REQUEST, true);
         } else {
             finish();
         }

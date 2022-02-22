@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.account.AccountActivity">
+
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/sign_in_cp_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_btn_bg"
+        app:chipBackgroundColor="@color/design_default_color_background"
+        app:chipIcon="@drawable/ic_baseline_arrow_back_24"
+        app:chipIconSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/divider3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/sign_in_activity_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/input_rounded_corners"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawablePadding="2dp"
+        android:ems="10"
+        android:hint="email"
+        android:inputType="textPersonName"
+        android:padding="@dimen/input_vertical_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider5" />
+
+    <EditText
+        android:id="@+id/sign_in_tv_password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/input_rounded_corners"
+        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="2dp"
+        android:ems="10"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:padding="@dimen/input_vertical_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_activity_email" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="48dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign in"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/divider5"
+        app:layout_constraintStart_toEndOf="@+id/sign_in_cp_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.kusu.loadingbutton.LoadingButton
+        android:id="@+id/sign_in_activity_btn_submit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Signin"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_tv_password"
+        app:lb_buttonColor="@color/teal_700"
+        app:lb_cornerRadius="32dp"
+        app:lb_isShadowEnable="false" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Don't have an account? "
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/sign_in_tv_open_sign_up"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_activity_btn_submit" />
+
+    <TextView
+        android:id="@+id/sign_in_tv_open_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Signup"
+        android:textColor="@color/teal_700"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_activity_btn_submit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

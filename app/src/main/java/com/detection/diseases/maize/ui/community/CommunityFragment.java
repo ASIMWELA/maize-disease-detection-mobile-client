@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.detection.diseases.maize.R;
+import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.VolleyController;
 import com.detection.diseases.maize.ui.community.payload.Issue;
 import com.google.android.material.chip.Chip;
 
@@ -146,5 +148,11 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        VolleyController.getInstance(requireContext()).getRequestQueue().cancelAll(AppConstants.GET_COMMUNITY_ISSUES);
     }
 }

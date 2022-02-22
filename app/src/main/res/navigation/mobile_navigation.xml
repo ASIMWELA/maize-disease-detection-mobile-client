@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_account"
-        android:name="com.detection.diseases.maize.ui.signin.SigninActivity"
+        android:name="com.detection.diseases.maize.ui.account.AccountActivity"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_signin" />
 </navigation>

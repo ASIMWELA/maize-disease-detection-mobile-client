@@ -56,6 +56,12 @@ public class CameraActivityPresenter implements CameraActivityContract.Presenter
        // client.addHeader("Content-Type", "multipart/form-data");
         client.post(AppConstants.BASE_API_URL+"/model/detect", params, new AsyncHttpResponseHandler() {
             @Override
+            public void setTag(Object TAG) {
+                super.setTag(AppConstants.POST_IMAGE_TAG_REQUEST);
+
+            }
+
+            @Override
             public void onStart() {
                 view.showProgressBar();
             }
@@ -78,6 +84,8 @@ public class CameraActivityPresenter implements CameraActivityContract.Presenter
                 }
 
             }
+
+
         });
 
     }

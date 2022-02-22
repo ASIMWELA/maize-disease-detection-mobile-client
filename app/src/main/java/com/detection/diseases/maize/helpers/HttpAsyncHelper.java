@@ -7,10 +7,15 @@ import com.loopj.android.http.AsyncHttpClient;
 public class HttpAsyncHelper {
     private static HttpAsyncHelper instance = null;
     private AsyncHttpClient client;
+    private Context context;
+
+    public HttpAsyncHelper(Context context) {
+        this.context = context;
+    }
 
     public static synchronized HttpAsyncHelper getInstance(Context context){
         if(instance == null){
-            return new HttpAsyncHelper();
+            return new HttpAsyncHelper(context);
         }
         return instance;
     }

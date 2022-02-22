@@ -1,21 +1,20 @@
 package com.detection.diseases.maize.ui.signin;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import com.android.volley.VolleyError;
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.ChangeEditTextDrawables;
+import com.detection.diseases.maize.helpers.EUserRoles;
 import com.detection.diseases.maize.helpers.FlagErrors;
+import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.helpers.TextValidator;
 import com.detection.diseases.maize.ui.signup.SignUpActivity;
 import com.google.android.material.chip.Chip;
@@ -25,8 +24,7 @@ import org.json.JSONObject;
 
 import lombok.SneakyThrows;
 
-public class SigninActivity extends Fragment implements SigninContract.View {
-
+public class SigninActivity extends AppCompatActivity implements SigninContract.View {
     private SigninPresenter signinPresenter;
     private EditText edPassword, edEmail;
     private Chip cpBbacArrow;
@@ -34,35 +32,39 @@ public class SigninActivity extends Fragment implements SigninContract.View {
     private LoadingButton btnSendLoginRequest;
     private String email, password;
     private FlagErrors flagErrors;
+    private SessionManager sessionManager;
     JSONObject data = new JSONObject();
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_signin, container, false);
-        initViews(root);
-        signinPresenter = new SigninPresenter(this, requireContext());
-        flagErrors = new FlagErrors(requireContext(), requireActivity());
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_signin);
+
+        initViews();
+        signinPresenter = new SigninPresenter(this, this);
+        sessionManager = new SessionManager(this);
+        flagErrors = new FlagErrors(this, this);
 
         cpBbacArrow.setOnClickListener(v -> {
-            requireActivity().onBackPressed();
+            onBackPressed();
         });
 
         tvOpenSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), SignUpActivity.class);
+            Intent intent = new Intent(this, SignUpActivity.class);
             startActivity(intent);
         });
         signinPresenter.initInputValidation();
         btnSendLoginRequest.setOnClickListener(v -> signinPresenter.sendSignRequest(data));
-        return root;
     }
 
-    private void initViews(View view) {
-        edEmail = view.findViewById(R.id.sign_in_activity_email);
-        edPassword = view.findViewById(R.id.sign_in_tv_password);
-        cpBbacArrow = view.findViewById(R.id.sign_in_cp_back);
-        tvOpenSignUp = view.findViewById(R.id.sign_in_tv_open_sign_up);
-        btnSendLoginRequest = view.findViewById(R.id.sign_in_activity_btn_submit);
+    private void initViews() {
+        edEmail = findViewById(R.id.sign_in_activity_email);
+        edPassword = findViewById(R.id.sign_in_tv_password);
+        cpBbacArrow = findViewById(R.id.sign_in_cp_back);
+        tvOpenSignUp = findViewById(R.id.sign_in_tv_open_sign_up);
+        btnSendLoginRequest = findViewById(R.id.sign_in_activity_btn_submit);
     }
+
 
     @Override
     public boolean validateInput() {
@@ -72,16 +74,16 @@ public class SigninActivity extends Fragment implements SigninContract.View {
             public void validate() {
                 if (!edPassword.getText().toString().isEmpty()) {
                     if (edPassword.getText().toString().trim().length() < 5) {
-                        ChangeEditTextDrawables.changeToErrorDrawable(edPassword, R.drawable.ic_baseline_lock_24, requireContext());
+                        ChangeEditTextDrawables.changeToErrorDrawable(edPassword, R.drawable.ic_baseline_lock_24, SigninActivity.this);
                         edPassword.setError("Valid password required");
                         password = null;
                     } else {
-                        ChangeEditTextDrawables.changeToNormalDrawable(edPassword, R.drawable.ic_baseline_lock_24, requireContext());
+                        ChangeEditTextDrawables.changeToNormalDrawable(edPassword, R.drawable.ic_baseline_lock_24, SigninActivity.this);
                         password = edPassword.getText().toString().trim();
                         data.put("password", password);
                     }
                 } else {
-                    ChangeEditTextDrawables.changeToNormalDrawable(edPassword, R.drawable.ic_baseline_lock_24, requireContext());
+                    ChangeEditTextDrawables.changeToNormalDrawable(edPassword, R.drawable.ic_baseline_lock_24, SigninActivity.this);
                     edPassword.setError(null);
                 }
             }
@@ -94,16 +96,16 @@ public class SigninActivity extends Fragment implements SigninContract.View {
                 if (!edEmail.getText().toString().isEmpty()) {
                     String emailRegex = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                     if (!edEmail.getText().toString().matches(emailRegex)) {
-                        ChangeEditTextDrawables.changeToErrorDrawable(edEmail, R.drawable.ic_baseline_email_24, requireContext());
+                        ChangeEditTextDrawables.changeToErrorDrawable(edEmail, R.drawable.ic_baseline_email_24, SigninActivity.this);
                         edEmail.setError("Valid email required");
                         email = null;
                     } else {
-                        ChangeEditTextDrawables.changeToNormalDrawable(edEmail, R.drawable.ic_baseline_email_24, requireContext());
+                        ChangeEditTextDrawables.changeToNormalDrawable(edEmail, R.drawable.ic_baseline_email_24, SigninActivity.this);
                         email = edEmail.getText().toString().trim();
                         data.put("email", email);
                     }
                 } else {
-                    ChangeEditTextDrawables.changeToNormalDrawable(edEmail, R.drawable.ic_baseline_email_24, requireContext());
+                    ChangeEditTextDrawables.changeToNormalDrawable(edEmail, R.drawable.ic_baseline_email_24, SigninActivity.this);
                     edEmail.setError(null);
                 }
             }
@@ -114,8 +116,25 @@ public class SigninActivity extends Fragment implements SigninContract.View {
     }
 
     @Override
+    @SneakyThrows
     public void onSigninSucess(JSONObject response) {
-        Toast.makeText(requireContext(), "SUCESS:  " + response.toString(), Toast.LENGTH_SHORT).show();
+        String role = response.getJSONObject("userData").getJSONArray("roles").getJSONObject(0).getString("name");
+        if (role.equals(EUserRoles.ROLE_USER.name())) {
+            JSONObject userObject = response.getJSONObject("userData");
+            LoggedInUserModel userModel =
+                    LoggedInUserModel.builder()
+                            .active(userObject.getBoolean("active"))
+                            .email(userObject.getString("email"))
+                            .firstName(userObject.getString("firstName"))
+                            .lastName(userObject.getString("lastName"))
+                            .uuid(userObject.getString("uuid"))
+                            .build();
+            String accessToken = response.getJSONObject("tokenPayload").getString("accessToken");
+            sessionManager.setUserRole(role);
+            sessionManager.setAccessToken(accessToken);
+            sessionManager.setLoggedInUser(userModel.toString());
+            finish();
+        }
     }
 
     @Override
@@ -125,7 +144,7 @@ public class SigninActivity extends Fragment implements SigninContract.View {
 
     @Override
     public void onValidationError() {
-        Toast.makeText(requireContext(), "Input validation error ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Input validation error ", Toast.LENGTH_SHORT).show();
 
     }
 

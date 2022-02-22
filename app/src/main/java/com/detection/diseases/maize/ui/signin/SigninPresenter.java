@@ -2,10 +2,6 @@ package com.detection.diseases.maize.ui.signin;
 
 import android.content.Context;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.detection.diseases.maize.helpers.AppConstants;
