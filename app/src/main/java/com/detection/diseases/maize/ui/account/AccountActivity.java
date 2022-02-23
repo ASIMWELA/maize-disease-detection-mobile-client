@@ -15,16 +15,19 @@ import androidx.fragment.app.Fragment;
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.ui.signin.SigninActivity;
+import com.google.android.material.chip.Chip;
 
 public class AccountActivity extends Fragment {
 
     private SessionManager sessionManager;
     private Button openLoginActivity, logout;
+    private Chip backIcon;
     private ConstraintLayout loggedOutUserView, loggedInUserView;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_not_logged_in_user, container, false);
         sessionManager = new SessionManager(requireContext());
+        backIcon = root.findViewById(R.id.user_account_back);
 
 
         loggedOutUserView = root.findViewById(R.id.activity_user_home_logged_out_user_view);
@@ -45,13 +48,13 @@ public class AccountActivity extends Fragment {
                loggedInUserView.setVisibility(View.GONE);
                loggedOutUserView.setVisibility(View.VISIBLE);
            });
-
             openLoginActivity.setOnClickListener(v->{
                 Intent intent = new Intent(requireContext(), SigninActivity.class);
                 startActivity(intent);
             });
-
-
+        backIcon.setOnClickListener(v->{
+                requireActivity().onBackPressed();
+            });
 
 
 
