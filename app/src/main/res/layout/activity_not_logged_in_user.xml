@@ -5,7 +5,7 @@
     android:id="@+id/activity_logged_out_user_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:textAlignment="center">
+    android:textAlignment="viewStart">
 
     <View
         android:id="@+id/divider8"
@@ -32,6 +32,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
             android:layout_width="409dp"
             android:layout_height="299dp"
             android:background="@color/colorOnSecondary"
@@ -44,22 +45,73 @@
 
             <EditText
                 android:id="@+id/sign_up_tv_first_name2"
-                android:layout_width="108dp"
+                android:layout_width="130dp"
                 android:layout_height="34dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/input_rounded_corners"
                 android:drawablePadding="8dp"
                 android:ems="10"
                 android:padding="@dimen/input_vertical_padding"
-                android:text="User name"
+                android:text="   User name"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.85"
+                app:layout_constraintHorizontal_bias="0.666"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.166" />
+                app:layout_constraintVertical_bias="0.192" />
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="47dp"
+                android:layout_height="130dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ic_baseline_person_first_name_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            app:layout_constraintVertical_bias="1.0"
+            app:tabBackground="@drawable/round_btn_bg"
+            app:tabTextAppearance="@style/TextAppearance.AppCompat.Body1">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Involvement" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contacts" />
+
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About Us" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="com.detection.diseases.maize.ui.crops.CropsFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="440dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
