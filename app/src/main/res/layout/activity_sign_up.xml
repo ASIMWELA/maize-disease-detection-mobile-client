@@ -80,7 +80,7 @@
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="2dp"
         android:ems="10"
-        android:hint="email"
+        android:hint="e-mail"
         android:inputType="textPersonName"
         android:padding="@dimen/input_vertical_padding"
         app:layout_constraintEnd_toEndOf="parent"

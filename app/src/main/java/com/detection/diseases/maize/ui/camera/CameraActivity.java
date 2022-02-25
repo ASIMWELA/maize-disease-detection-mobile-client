@@ -112,14 +112,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
                         Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                ProcessCameraProvider cameraProvider = null;
-                try {
-                    cameraProvider = cameraProviderListenableFuture.get();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                ProcessCameraProvider cameraProvider = cameraProviderListenableFuture.get();
                 startCamera(cameraProvider);
             }
         }
