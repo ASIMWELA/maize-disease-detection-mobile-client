@@ -9,14 +9,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
 import com.detection.diseases.maize.ui.signin.SigninActivity;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
 public class AccountActivity extends Fragment {
@@ -27,8 +30,9 @@ public class AccountActivity extends Fragment {
     private TextView tvUsername, tvEmail;
     private ConstraintLayout loggedOutUserView, loggedInUserView;
     private LoggedInUserModel userModel;
+    TabLayout loggedInTabs;
+    ViewPager loggedInUserTabViewPager;
     Gson gson = new Gson();
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +56,29 @@ public class AccountActivity extends Fragment {
             requireActivity().onBackPressed();
         });
 
+        loggedInTabs.addTab(loggedInTabs.newTab().setText("Involvement"));
+        loggedInTabs.addTab(loggedInTabs.newTab().setText("About"));
+        loggedInTabs.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final FragmentAdapter adapter = new FragmentAdapter(getChildFragmentManager(), loggedInTabs.getTabCount());
+        loggedInUserTabViewPager.setAdapter(adapter);
+        loggedInUserTabViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(loggedInTabs));
+
+        loggedInTabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                loggedInUserTabViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
 
         return root;
     }
@@ -63,7 +90,8 @@ public class AccountActivity extends Fragment {
         openLoginActivity = root.findViewById(R.id.account_activity_login_btn);
         tvUsername = root.findViewById(R.id.tv_logged_in_user_name);
         tvEmail = root.findViewById(R.id.tv_logged_in_user_email);
-
+        loggedInTabs = root.findViewById(R.id.logged_in_user_tab_layout);
+        loggedInUserTabViewPager = root.findViewById(R.id.logged_in_user_fragmentsPager);
     }
 
 
@@ -78,4 +106,5 @@ public class AccountActivity extends Fragment {
             tvUsername.setText(userModel.getFirstName() + " " + userModel.getLastName());
         }
     }
+
 }

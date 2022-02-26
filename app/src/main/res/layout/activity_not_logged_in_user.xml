@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:textAlignment="center"
     android:textDirection="inherit"
-    tools:context="@tools:sample/full_names">
+    >
 
     <com.google.android.material.chip.Chip
         android:id="@+id/user_account_back"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -196,7 +196,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="49dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -214,12 +214,13 @@
                 android:layout_height="match_parent"
                 android:padding="3dp">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView13"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="16dp"
                     android:src="@drawable/ic_baseline_person_24_anonymous"
+                    app:civ_border_color="@color/teal_700"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -273,24 +274,24 @@
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/logged_in_user_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+            app:layout_constraintTop_toBottomOf="@+id/cardView5"
+            app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/user_involvement_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Involvement" />
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/logged_in_user_fragmentsPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="170dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/logged_in_user_tab_layout" />
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/user_about_app_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="About" />
-        </com.google.android.material.tabs.TabLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
