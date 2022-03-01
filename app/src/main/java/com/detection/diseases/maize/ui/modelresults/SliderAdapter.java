@@ -9,17 +9,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.detection.diseases.maize.R;
-import com.detection.diseases.maize.ui.modelresults.model.ImageResources;
+import com.detection.diseases.maize.ui.modelresults.model.ImageIdsHolder;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder> {
-    private List<ImageResources> sliderItems;
+    private List<ImageIdsHolder> sliderItems;
     private ViewPager2 viewPager2;
 
-    SliderAdapter(List<ImageResources> sliderItems, ViewPager2 viewPager2) {
+    SliderAdapter(List<ImageIdsHolder> sliderItems, ViewPager2 viewPager2) {
         this.sliderItems = sliderItems;
         this.viewPager2 = viewPager2;
     }
@@ -55,7 +55,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
             imageView = itemView.findViewById(R.id.image_image_view_holder);
         }
 
-        void setImage(ImageResources sliderItems) {
+        void setImage(ImageIdsHolder sliderItems) {
             Picasso.get().load(sliderItems.getImage()).fit().into(imageView);
         }
     }
