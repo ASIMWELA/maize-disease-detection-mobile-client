@@ -48,8 +48,9 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_straight_corners"
         android:padding="2dp"
-        android:text="Specify Crop"
+        android:text="Select crop"
         android:textAllCaps="false"
+        android:textColor="@color/teal_700"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider9" />
 
@@ -62,11 +63,51 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/input_rounded_corners"
         android:ems="10"
-        android:hint="question: e.g. What causes abc?"
+        android:hint="specify whats wrong with your crops"
         android:inputType="textPersonName"
         android:padding="@dimen/input_vertical_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
+
+    <EditText
+        android:id="@+id/ed_create_issue_question_desc"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/input_rounded_corners"
+        android:drawablePadding="4dp"
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Describe the occuring defects like color of leaves ,bugs e.t.c"
+        android:includeFontPadding="false"
+        android:inputType="text|textMultiLine"
+        android:maxLength="200"
+        android:maxLines="4"
+        android:padding="8dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ed_create_issue_question_desc">
+
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

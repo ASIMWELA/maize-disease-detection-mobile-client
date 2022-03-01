@@ -3,7 +3,6 @@ package com.detection.diseases.maize.ui.modelresults;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -11,19 +10,17 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.EDiseases;
-import com.detection.diseases.maize.ui.modelresults.model.ImageResources;
+import com.detection.diseases.maize.ui.modelresults.model.ImageIdsHolder;
 import com.detection.diseases.maize.ui.modelresults.model.ModelResults;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -54,28 +51,28 @@ public class ModelResultsActivity extends AppCompatActivity {
         ArrayAdapter<String> symptomsAdapter = new ArrayAdapter<>(this,
                 R.layout.disease_symptoms_row, results.getSymptoms());
 
-        List<ImageResources> commonRust = Stream.of(
-                new ImageResources(R.drawable.common_rust_1),
-                new ImageResources(R.drawable.common_rsut_2),
-                new ImageResources(R.drawable.common_rust_3)).collect(Collectors.toList());
+        List<ImageIdsHolder> commonRust = Stream.of(
+                new ImageIdsHolder(R.drawable.common_rust_1),
+                new ImageIdsHolder(R.drawable.common_rsut_2),
+                new ImageIdsHolder(R.drawable.common_rust_3)).collect(Collectors.toList());
 
 
-        List<ImageResources> nothernLeafBlight = Stream.of(
-                new ImageResources(R.drawable.blight_1),
-                new ImageResources(R.drawable.blight_2),
-                new ImageResources(R.drawable.blight_3)).collect(Collectors.toList());
+        List<ImageIdsHolder> nothernLeafBlight = Stream.of(
+                new ImageIdsHolder(R.drawable.blight_1),
+                new ImageIdsHolder(R.drawable.blight_2),
+                new ImageIdsHolder(R.drawable.blight_3)).collect(Collectors.toList());
 
 
-        List<ImageResources> health = Stream.of(
-                new ImageResources(R.drawable.corn_health_1),
-                new ImageResources(R.drawable.corn_health_2),
-                new ImageResources(R.drawable.corn_health_3)).collect(Collectors.toList());
+        List<ImageIdsHolder> health = Stream.of(
+                new ImageIdsHolder(R.drawable.corn_health_1),
+                new ImageIdsHolder(R.drawable.corn_health_2),
+                new ImageIdsHolder(R.drawable.corn_health_3)).collect(Collectors.toList());
 
 
-        List<ImageResources> gray = Stream.of(
-                new ImageResources(R.drawable.gray_leaf_1),
-                new ImageResources(R.drawable.gray_leaf_2),
-                new ImageResources(R.drawable.gray_leaf_3)).collect(Collectors.toList());
+        List<ImageIdsHolder> gray = Stream.of(
+                new ImageIdsHolder(R.drawable.gray_leaf_1),
+                new ImageIdsHolder(R.drawable.gray_leaf_2),
+                new ImageIdsHolder(R.drawable.gray_leaf_3)).collect(Collectors.toList());
 
         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer((page, position) -> {

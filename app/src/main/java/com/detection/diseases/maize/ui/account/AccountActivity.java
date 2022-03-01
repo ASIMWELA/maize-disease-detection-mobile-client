@@ -39,6 +39,7 @@ public class AccountActivity extends Fragment {
         View root = inflater.inflate(R.layout.activity_not_logged_in_user, container, false);
         initViews(root);
 
+
         sessionManager = new SessionManager(requireContext());
         if (sessionManager.getLoggedInUser() != null && sessionManager.getToken() != null) {
             loggedInUserView.setVisibility(View.VISIBLE);

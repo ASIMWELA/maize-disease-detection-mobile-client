@@ -1,10 +1,10 @@
 package com.detection.diseases.maize.ui.modelresults.model;
 
-public class ImageResources {
+public class ImageIdsHolder {
     //set to String, if you want to add image url from internet
     private int image;
 
-    public ImageResources(int image) {
+    public ImageIdsHolder(int image) {
         this.image = image;
     }
 
