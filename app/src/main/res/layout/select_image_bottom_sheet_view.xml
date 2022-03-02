@@ -1,40 +1,59 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/images_bottom_sheet_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="62dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    app:behavior_peekHeight="250dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add an image"
+        android:layout_marginTop="10dp"
+        android:gravity="clip_horizontal"
+        android:text="Select an image"
+        android:textColor="@color/teal_700"
         android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <GridView
+        android:id="@+id/bottom_sheet_images_grid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:numColumns="3"
+        android:layout_marginTop="1dp"
+        android:numColumns="4"
         android:verticalSpacing="6dp"
+        android:horizontalSpacing="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19">
+        app:layout_constraintTop_toBottomOf="@+id/divider10">
 
     </GridView>
 
     <ImageView
-        android:id="@+id/imageView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-15dp"
+        android:id="@+id/bttom_sheet_up_arrow"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:tint="@color/teal_700"
         app:layout_constraintStart_toEndOf="@+id/textView19"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_keyboard_arrow_up_24" />
+
+    <View
+        android:id="@+id/divider10"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="6dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bttom_sheet_up_arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.detection.diseases.maize.ui.community;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +67,12 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
                 }
             }
         });
+
+        askCommunity.setOnClickListener(v->{
+            Intent createIssue = new Intent(requireContext(), CreateAnIssueActivity.class);
+            startActivity(createIssue);
+        });
+
         return root;
     }
 
