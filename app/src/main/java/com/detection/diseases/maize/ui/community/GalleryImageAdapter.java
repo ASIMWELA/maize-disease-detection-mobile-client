@@ -33,4 +33,6 @@ public class GalleryImageAdapter extends ArrayAdapter<GalleryImageModel> {
         Picasso.get().load(galleryImageModel.getImage()).fit().centerCrop().into(image);
         return listitemView;
     }
+
+
 }

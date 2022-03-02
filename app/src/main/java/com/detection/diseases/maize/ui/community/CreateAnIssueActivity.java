@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -14,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -42,11 +44,12 @@ public class CreateAnIssueActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateISsue";
     private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 200;
-    ConstraintLayout bottomSheetView;
-    BottomSheetBehavior<?> bottomSheetBehavior;
-    ImageView ivUpDown;
-    GridView imageGridContainer;
-    List<File> images = new ArrayList<>();
+    private ConstraintLayout bottomSheetView;
+    private BottomSheetBehavior<?> bottomSheetBehavior;
+    private ImageView ivUpDown;
+    private GridView imageGridContainer;
+    private List<File> images = new ArrayList<>();
+    private CoordinatorLayout bottomSheetHolder;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -62,41 +65,38 @@ public class CreateAnIssueActivity extends AppCompatActivity {
         }
 
 
-
-
-
         ivUpDown.setOnClickListener(v -> {
-            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            } else {
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.setDraggable(true);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+            if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
 
-        imageGridContainer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        imageGridContainer.setOnItemClickListener((adapterView, view, position, id) -> {
+            GalleryImageModel selectedImage = (GalleryImageModel)adapterView.getItemAtPosition(position);
+            Toast.makeText(CreateAnIssueActivity.this, selectedImage.getImage().getAbsolutePath(), Toast.LENGTH_SHORT).show();
 
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
         });
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
+                if(newState == BottomSheetBehavior.STATE_EXPANDED){
+                   bottomSheetBehavior.setDraggable(false);
+                }
             }
 
+            //change the state of the arrow icon
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 ivUpDown.setRotation(slideOffset * 180);
-
             }
         });
+
+
 
 
     }
@@ -117,6 +117,7 @@ public class CreateAnIssueActivity extends AppCompatActivity {
         bottomSheetView = findViewById(R.id.images_bottom_sheet_view);
         ivUpDown = findViewById(R.id.bttom_sheet_up_arrow);
         imageGridContainer = findViewById(R.id.bottom_sheet_images_grid);
+        bottomSheetHolder = findViewById(R.id.coordiantor_layout_sheet_holder);
     }
 
     public boolean checkAndRequestPermissions() {
