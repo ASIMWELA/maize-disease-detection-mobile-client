@@ -4,21 +4,22 @@
     android:id="@+id/images_bottom_sheet_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:alpha="1"
+    android:background="@color/white"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="auto"
+    app:behavior_peekHeight="250dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
         android:gravity="clip_horizontal"
-        android:text="Pick an image"
+        android:text="Attach an image to your issue"
         android:textColor="@color/teal_700"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,6 +27,7 @@
         android:id="@+id/bottom_sheet_images_grid"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:gravity="center"
         android:horizontalSpacing="0dp"
         android:numColumns="4"
         android:verticalSpacing="8dp"
@@ -49,10 +51,10 @@
         android:id="@+id/divider10"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="48dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bttom_sheet_up_arrow" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
