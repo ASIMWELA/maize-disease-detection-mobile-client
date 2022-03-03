@@ -1,40 +1,35 @@
 package com.detection.diseases.maize.ui.community;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.RealPathUtil;
-import com.detection.diseases.maize.ui.camera.CameraActivity;
 import com.detection.diseases.maize.ui.community.model.GalleryImageModel;
-import com.detection.diseases.maize.ui.modelresults.model.ImageIdsHolder;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import lombok.SneakyThrows;
 
@@ -42,11 +37,17 @@ public class CreateAnIssueActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateISsue";
     private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 200;
-    ConstraintLayout bottomSheetView;
-    BottomSheetBehavior<?> bottomSheetBehavior;
-    ImageView ivUpDown;
-    GridView imageGridContainer;
-    List<File> images = new ArrayList<>();
+    private ConstraintLayout bottomSheetView;
+    private BottomSheetBehavior<?> bottomSheetBehavior;
+    private ImageView ivUpDown, iVSelectedImage, ivCancelImageSelection;
+    private GridView imageGridContainer;
+    private List<File> images = new ArrayList<>();
+    private CoordinatorLayout bottomSheetHolder;
+    private Button btnCreateIssue;
+    private EditText edIssueQuestion, edIssueDescription;
+    private File fSelectedImage;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -61,42 +62,61 @@ public class CreateAnIssueActivity extends AppCompatActivity {
             loadImagesAndAttachToAdapter();
         }
 
-
-
-
-
         ivUpDown.setOnClickListener(v -> {
-            if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            } else {
+            if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                bottomSheetBehavior.setDraggable(true);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
-        });
-
-        imageGridContainer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            if(bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED){
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
+
+        imageGridContainer.setOnItemClickListener((adapterView, view, position, id) -> {
+            GalleryImageModel selectedImage = (GalleryImageModel)adapterView.getItemAtPosition(position);
+            fSelectedImage = selectedImage.getImage();
+            Picasso.get().load(fSelectedImage).fit().centerCrop().into(iVSelectedImage);
+            iVSelectedImage.setVisibility(View.VISIBLE);
+            bottomSheetBehavior.setHideable(true);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            ivCancelImageSelection.setVisibility(View.VISIBLE);
+
+        });
+
+        ivCancelImageSelection.setOnClickListener(v->{
+            ivCancelImageSelection.setVisibility(View.GONE);
+            iVSelectedImage.setVisibility(View.GONE);
+            iVSelectedImage.setImageDrawable(null);
+            bottomSheetBehavior.setHideable(false);
+            bottomSheetBehavior.setDraggable(true);
+            fSelectedImage = null;
+        });
+
+
+        edIssueDescription.setFocusable(false);
+        edIssueQuestion.setFocusable(false);
+
+
+        edIssueQuestion.setOnClickListener(view -> edIssueQuestion.setFocusable(true));
+
+        edIssueDescription.setOnClickListener(view -> edIssueDescription.setFocusable(true));
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
+                if(newState == BottomSheetBehavior.STATE_EXPANDED){
+                   bottomSheetBehavior.setDraggable(false);
+                }
             }
-
+            //change the state of the arrow icon
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 ivUpDown.setRotation(slideOffset * 180);
 
             }
         });
+
+
 
 
     }
@@ -117,6 +137,12 @@ public class CreateAnIssueActivity extends AppCompatActivity {
         bottomSheetView = findViewById(R.id.images_bottom_sheet_view);
         ivUpDown = findViewById(R.id.bttom_sheet_up_arrow);
         imageGridContainer = findViewById(R.id.bottom_sheet_images_grid);
+        bottomSheetHolder = findViewById(R.id.coordiantor_layout_sheet_holder);
+        btnCreateIssue = findViewById(R.id.create_issue_btn_send_issue);
+        edIssueQuestion = findViewById(R.id.edt_create_issue_question);
+        edIssueDescription=findViewById(R.id.ed_create_issue_question_desc);
+        iVSelectedImage = findViewById(R.id.iv_create_an_issue_selected_image);
+        ivCancelImageSelection = findViewById(R.id.iv_cancel_image_selectiton);
     }
 
     public boolean checkAndRequestPermissions() {

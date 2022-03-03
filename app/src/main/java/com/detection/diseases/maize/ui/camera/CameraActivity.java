@@ -151,7 +151,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         captureImageUrl = outputFileResults.getSavedUri().getPath();
-                        Picasso.get().load(outputFileResults.getSavedUri()).fit().into(previewCapturedImage);
+                        Picasso.get().load(outputFileResults.getSavedUri()).fit().centerCrop().into(previewCapturedImage);
                         previewCapturedImage.setVisibility(View.VISIBLE);
                         ivCaptureImage.setVisibility(View.GONE);
                         ivLoadGallery.setVisibility(View.GONE);

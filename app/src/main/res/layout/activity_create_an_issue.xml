@@ -15,8 +15,18 @@
         app:chipBackgroundColor="@color/design_default_color_background"
         app:chipIcon="@drawable/ic_baseline_arrow_back_24"
         app:chipIconSize="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/divider9"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Ask Community"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/create_account_back"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -29,98 +39,124 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/views_contraint_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/alike_angular"
-        android:text="Ask Community"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/divider9"
-        app:layout_constraintStart_toEndOf="@+id/create_account_back"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_straight_corners"
-        android:padding="2dp"
-        android:text="Select crop"
-        android:textAllCaps="false"
-        android:textColor="@color/teal_700"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider9" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/input_rounded_corners"
-        android:ems="10"
-        android:hint="specify whats wrong with your crops"
-        android:inputType="textPersonName"
-        android:padding="@dimen/input_vertical_padding"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_create_an_issue_selected_image"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/corn_health_2" />
+
+        <ImageView
+            android:id="@+id/iv_cancel_image_selectiton"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_cancel_24" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_straight_corners"
+            android:padding="2dp"
+            android:text="Select crop"
+            android:textAllCaps="false"
+            android:textColor="@color/teal_700"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_create_an_issue_selected_image" />
+
+        <EditText
+            android:id="@+id/edt_create_issue_question"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/input_rounded_corners"
+            android:ems="10"
+            android:hint="specify whats wrong with your crops"
+            android:inputType="textPersonName"
+            android:padding="@dimen/input_vertical_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button" />
 
 
-    <EditText
-        android:id="@+id/ed_create_issue_question_desc"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/input_rounded_corners"
-        android:drawablePadding="4dp"
-        android:ems="10"
-        android:gravity="top"
-        android:hint="Describe the occuring defects like color of leaves ,bugs e.t.c"
-        android:includeFontPadding="false"
-        android:inputType="text|textMultiLine"
-        android:maxLength="200"
-        android:maxLines="4"
-        android:padding="8dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:scrollHorizontally="false"
-        android:singleLine="false"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        <EditText
+            android:id="@+id/ed_create_issue_question_desc"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/input_rounded_corners"
+            android:drawablePadding="4dp"
+            android:ems="10"
+            android:gravity="top"
+            android:hint="Describe the occuring defects like color of leaves ,bugs e.t.c"
+            android:includeFontPadding="false"
+            android:inputType="text|textMultiLine"
+            android:maxLength="200"
+            android:maxLines="4"
+            android:padding="8dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edt_create_issue_question" />
+
+        <Button
+            android:id="@+id/create_issue_btn_send_issue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/round_btn_bg"
+            android:text="Send issue"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ed_create_issue_question_desc" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordiantor_layout_sheet_holder"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="50dp"
+        android:alpha="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_issue_btn_send_issue">
+        app:layout_constraintTop_toTopOf="parent">
 
         <include layout="@layout/select_image_bottom_sheet_view" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <Button
-        android:id="@+id/create_issue_btn_send_issue"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/round_btn_bg"
-        android:text="Send issue"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed_create_issue_question_desc" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
