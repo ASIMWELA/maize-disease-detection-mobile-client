@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_background"
+    android:background="@color/light_grey"
     tools:context=".ui.community.CreateAnIssueActivity">
 
     <com.google.android.material.chip.Chip
-        android:id="@+id/create_account_back"
+        android:id="@+id/create_issue_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_btn_bg"
-        app:chipBackgroundColor="@color/design_default_color_background"
+        app:chipBackgroundColor="@color/light_grey"
         app:chipIcon="@drawable/ic_baseline_arrow_back_24"
         app:chipIconSize="40dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +25,7 @@
         android:fontFamily="sans-serif-medium"
         android:text="Ask Community"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/create_account_back"
+        app:layout_constraintStart_toEndOf="@+id/create_issue_back"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
@@ -44,6 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -62,15 +63,15 @@
             android:id="@+id/iv_cancel_image_selectiton"
             android:layout_width="40dp"
             android:layout_height="50dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_cancel_24" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_open_select_crop_dialog"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginStart="16dp"
@@ -80,6 +81,7 @@
             android:text="Select crop"
             android:textAllCaps="false"
             android:textColor="@color/teal_700"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_create_an_issue_selected_image" />
 
@@ -90,14 +92,15 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/input_rounded_corners"
+            android:background="@drawable/solod_radius_colorn_secondary"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:hint="specify whats wrong with your crops"
             android:inputType="textPersonName"
             android:padding="@dimen/input_vertical_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_open_select_crop_dialog" />
 
 
         <EditText
@@ -107,9 +110,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/input_rounded_corners"
+            android:background="@drawable/solod_radius_colorn_secondary"
             android:drawablePadding="4dp"
             android:ems="10"
+            android:focusableInTouchMode="true"
             android:gravity="top"
             android:hint="Describe the occuring defects like color of leaves ,bugs e.t.c"
             android:includeFontPadding="false"
@@ -126,7 +130,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_create_issue_question" />
 
-        <Button
+        <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/create_issue_btn_send_issue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -139,7 +143,24 @@
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ed_create_issue_question_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/ed_create_issue_question_desc"
+            app:spinning_bar_color="@color/colorOnSecondary" />
+
+        <TextView
+            android:id="@+id/tv_display_selected_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:drawableRight="@drawable/ic_baseline_clear_24"
+            android:text="Maize"
+            android:textColor="@color/teal_700"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:drawableTint="@color/top_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_create_an_issue_selected_image" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -157,6 +178,16 @@
 
         <include layout="@layout/select_image_bottom_sheet_view" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <ImageView
+        android:id="@+id/iv_open_select_image_tray"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/views_contraint_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_attach_file_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
