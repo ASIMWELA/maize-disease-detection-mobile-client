@@ -20,19 +20,18 @@ public class GalleryImageAdapter extends ArrayAdapter<GalleryImageModel> {
     public GalleryImageAdapter(@NonNull Context context, List<GalleryImageModel> galleryImageModels) {
         super(context, 0, galleryImageModels);
     }
- 
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listitemView = convertView;
-        if (listitemView == null) {
-            listitemView = LayoutInflater.from(getContext()).inflate(R.layout.gallery_image_view, parent, false);
+        View listItemView = convertView;
+        if (listItemView == null) {
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.gallery_image_view, parent, false);
         }
         GalleryImageModel galleryImageModel = getItem(position);
-        RoundedImageView image = listitemView.findViewById(R.id.gallery_image_id);
+        RoundedImageView image = listItemView.findViewById(R.id.gallery_image_id);
         Picasso.get().load(galleryImageModel.getImage()).fit().centerCrop().into(image);
-        return listitemView;
+        return listItemView;
     }
-
 
 }

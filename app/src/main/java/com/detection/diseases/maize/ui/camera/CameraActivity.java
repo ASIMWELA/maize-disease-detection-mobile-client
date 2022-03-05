@@ -35,6 +35,7 @@ import com.detection.diseases.maize.helpers.HttpAsyncHelper;
 import com.detection.diseases.maize.helpers.RealPathUtil;
 import com.detection.diseases.maize.ui.modelresults.ModelResultsActivity;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -49,7 +50,8 @@ import lombok.SneakyThrows;
 public class CameraActivity extends AppCompatActivity implements CameraActivityContract.View {
     private static final int SELECT_IMAGE_CODE = 2;
     private PreviewView cameraPreview;
-    private ImageView ivCaptureImage, ivLoadGallery, ivShowHint, previewCapturedImage;
+    private ImageView ivCaptureImage, ivLoadGallery, ivShowHint;
+    private RoundedImageView previewCapturedImage;
     private ImageButton sendImage;
     private ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture;
     private ImageCapture imageCapture;
