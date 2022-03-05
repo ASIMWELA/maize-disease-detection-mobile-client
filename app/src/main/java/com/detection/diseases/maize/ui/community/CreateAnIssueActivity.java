@@ -26,10 +26,12 @@ import androidx.core.content.ContextCompat;
 
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.RealPathUtil;
+import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.helpers.TextValidator;
 import com.detection.diseases.maize.ui.community.model.CropsModel;
 import com.detection.diseases.maize.ui.community.model.GalleryImageModel;
 import com.detection.diseases.maize.ui.community.payload.CropsGridAdapter;
+import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
@@ -62,8 +64,9 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     private Gson gson = new Gson();
     private Button btnOpenCropsDialog;
     private TextView tvDisplaySeletedCrop;
-
-
+    private CreateIssuePresenter createIssuePresenter;
+    private String token;
+    private LoggedInUserModel loggedInUserModel;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,10 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         setContentView(R.layout.activity_create_an_issue);
         initViews();
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
+        createIssuePresenter = new CreateIssuePresenter(this, this);
+        SessionManager sessionManager = new SessionManager(this);
+        loggedInUserModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
+        token = sessionManager.getToken();
 
         if (checkAndRequestPermissions()) {
             loadImagesAndAttachToAdapter();
@@ -93,7 +100,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         });
 
         btnCreateIssue.setOnClickListener(v -> {
-            btnCreateIssue.startAnimation();
+            //btnCreateIssue.;
         });
         edIssueQuestion.setOnFocusChangeListener((view, b) -> {
             if (b) {
@@ -159,6 +166,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             crop = null;
             tvDisplaySeletedCrop.setVisibility(View.GONE);
             btnOpenCropsDialog.setVisibility(View.VISIBLE);
+            btnOpenCropsDialog.setEnabled(true);
         });
 
     }
@@ -469,7 +477,8 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             crop = cropModel.getCropName();
             tvDisplaySeletedCrop.setText(crop);
             tvDisplaySeletedCrop.setVisibility(View.VISIBLE);
-            btnOpenCropsDialog.setVisibility(View.GONE);
+            btnOpenCropsDialog.setVisibility(View.INVISIBLE);
+            btnOpenCropsDialog.setEnabled(false);
             alertDialog.dismiss();
         });
         return alertDialog;
