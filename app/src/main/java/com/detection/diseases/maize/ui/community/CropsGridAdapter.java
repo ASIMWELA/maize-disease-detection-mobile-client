@@ -15,11 +15,18 @@ import com.detection.diseases.maize.ui.community.model.CropsModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class CropsGridAdapter extends ArrayAdapter<CropsModel> {
+    List<CropsModel> cropsModels;
+    List<CropsModel> searchedModels;
+
     public CropsGridAdapter(@NonNull Context context, List<CropsModel> cropsModels) {
         super(context, 0, cropsModels);
+        this.cropsModels = cropsModels;
+        searchedModels = new ArrayList<>(cropsModels);
     }
 
     @NonNull
@@ -36,5 +43,21 @@ public class CropsGridAdapter extends ArrayAdapter<CropsModel> {
         Picasso.get().load(cropsModel.getImageId()).fit().centerCrop().into(image);
         return listItemView;
     }
-
+    public void searchCrop(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        cropsModels.clear();
+        if (charText.length() == 0) {
+            cropsModels.addAll(searchedModels);
+        } else {
+            for (CropsModel cropModel : searchedModels) {
+                if (cropModel.getCropName().toLowerCase(Locale.getDefault())
+                        .contains(charText)) {
+                    cropsModels.add(cropModel);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 }
+
+

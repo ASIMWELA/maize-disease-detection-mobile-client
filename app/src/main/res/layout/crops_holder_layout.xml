@@ -20,7 +20,7 @@
         android:background="?android:attr/listDivider" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName3"
+        android:id="@+id/ed_search_crop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

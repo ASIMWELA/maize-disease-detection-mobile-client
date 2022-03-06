@@ -24,7 +24,6 @@ public class CreateIssuePresenter implements CreateIssueContract.Presenter {
 
     @Override
     public void sendIssueRequest(RequestParams data,String userUuid, String token) {
-
         if (view.validateInputs()) {
             AsyncHttpClient asyncHttpClient = HttpAsyncHelper.getInstance(context).getHttpClient();
             asyncHttpClient.addHeader("Authorization", "Bearer " + token);

@@ -164,4 +164,10 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         super.onDetach();
         VolleyController.getInstance(requireContext()).getRequestQueue().cancelAll(AppConstants.GET_COMMUNITY_ISSUES);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        communityPresenter.getCommunityIssues(page, numberOfPages);
+    }
 }

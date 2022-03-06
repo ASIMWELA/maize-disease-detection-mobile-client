@@ -15,6 +15,19 @@
         android:layout_height="40sp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        android:saveEnabled="false"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_more_vert_24" />
+
+    <ImageView
+        android:id="@+id/iv_fg_user_account_logged_out_vert"
+        android:layout_width="30sp"
+        android:layout_height="40sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

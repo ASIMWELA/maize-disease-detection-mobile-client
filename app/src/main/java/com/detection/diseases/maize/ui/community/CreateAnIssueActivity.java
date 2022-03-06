@@ -1,11 +1,13 @@
 package com.detection.diseases.maize.ui.community;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -22,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.detection.diseases.maize.R;
+import com.detection.diseases.maize.helpers.CheckUserSession;
 import com.detection.diseases.maize.helpers.RealPathUtil;
 import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.helpers.TextValidator;
@@ -34,9 +37,14 @@ import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,6 +70,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     private CreateIssuePresenter createIssuePresenter;
     private String token;
     private LoggedInUserModel loggedInUserModel;
+    JSONObject stringData = new JSONObject();
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -95,9 +104,6 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             }
         });
 
-        btnCreateIssue.setOnClickListener(v -> {
-            //btnCreateIssue.;
-        });
         edIssueQuestion.setOnFocusChangeListener((view, b) -> {
             if (b) {
                 bottomSheetBehavior.setHideable(true);
@@ -127,6 +133,12 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                 bottomSheetBehavior.setDraggable(true);
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                View view = this.getCurrentFocus();
+                if (view == null) {
+                    view = new View(this);
+                }
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         });
 
@@ -162,6 +174,27 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             tvDisplaySeletedCrop.setVisibility(View.GONE);
             btnOpenCropsDialog.setVisibility(View.VISIBLE);
             btnOpenCropsDialog.setEnabled(true);
+        });
+
+        //set the initail validation
+        createIssuePresenter.initValidation();
+
+        btnCreateIssue.setOnClickListener(v -> {
+            if (!CheckUserSession.isUserLoggedIn(this)) {
+
+            } else {
+                RequestParams data = new RequestParams();
+
+                try {   data.put("image", fSelectedImage);
+                        data.put("issue", stringData.toString());
+                        createIssuePresenter.sendIssueRequest(data, loggedInUserModel.getUuid(), token);
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
         });
 
     }
@@ -232,16 +265,16 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     @Override
     public boolean validateInputs() {
         edIssueQuestion.addTextChangedListener(new TextValidator(edIssueQuestion) {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             @SneakyThrows
             public void validate() {
                 if (!edIssueQuestion.getText().toString().isEmpty()) {
-                    if (edIssueQuestion.getText().toString().trim().length() < 3) {
-                        edIssueQuestion.setError("first name too short");
+                    if (edIssueQuestion.getText().toString().trim().length() < 8) {
+                        edIssueQuestion.setError("Question too short");
                         question = null;
                     } else {
                         question = edIssueQuestion.getText().toString().trim();
+                        stringData.put("question", question);
                     }
                 } else {
                     edIssueQuestion.setError(null);
@@ -249,16 +282,16 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             }
         });
         edIssueDescription.addTextChangedListener(new TextValidator(edIssueDescription) {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             @SneakyThrows
             public void validate() {
                 if (!edIssueDescription.getText().toString().isEmpty()) {
-                    if (edIssueDescription.getText().toString().trim().length() < 3) {
-                        edIssueDescription.setError("first name too short");
-                        question = null;
+                    if (edIssueDescription.getText().toString().trim().length() < 10) {
+                        edIssueDescription.setError("Try to be brief !");
+                        questionDescription = null;
                     } else {
                         questionDescription = edIssueDescription.getText().toString().trim();
+                        stringData.put("questionDescription", questionDescription);
                     }
                 } else {
                     edIssueQuestion.setError(null);
@@ -267,23 +300,25 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         });
         return question != null
                 && questionDescription != null
-                && crop != null;
-
+                && crop != null
+                && fSelectedImage != null;
     }
 
     @Override
     public void onValidationFailure() {
-        Toast.makeText(this, "Please fill the\nrequired fields", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, stringData.toString() + "\n selected image" + fSelectedImage, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Please fill the\nrequired fields", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSendIssueSuccess(String response) {
-
+        Toast.makeText(this, "Sucess :  " + response, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onSendIssueError(String errorResponse) {
 
+        Toast.makeText(this, "Error: " + errorResponse, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -303,12 +338,14 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+    @SneakyThrows
     private AlertDialog buildDialog() {
         AlertDialog.Builder searchDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.crops_holder_layout, null);
         searchDialog.setView(dialogView);
         GridView cropsGrid = dialogView.findViewById(R.id.crops_holder_grid);
+        EditText edSearchCrop = dialogView.findViewById(R.id.ed_search_crop);
 
         List<CropsModel> cropsModels = Stream.of(
                 CropsModel.builder()
@@ -467,9 +504,27 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
         CropsGridAdapter cropsGridAdapter = new CropsGridAdapter(this, cropsModels);
         cropsGrid.setAdapter(cropsGridAdapter);
+
+        edSearchCrop.addTextChangedListener(new TextValidator(edSearchCrop) {
+            @Override
+            public void validate() {
+                if (edSearchCrop.getText().toString().length() == 0) {
+                    cropsGridAdapter.searchCrop("");
+                } else {
+                    String text = edSearchCrop.getText().toString().toLowerCase(Locale.getDefault());
+                    cropsGridAdapter.searchCrop(text);
+                }
+            }
+        });
+
         cropsGrid.setOnItemClickListener((adapterView, view, position, id) -> {
             CropsModel cropModel = cropsModels.get(position);
             crop = cropModel.getCropName();
+            try {
+                stringData.put("crop", crop);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             tvDisplaySeletedCrop.setText(crop);
             tvDisplaySeletedCrop.setVisibility(View.VISIBLE);
             btnOpenCropsDialog.setVisibility(View.INVISIBLE);
