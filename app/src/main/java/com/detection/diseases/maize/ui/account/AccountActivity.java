@@ -1,19 +1,24 @@
 package com.detection.diseases.maize.ui.account;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.detection.diseases.maize.R;
+import com.detection.diseases.maize.helpers.CustomOptionsMenu;
 import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
 import com.detection.diseases.maize.ui.signin.SigninActivity;
@@ -24,28 +29,33 @@ import com.google.gson.Gson;
 public class AccountActivity extends Fragment {
 
     private SessionManager sessionManager;
-    private Button openLoginActivity, logout;
+    private Button openLoginActivity;
     private Chip backIcon;
     private TextView tvUsername, tvEmail;
     private ConstraintLayout loggedOutUserView, loggedInUserView;
     private LoggedInUserModel userModel;
-    TabLayout loggedInTabs;
-    ViewPager loggedInUserTabViewPager;
-    Gson gson = new Gson();
+    private TabLayout loggedInTabs;
+    private ViewPager loggedInUserTabViewPager;
+    private Gson gson = new Gson();
+    private ImageView ivOpenMenuVert;
+    private PopupMenu menu;
 
+    @SuppressLint("NonConstantResourceId")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_user_account_view, container, false);
         initViews(root);
 
-
         sessionManager = new SessionManager(requireContext());
-        if (sessionManager.getLoggedInUser() != null && sessionManager.getToken() != null) {
+        if (checkUserSession()) {
             loggedInUserView.setVisibility(View.VISIBLE);
             loggedOutUserView.setVisibility(View.GONE);
             userModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
             tvEmail.setText(userModel.getEmail());
             tvUsername.setText(userModel.getFirstName() + " " + userModel.getLastName());
+            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_in_user_more_menu);
+        } else {
+            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_out_user_more_menu);
         }
 
         openLoginActivity.setOnClickListener(v -> {
@@ -79,6 +89,31 @@ public class AccountActivity extends Fragment {
             }
         });
 
+        menu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.log_out_user_account:
+                    loggedInUserView.setVisibility(View.GONE);
+                    loggedOutUserView.setVisibility(View.VISIBLE);
+                    sessionManager.setAccessToken(null);
+                    sessionManager.setLoggedInUser(null);
+                    menu.dismiss();
+                    menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_out_user_more_menu);
+                    return true;
+                case R.id.about_app:
+                    Toast.makeText(requireContext(), "About logged in user", Toast.LENGTH_SHORT).show();
+                    return true;
+                case R.id.about_app_logged_out_user:
+                    Toast.makeText(requireActivity(), "About logged out user", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
+
+        ivOpenMenuVert.setOnClickListener(v -> {
+            menu.setForceShowIcon(true);
+            menu.dismiss();
+            menu.show();
+        });
+
 
         return root;
     }
@@ -92,19 +127,28 @@ public class AccountActivity extends Fragment {
         tvEmail = root.findViewById(R.id.tv_logged_in_user_email);
         loggedInTabs = root.findViewById(R.id.logged_in_user_tab_layout);
         loggedInUserTabViewPager = root.findViewById(R.id.logged_in_user_fragmentsPager);
+        ivOpenMenuVert = root.findViewById(R.id.iv_fg_user_account_more_vert);
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        if (sessionManager.getLoggedInUser() != null && sessionManager.getToken() != null) {
+        if (checkUserSession()) {
             loggedInUserView.setVisibility(View.VISIBLE);
             loggedOutUserView.setVisibility(View.GONE);
             userModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
             tvEmail.setText(userModel.getEmail());
             tvUsername.setText(userModel.getFirstName() + " " + userModel.getLastName());
+            menu.dismiss();
+            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_in_user_more_menu);
+        } else {
+            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_out_user_more_menu);
         }
+    }
+
+    public boolean checkUserSession() {
+        return sessionManager.getLoggedInUser() != null && sessionManager.getToken() != null;
     }
 
 }

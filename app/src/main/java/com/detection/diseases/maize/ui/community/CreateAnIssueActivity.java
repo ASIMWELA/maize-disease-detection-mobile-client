@@ -2,13 +2,10 @@ package com.detection.diseases.maize.ui.community;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -48,7 +45,6 @@ import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import lombok.SneakyThrows;
 
 public class CreateAnIssueActivity extends AppCompatActivity implements CreateIssueContract.View {
-    private static final String TAG = "CreateISsue";
     private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 200;
     private ConstraintLayout bottomSheetView;
     private BottomSheetBehavior<?> bottomSheetBehavior;
@@ -67,6 +63,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     private CreateIssuePresenter createIssuePresenter;
     private String token;
     private LoggedInUserModel loggedInUserModel;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +80,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             loadImagesAndAttachToAdapter();
         }
 
-        btnOpenCropsDialog.setOnClickListener(v->{
+        btnOpenCropsDialog.setOnClickListener(v -> {
             buildDialog().show();
         });
         cpBackArrow.setOnClickListener(v -> {
@@ -134,7 +131,6 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             }
         });
 
-
         ivCancelImageSelection.setOnClickListener(v -> {
             ivCancelImageSelection.setVisibility(View.GONE);
             iVSelectedImage.setVisibility(View.GONE);
@@ -162,7 +158,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
             }
         });
 
-        tvDisplaySeletedCrop.setOnClickListener(v->{
+        tvDisplaySeletedCrop.setOnClickListener(v -> {
             crop = null;
             tvDisplaySeletedCrop.setVisibility(View.GONE);
             btnOpenCropsDialog.setVisibility(View.VISIBLE);

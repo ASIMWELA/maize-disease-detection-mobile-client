@@ -49,6 +49,7 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
     List<Issue> issueList;
     private TextView noIssuesMessage;
     private int page = 0, numberOfPages = 1;
+    private Chip chBackChip;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,20 +58,20 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         communityPresenter.getCommunityIssues(page, numberOfPages);
 
         nestedScrollView.setNestedScrollingEnabled(true);
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
-                    // in this method we are incrementing page number,
-                       ++page;
-                       communityPresenter.getCommunityIssues(page, numberOfPages);
-                }
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
+                // incrementing page number if reached bottom,
+                ++page;
+                communityPresenter.getCommunityIssues(page, numberOfPages);
             }
         });
-
-        askCommunity.setOnClickListener(v->{
+        askCommunity.setOnClickListener(v -> {
             Intent createIssue = new Intent(requireContext(), CreateAnIssueActivity.class);
             startActivity(createIssue);
+        });
+
+        chBackChip.setOnClickListener(v -> {
+            requireActivity().onBackPressed();
         });
 
         return root;
@@ -83,8 +84,9 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         askCommunity = root.findViewById(R.id.fg_community_ask_cp);
         communityRootView = root.findViewById(R.id.fg_community_root_view);
         noIssuesMessage = root.findViewById(R.id.fg_community_tv_no_issues);
-        nestedScrollView = (NestedScrollView) root.findViewById(R.id.fg_community_nsc_view);
+        nestedScrollView = root.findViewById(R.id.fg_community_nsc_view);
         issueList = new ArrayList<>();
+        chBackChip = root.findViewById(R.id.community_chip_back);
         communityPresenter = new CommunityPresenter(this, requireContext());
     }
 
