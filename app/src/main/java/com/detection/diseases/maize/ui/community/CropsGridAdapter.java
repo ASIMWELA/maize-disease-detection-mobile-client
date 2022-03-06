@@ -1,4 +1,4 @@
-package com.detection.diseases.maize.ui.community.payload;
+package com.detection.diseases.maize.ui.community;
 
 import android.content.Context;
 import android.view.LayoutInflater;

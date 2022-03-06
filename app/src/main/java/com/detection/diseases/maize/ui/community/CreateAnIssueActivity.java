@@ -27,7 +27,6 @@ import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.helpers.TextValidator;
 import com.detection.diseases.maize.ui.community.model.CropsModel;
 import com.detection.diseases.maize.ui.community.model.GalleryImageModel;
-import com.detection.diseases.maize.ui.community.payload.CropsGridAdapter;
 import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
