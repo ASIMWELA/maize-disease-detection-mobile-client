@@ -20,10 +20,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.TextValidator;
 import com.detection.diseases.maize.helpers.VolleyController;
 import com.detection.diseases.maize.ui.community.payload.Issue;
 import com.google.android.material.chip.Chip;
@@ -33,6 +35,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import lombok.SneakyThrows;
 
@@ -50,13 +53,14 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
     private TextView noIssuesMessage;
     private int page = 0, numberOfPages = 1;
     private Chip chBackChip;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community, container, false);
         initComponent(root);
-        communityPresenter.getCommunityIssues(page, numberOfPages);
 
+        communityPresenter.getCommunityIssues(page, numberOfPages);
         nestedScrollView.setNestedScrollingEnabled(true);
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY == v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) {
@@ -74,6 +78,13 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
             requireActivity().onBackPressed();
         });
 
+
+
+//        swipeRefreshLayout.setOnRefreshListener(() -> {
+//            issueList.clear();
+//            communityPresenter.getCommunityIssues(page,numberOfPages);
+//        });
+
         return root;
     }
 
@@ -88,10 +99,12 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         issueList = new ArrayList<>();
         chBackChip = root.findViewById(R.id.community_chip_back);
         communityPresenter = new CommunityPresenter(this, requireContext());
+        swipeRefreshLayout = root.findViewById(R.id.swipte_to_refresh);
     }
 
     @Override
     public void onError(VolleyError volleyError) {
+        etSearch.addTextChangedListener(null);
         Toast.makeText(requireActivity(), volleyError.toString(), Toast.LENGTH_SHORT).show();
     }
 
@@ -127,7 +140,7 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
                         .crop(issueObject.getString("crop"))
                         .issueLikes(issueLikes > 0 ? String.valueOf(issueLikes) : "like")
                         .issueDislikes(issueDislikes > 0 ? String.valueOf(issueDislikes) : "dislike")
-                        .issueAnswers(String.valueOf(issueObject.getInt("issueAnswers")) + " answers")
+                        .issueAnswers(issueObject.getInt("issueAnswers") + " answers")
                         .issueStatus(issueObject.getString("issueStatus"))
                         .question(issueObject.getString("question"))
                         .imageAvatarUrl(imageUrl)
@@ -142,6 +155,17 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         recyclerView.setLayoutManager(r);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        etSearch.addTextChangedListener(new TextValidator(etSearch) {
+            @Override
+            public void validate() {
+                if (etSearch.getText().toString().length() == 0) {
+                    adapter.searchIssue("");
+                } else {
+                    String text = etSearch.getText().toString().toLowerCase(Locale.getDefault());
+                    adapter.searchIssue(text);
+                }
+            }
+        });
     }
 
     @Override
@@ -157,17 +181,20 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        etSearch.addTextChangedListener(null);
         VolleyController.getInstance(requireContext()).getRequestQueue().cancelAll(AppConstants.GET_COMMUNITY_ISSUES);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        communityPresenter.getCommunityIssues(page, numberOfPages);
+    public void stopReshresh() {
+
     }
+
+
 }

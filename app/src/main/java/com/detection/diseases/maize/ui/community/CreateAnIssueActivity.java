@@ -312,6 +312,11 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
     @Override
     public void onSendIssueSuccess(String response) {
+        crop = null;
+        question = null;
+        questionDescription=null;
+        fSelectedImage=null;
+
         Toast.makeText(this, "Sucess :  " + response, Toast.LENGTH_SHORT).show();
     }
 

@@ -73,6 +73,7 @@ public class RealPathUtil {
         Cursor cursor;
         int column_index_data;
         String[] projection = {MediaStore.MediaColumns.DATA};
+        String orderBy = MediaStore.Images.Media.DATE_TAKEN + " DESC";
 
         //GET IMAGES FROM EXTERNAL SD CARD
         if(isSDPresent){
@@ -81,7 +82,7 @@ public class RealPathUtil {
                     projection,
                     null,
                     null,
-                    null);
+                    orderBy);
 
             column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
             while (cursor.moveToNext()) {
@@ -97,7 +98,7 @@ public class RealPathUtil {
                 projection,
                 null,
                 null,
-                null);
+                orderBy);
 
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         while (cursor.moveToNext()) {
