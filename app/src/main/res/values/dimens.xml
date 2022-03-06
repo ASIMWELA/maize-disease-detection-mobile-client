@@ -1,5 +1,5 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="input_vertical_padding">8dp</dimen>
-   <dimen name="progres_bar_height_width">26dp</dimen>
+   <dimen name="progres_bar_height_width">40dp</dimen>
 </resources>

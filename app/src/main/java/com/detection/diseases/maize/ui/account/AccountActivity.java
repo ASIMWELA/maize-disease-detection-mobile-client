@@ -37,8 +37,9 @@ public class AccountActivity extends Fragment {
     private TabLayout loggedInTabs;
     private ViewPager loggedInUserTabViewPager;
     private Gson gson = new Gson();
-    private ImageView ivOpenMenuVert;
-    private PopupMenu menu;
+    private ImageView ivOpenMenuVertLoggedInUser, ivOPenMenuVertLoggedoutUser;
+    private PopupMenu loggedInUserMenu;
+    private PopupMenu loggedOutUserMenu;
 
     @SuppressLint("NonConstantResourceId")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -47,16 +48,6 @@ public class AccountActivity extends Fragment {
         initViews(root);
 
         sessionManager = new SessionManager(requireContext());
-        if (checkUserSession()) {
-            loggedInUserView.setVisibility(View.VISIBLE);
-            loggedOutUserView.setVisibility(View.GONE);
-            userModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
-            tvEmail.setText(userModel.getEmail());
-            tvUsername.setText(userModel.getFirstName() + " " + userModel.getLastName());
-            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_in_user_more_menu);
-        } else {
-            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_out_user_more_menu);
-        }
 
         openLoginActivity.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), SigninActivity.class);
@@ -89,29 +80,44 @@ public class AccountActivity extends Fragment {
             }
         });
 
-        menu.setOnMenuItemClickListener(item -> {
+        loggedInUserMenu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVertLoggedInUser, R.menu.logged_in_user_more_menu);
+
+        loggedOutUserMenu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOPenMenuVertLoggedoutUser, R.menu.logged_out_user_more_menu);
+
+        if(checkUserSession()){
+            ivOPenMenuVertLoggedoutUser.setVisibility(View.GONE);
+            ivOpenMenuVertLoggedInUser.setVisibility(View.VISIBLE);
+        }
+        loggedOutUserMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()){
+                case R.id.about_app_logged_out_user:
+                    Toast.makeText(requireActivity(), "Logged out user", Toast.LENGTH_SHORT).show();
+                    return true;
+            }
+            return true;
+        });
+        loggedInUserMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.log_out_user_account:
                     loggedInUserView.setVisibility(View.GONE);
                     loggedOutUserView.setVisibility(View.VISIBLE);
                     sessionManager.setAccessToken(null);
                     sessionManager.setLoggedInUser(null);
-                    menu.dismiss();
-                    menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_out_user_more_menu);
+                    ivOPenMenuVertLoggedoutUser.setVisibility(View.VISIBLE);
+                    ivOpenMenuVertLoggedInUser.setVisibility(View.GONE);
                     return true;
                 case R.id.about_app:
                     Toast.makeText(requireContext(), "About logged in user", Toast.LENGTH_SHORT).show();
                     return true;
-                case R.id.about_app_logged_out_user:
-                    Toast.makeText(requireActivity(), "About logged out user", Toast.LENGTH_SHORT).show();
             }
             return true;
         });
 
-        ivOpenMenuVert.setOnClickListener(v -> {
-            menu.setForceShowIcon(true);
-            menu.dismiss();
-            menu.show();
+        ivOpenMenuVertLoggedInUser.setOnClickListener(v -> {
+            loggedInUserMenu.show();
+        });
+        ivOPenMenuVertLoggedoutUser.setOnClickListener(v->{
+            loggedOutUserMenu.show();
         });
 
 
@@ -127,10 +133,9 @@ public class AccountActivity extends Fragment {
         tvEmail = root.findViewById(R.id.tv_logged_in_user_email);
         loggedInTabs = root.findViewById(R.id.logged_in_user_tab_layout);
         loggedInUserTabViewPager = root.findViewById(R.id.logged_in_user_fragmentsPager);
-        ivOpenMenuVert = root.findViewById(R.id.iv_fg_user_account_more_vert);
+        ivOpenMenuVertLoggedInUser = root.findViewById(R.id.iv_fg_user_account_more_vert);
+        ivOPenMenuVertLoggedoutUser =root.findViewById(R.id.iv_fg_user_account_logged_out_vert);
     }
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -140,11 +145,10 @@ public class AccountActivity extends Fragment {
             userModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
             tvEmail.setText(userModel.getEmail());
             tvUsername.setText(userModel.getFirstName() + " " + userModel.getLastName());
-            menu.dismiss();
-            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_in_user_more_menu);
-        } else {
-            menu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOpenMenuVert, R.menu.logged_out_user_more_menu);
-        }
+            ivOPenMenuVertLoggedoutUser.setVisibility(View.GONE);
+            ivOpenMenuVertLoggedInUser.setVisibility(View.VISIBLE);
+            }
+
     }
 
     public boolean checkUserSession() {

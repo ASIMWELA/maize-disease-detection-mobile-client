@@ -35,9 +35,11 @@ public class CommunityPresenter  implements CommunityContract.Presenter {
                 response -> {
                     view.hideLoading();
                     view.onResponse(response);
+                    view.stopReshresh();
                 }, error -> {
             view.hideLoading();
             view.onError(error);
+            view.stopReshresh();
         });
         serviceCategoriesRequest.setTag(AppConstants.GET_COMMUNITY_ISSUES);
         VolleyController.getInstance(context).addToRequestQueue(serviceCategoriesRequest);

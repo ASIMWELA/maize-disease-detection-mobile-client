@@ -11,6 +11,8 @@ public interface CommunityContract {
         void onResponse(JSONObject response);
         void showLoading();
         void hideLoading();
+        void stopReshresh();
+
     }
     interface Presenter{
         void getCommunityIssues(int page, int totalPages);
