@@ -354,152 +354,140 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
         List<CropsModel> cropsModels = Stream.of(
                 CropsModel.builder()
-                        .cropName("Maize")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Cassava")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Millet")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Tobacco")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Tomato")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
                         .cropName("Apple")
-                        .imageId(R.drawable.common_rust_3)
+                        .imageId(R.drawable.apple)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Bean")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Cashew nut")
+                        .imageId(R.drawable.cashew)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Avocado")
+                        .imageId(R.drawable.avocado)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Beans")
+                        .imageId(R.drawable.bean)
                         .build(),
                 CropsModel.builder()
                         .cropName("Cabbage")
-                        .imageId(R.drawable.common_rust_3)
+                        .imageId(R.drawable.cabbage)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Carrot")
+                        .imageId(R.drawable.carrot)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Cassava")
+                        .imageId(R.drawable.cassava)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Cherry")
+                        .imageId(R.drawable.cherry)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Chinese leaves")
+                        .imageId(R.drawable.chinese)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Coconut")
+                        .imageId(R.drawable.coconut)
                         .build(),
                 CropsModel.builder()
                         .cropName("Coffee")
-                        .imageId(R.drawable.common_rust_3)
+                        .imageId(R.drawable.coffee)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Cucumber")
+                        .imageId(R.drawable.cucumber)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Figs")
+                        .imageId(R.drawable.figs)
                         .build(),
                 CropsModel.builder()
                         .cropName("Ginger")
-                        .imageId(R.drawable.common_rust_3)
+                        .imageId(R.drawable.ginger)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Grapes")
+                        .imageId(R.drawable.grapes)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Guava")
+                        .imageId(R.drawable.guava)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Lemon")
+                        .imageId(R.drawable.lemon)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Maize")
+                        .imageId(R.drawable.maize)
                         .build(),
                 CropsModel.builder()
                         .cropName("Mango")
-                        .imageId(R.drawable.common_rust_3)
+                        .imageId(R.drawable.mango)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Melon")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Onion")
+                        .imageId(R.drawable.onion)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Orange")
+                        .imageId(R.drawable.orange)
+                        .build(),
+                CropsModel.builder()
+                        .cropName("Wheat")
+                        .imageId(R.drawable.wheat)
                         .build(),
                 CropsModel.builder()
                         .cropName("Papaya")
-                        .imageId(R.drawable.common_rust_3)
+                        .imageId(R.drawable.papaya)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Banana")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Peach")
+                        .imageId(R.drawable.peach)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Onion")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Pear")
+                        .imageId(R.drawable.pear)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Tea")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Pineapple")
+                        .imageId(R.drawable.pineapple)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Other")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Pumpkin")
+                        .imageId(R.drawable.pumpkin)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Banana")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Strawberry")
+                        .imageId(R.drawable.strawberry)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Onion")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Sugarcane")
+                        .imageId(R.drawable.sugarcane)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Tea")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Tangerine")
+                        .imageId(R.drawable.tangerine)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Other")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Tobacco")
+                        .imageId(R.drawable.tobacco)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Banana")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Tomato")
+                        .imageId(R.drawable.tomato)
                         .build(),
                 CropsModel.builder()
-                        .cropName("Onion")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Tea")
-                        .imageId(R.drawable.common_rust_3)
+                        .cropName("Millet")
+                        .imageId(R.drawable.wheat)
                         .build(),
                 CropsModel.builder()
                         .cropName("Other")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Banana")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Onion")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Tea")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Other")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Banana")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Onion")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Tea")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Other")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Banana")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Onion")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Tea")
-                        .imageId(R.drawable.common_rust_3)
-                        .build(),
-                CropsModel.builder()
-                        .cropName("Other")
-                        .imageId(R.drawable.common_rust_3)
+                        .imageId(R.drawable.questio)
                         .build()
         ).collect(Collectors.toList());
 

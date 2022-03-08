@@ -104,7 +104,6 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
 
     @Override
     public void onError(VolleyError volleyError) {
-        etSearch.addTextChangedListener(null);
         Toast.makeText(requireActivity(), volleyError.toString(), Toast.LENGTH_SHORT).show();
     }
 
@@ -187,7 +186,6 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
     @Override
     public void onDetach() {
         super.onDetach();
-        etSearch.addTextChangedListener(null);
         VolleyController.getInstance(requireContext()).getRequestQueue().cancelAll(AppConstants.GET_COMMUNITY_ISSUES);
     }
 

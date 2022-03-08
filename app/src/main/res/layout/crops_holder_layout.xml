@@ -2,13 +2,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="35dp"
+    android:background="@color/colorOnSecondary"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Select your crops"
+        android:text="Pick your crop"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -34,12 +35,13 @@
     <GridView
         android:id="@+id/crops_holder_grid"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorOnSecondary"
         android:gravity="center"
-        android:horizontalSpacing="4dp"
+        android:clipToPadding="false"
+        android:layout_marginVertical="15dp"
         android:numColumns="3"
-        android:verticalSpacing="8dp" />
+        android:verticalSpacing="30dp" />
 </LinearLayout>
 
 
