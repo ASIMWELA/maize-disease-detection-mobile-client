@@ -33,10 +33,16 @@ import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.HttpAsyncHelper;
 import com.detection.diseases.maize.helpers.RealPathUtil;
+import com.detection.diseases.maize.ui.modelresults.ModelResultHelper;
 import com.detection.diseases.maize.ui.modelresults.ModelResultsActivity;
+import com.detection.diseases.maize.ui.modelresults.model.HighConfidenceDisease;
+import com.detection.diseases.maize.ui.modelresults.model.ModelResponse;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,8 +63,9 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
     private ImageCapture imageCapture;
     private CameraActivityPresenter cameraActivityPresenter;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
-    String captureImageUrl = null;
+    private String captureImageUrl = null;
     private ConstraintLayout sendOveray;
+    private final Gson gson = new Gson();
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -219,11 +226,36 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
     }
 
     @Override
+    @SneakyThrows
     public void onUploadSucess(String response) {
-        Intent intent = new Intent(this, ModelResultsActivity.class);
-        intent.putExtra(AppConstants.MODEL_RESULTS, response);
-        startActivity(intent);
-        finish();
+        ModelResponse modelResponse = gson.fromJson(response, ModelResponse.class);
+        HighConfidenceDisease results = modelResponse.getFirstDisease();
+        double accuracyPercentage = Double.parseDouble(results.getAccuracy());
+
+        if(accuracyPercentage>=70){
+            Intent intent = new Intent(this, ModelResultsActivity.class);
+            intent.putExtra(AppConstants.MODEL_RESULTS, results.toString());
+            if(results.getDiseaseName().equals("Health")){
+                Toast.makeText(this, "Health leaf detected", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this, "Disease confidently detected", Toast.LENGTH_SHORT).show();
+            }
+            intent.putExtra(AppConstants.ACTIVITY_SOURCE, AppConstants.DIRECT_DETECTION);
+            startActivity(intent);
+            finish();    
+        }
+        if(accuracyPercentage >= 55 && accuracyPercentage < 70){
+            Intent intent = new Intent(this, ModelResultHelper.class);
+            intent.putExtra(AppConstants.MODEL_RESPONSE_RESULTS, modelResponse.toString());
+            Toast.makeText(this, "Confident detection failed", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+            finish();
+        }
+        
+        if(accuracyPercentage < 55){
+            Toast.makeText(this, "Failed to confidently classify :"+ accuracyPercentage, Toast.LENGTH_SHORT).show();
+        }
+        
     }
 
     @Override

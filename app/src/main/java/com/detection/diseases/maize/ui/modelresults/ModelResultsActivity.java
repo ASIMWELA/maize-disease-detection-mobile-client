@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +18,8 @@ import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.EDiseases;
 import com.detection.diseases.maize.ui.modelresults.model.ImageIdsHolder;
-import com.detection.diseases.maize.ui.modelresults.model.ModelResults;
+import com.detection.diseases.maize.ui.modelresults.model.HighConfidenceDisease;
+import com.detection.diseases.maize.ui.modelresults.model.LowConfidenceDisease;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 
@@ -40,12 +42,36 @@ public class ModelResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_model_results_actity);
         initViews();
         Gson gson = new Gson();
-        ModelResults results = gson.fromJson(getIntent().getStringExtra(AppConstants.MODEL_RESULTS), ModelResults.class);
-        tvDiseaseName.setText(results.getDiseaseName());
-        if (results.getDiseaseName().equals("Health")) {
-            tvRecommendations.setText("Keeping The Crop Healthy");
-            tvSymptoms.setText("Signs for a healthy crop");
+
+        String activitySource = getIntent().getStringExtra(AppConstants.ACTIVITY_SOURCE);
+        HighConfidenceDisease results = null;
+        if(activitySource.equals(AppConstants.DIRECT_DETECTION)){
+            results = gson.fromJson(getIntent().getStringExtra(AppConstants.MODEL_RESULTS), HighConfidenceDisease.class);
+            tvDiseaseName.setText(results.getDiseaseName());
+            if (results.getDiseaseName().equals("Health")) {
+                tvRecommendations.setText("Keeping The Crop Healthy");
+                tvSymptoms.setText("Signs of a healthy crop");
+            }
         }
+
+        if(activitySource.equals(AppConstants.FIRST_DISEASE_SELECTION_HELPER)){
+            results = gson.fromJson(getIntent().getStringExtra(AppConstants.MODEL_RESULTS), HighConfidenceDisease.class);
+            tvDiseaseName.setText(results.getDiseaseName());
+            if (results.getDiseaseName().equals("Health")) {
+                tvRecommendations.setText("Keeping The Crop Healthy");
+                tvSymptoms.setText("Signs of a healthy crop");
+            }
+        }
+        if(activitySource.equals(AppConstants.SECOND_DISEASE_SELECTION_HELPER)){
+            results = gson.fromJson(getIntent().getStringExtra(AppConstants.MODEL_RESULTS), HighConfidenceDisease.class);
+            tvDiseaseName.setText(results.getDiseaseName());
+            if (results.getDiseaseName().equals("Health")) {
+                tvRecommendations.setText("Keeping The Crop Healthy");
+                tvSymptoms.setText("Signs of a healthy crop");
+            }
+        }
+
+
         ArrayAdapter<String> recommendationAdapter = new ArrayAdapter<>(this,
                 R.layout.disease_recommendations_row, results.getPrescriptions());
         ArrayAdapter<String> symptomsAdapter = new ArrayAdapter<>(this,

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class CropsGridAdapter extends ArrayAdapter<CropsModel> {
     List<CropsModel> cropsModels;
     List<CropsModel> searchedModels;
@@ -37,7 +39,7 @@ public class CropsGridAdapter extends ArrayAdapter<CropsModel> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.single_crop_view, parent, false);
         }
         CropsModel cropsModel = getItem(position);
-        RoundedImageView image = listItemView.findViewById(R.id.image_crop);
+        CircleImageView image = listItemView.findViewById(R.id.image_crop);
         TextView cropName = listItemView.findViewById(R.id.crop_name);
         cropName.setText(cropsModel.getCropName());
         Picasso.get().load(cropsModel.getImageId()).fit().centerCrop().into(image);
