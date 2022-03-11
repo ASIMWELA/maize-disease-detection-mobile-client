@@ -8,4 +8,9 @@ public class AppConstants {
     public static final String API_ACCESS_TOKEN = "Usser_access_tokess";
     public static final String LOGGED_IN_USER_SESSION_KEY = "Setloggedinuserindf the applicattion";
     public static final String USER_ROLE = "ygdugdihreorihfksuhfewiofhoewidjewopjdweop";
+    public static final String MODEL_RESPONSE_RESULTS = "iygedidugweodhwepodkml,jdnwe;odjew;dmew;";
+    public static final String ACTIVITY_SOURCE = "activity";
+    public static final String DIRECT_DETECTION = "direct_detection";
+    public static final String FIRST_DISEASE_SELECTION_HELPER = "Model_result_first_selection";
+    public static final String SECOND_DISEASE_SELECTION_HELPER = "Modewl_second_choice";
 }

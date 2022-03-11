@@ -1,5 +1,9 @@
 package com.detection.diseases.maize.ui.modelresults.model;
 
+import androidx.annotation.NonNull;
+
+import com.google.gson.GsonBuilder;
+
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -13,10 +17,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ModelResults {
+public class HighConfidenceDisease {
     String diseaseUuid,
             diseaseName,
             accuracy;
     List<String> symptoms;
     List<String> prescriptions;
+    @NonNull
+    @Override
+    public String toString() {
+        return new GsonBuilder().create().toJson(this, HighConfidenceDisease.class);
+    }
 }
