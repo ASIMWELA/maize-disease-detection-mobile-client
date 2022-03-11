@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/PROJECT/maize-disease-detection-mobile-client/app/src/main/res/layout/activity_model_result_helper.xml" value="0.14722222222222223" />
+        <entry key="..\:/PROJECT/maize-disease-detection-mobile-client/app/src/main/res/layout/community_issue_row.xml" value="0.14722222222222223" />
         <entry key="..\:/maize-disease-detection-mobile-client/app/src/main/res/layout/activity_camera.xml" value="0.2015625" />
         <entry key="..\:/maize-disease-detection-mobile-client/app/src/main/res/layout/activity_main.xml" value="0.38697916666666665" />
         <entry key="..\:/maize-disease-detection-mobile-client/app/src/main/res/layout/activity_model_results_actity.xml" value="0.38697916666666665" />
