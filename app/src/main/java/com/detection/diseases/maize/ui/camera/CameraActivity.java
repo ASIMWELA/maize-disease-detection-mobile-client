@@ -3,6 +3,7 @@ package com.detection.diseases.maize.ui.camera;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
@@ -19,12 +20,18 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Size;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -33,6 +40,10 @@ import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.HttpAsyncHelper;
 import com.detection.diseases.maize.helpers.RealPathUtil;
+import com.detection.diseases.maize.helpers.TextValidator;
+import com.detection.diseases.maize.ui.community.CreateAnIssueActivity;
+import com.detection.diseases.maize.ui.community.CropsGridAdapter;
+import com.detection.diseases.maize.ui.community.model.CropsModel;
 import com.detection.diseases.maize.ui.modelresults.ModelResultHelper;
 import com.detection.diseases.maize.ui.modelresults.ModelResultsActivity;
 import com.detection.diseases.maize.ui.modelresults.model.HighConfidenceDisease;
@@ -42,14 +53,18 @@ import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.SneakyThrows;
 
@@ -232,7 +247,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         HighConfidenceDisease results = modelResponse.getFirstDisease();
         double accuracyPercentage = Double.parseDouble(results.getAccuracy());
 
-        if(accuracyPercentage>=70){
+        if(accuracyPercentage>=75){
             Intent intent = new Intent(this, ModelResultsActivity.class);
             intent.putExtra(AppConstants.MODEL_RESULTS, results.toString());
             if(results.getDiseaseName().equals("Health")){
@@ -244,16 +259,16 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
             startActivity(intent);
             finish();    
         }
-        if(accuracyPercentage >= 55 && accuracyPercentage < 70){
+        if(accuracyPercentage >= 55 && accuracyPercentage < 75){
             Intent intent = new Intent(this, ModelResultHelper.class);
             intent.putExtra(AppConstants.MODEL_RESPONSE_RESULTS, modelResponse.toString());
             Toast.makeText(this, "Confident detection failed", Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
         }
-        
         if(accuracyPercentage < 55){
-            Toast.makeText(this, "Failed to confidently classify :"+ accuracyPercentage, Toast.LENGTH_SHORT).show();
+            AlertDialog errorDialog = this.buildDialog();
+            errorDialog.show();
         }
         
     }
@@ -327,6 +342,32 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
         }
 
+    }
+
+
+    private AlertDialog buildDialog() {
+        AlertDialog.Builder searchDialog = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.detection_failure_error_layout, null);
+        Button createIssue = dialogView.findViewById(R.id.btn_detection_error_dialog);
+        ImageView closeDialog = dialogView.findViewById(R.id.iv_close_dialog);
+        searchDialog.setView(dialogView);
+        AlertDialog alertDialog = searchDialog.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+        closeDialog.setOnClickListener(v->{
+            alertDialog.dismiss();
+        });
+        createIssue.setOnClickListener(v->{
+            Intent i = new Intent(this, CreateAnIssueActivity.class);
+            i.putExtra(AppConstants.CAPTURED_IMAGE_URL, captureImageUrl);
+            alertDialog.dismiss();
+            startActivity(i);
+            finish();
+        });
+        return alertDialog;
     }
 
 }

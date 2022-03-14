@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_marginStart="3dp"
     android:background="@color/light_grey"
-    android:padding="10dp"
     tools:context=".ui.community.CreateAnIssueActivity">
 
     <com.google.android.material.chip.Chip
@@ -54,23 +53,31 @@
         <ImageView
             android:id="@+id/iv_create_an_issue_selected_image"
             android:layout_width="0dp"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/corn_health_2" />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_cancel_image_selectiton"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_baseline_clear_24"
+            android:tint="@color/white"
             android:visibility="gone"
+
+            app:civ_border_color="@color/white"
+            app:civ_border_width="1dp"
+            app:civ_circle_background_color="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_cancel_24" />
+
+            />
 
         <Button
             android:id="@+id/btn_open_select_crop_dialog"

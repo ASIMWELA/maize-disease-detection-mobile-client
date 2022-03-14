@@ -2,7 +2,7 @@ package com.detection.diseases.maize.ui.community;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.icu.text.DateFormat;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -13,10 +13,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.detection.diseases.maize.R;
-import com.detection.diseases.maize.ui.community.model.CropsModel;
+import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.ui.community.payload.Issue;
 import com.google.android.material.chip.Chip;
 import com.squareup.picasso.Picasso;
@@ -30,7 +31,6 @@ import java.util.List;
 import java.util.Locale;
 
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 
@@ -74,6 +74,9 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         if (days > 1) {
             daysToDisplay = days + " days ago";
         }
+        if(days>30){
+            daysToDisplay =createdData.getDay()+ "-"+ createdData.getMonth()+"-"+ createdData.getYear();
+        }
         holder.tvIssueCreator.setText(issue.getCreatedBy());
         holder.tvIssueCreatedAt.setText(daysToDisplay);
         holder.tvIssueQuestion.setText(issue.getQuestion());
@@ -92,6 +95,11 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             holder.cpIssueStatus.setVisibility(View.VISIBLE);
         }
         holder.ivIssueCreator.setImageResource(R.drawable.ic_baseline_person_24);
+        holder.baseView.setOnClickListener(v->{
+            Intent i = new Intent(context, AnswerAnIssueActivity.class);
+            i.putExtra(AppConstants.ISSUE_TO_ANSWER, issue);
+            context.startActivity(i);
+        });
     }
 
     @Override
@@ -113,6 +121,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
                 ivIssueDislikes,
                 ivIssueCreator;
         Chip cpIssueStatus;
+        CardView baseView;
 
         public IssuesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -129,6 +138,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             ivIssueCreator = itemView.findViewById(R.id.fg_communuty_issue_creator_avatar);
             cpIssueStatus = itemView.findViewById(R.id.fg_community_cp_resolved);
             tvCrop = itemView.findViewById(R.id.tv_community_crop);
+            baseView = itemView.findViewById(R.id.fg_community_issue_row);
         }
     }
 

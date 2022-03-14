@@ -45,15 +45,11 @@ public class FlagErrors {
         LayoutInflater inflater = activity.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.api_app_dialog_error, null);
         searchDialog.setView(dialogView);
-        tvGeneralError = (TextView)dialogView.findViewById(R.id.error_dialog_error_content);
+        tvGeneralError = dialogView.findViewById(R.id.error_dialog_error_content);
         btnDismisDialog = dialogView.findViewById(R.id.error_dialog_dismiss_dialog);
-        btnCreateIssue = dialogView.findViewById(R.id.error_dialog_create_issue_community);
         AlertDialog r = searchDialog.create();
-        r.getWindow().setLayout(200, 100);
         r.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         r.setCanceledOnTouchOutside(false);
-
-
         if(apiError instanceof NoConnectionError) {
             tvGeneralError.setText("There is No Internet Connection Available.");
             r.show();
