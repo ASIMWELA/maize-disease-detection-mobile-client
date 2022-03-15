@@ -15,17 +15,29 @@
     </style>
 
 
-    <style name="Theme.CreateIssueActivity" parent="ThemeOverlay.MaterialComponents.ActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/teal_700</item>
+    <style name="Theme.CreateIssueActivity"  parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryVariant">@color/top_color</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">#fefcd2</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">@android:color/transparent</item>
+        <item name="android:textColor">#9E9E9E</item>
+        <item name="colorControlNormal">#9E9E9E</item>
+        <item name="backgroundColor">@color/top_color</item>
+        <item name="background">@android:color/transparent</item>
+    </style>
+
+    <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="Theme.CollapsedBar"  parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryVariant">@color/top_color</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:textColorPrimary">#9E9E9E</item>
+        <item name="android:textColor">#9E9E9E</item>
+        <item name="colorControlNormal">#9E9E9E</item>
+        <item name="backgroundColor">@color/top_color</item>
+        <item name="background">@android:color/transparent</item>
     </style>
 </resources>
