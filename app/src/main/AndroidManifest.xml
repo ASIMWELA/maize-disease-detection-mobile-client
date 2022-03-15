@@ -18,7 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaizeDiseaseDetection"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.modelresults.ModelResultHelper"></activity>
+        <activity android:name=".ui.community.AnswerAnIssueActivity"
+            android:theme="@style/Theme.CreateIssueActivity">
+        </activity>
+        <activity android:name=".ui.modelresults.ModelResultHelper" />
         <activity android:name=".ui.community.CreateAnIssueActivity" />
         <activity android:name=".ui.signin.SigninActivity" />
         <activity android:name=".ui.signup.SignUpActivity" />

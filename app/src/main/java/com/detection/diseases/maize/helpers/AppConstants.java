@@ -13,4 +13,6 @@ public class AppConstants {
     public static final String DIRECT_DETECTION = "direct_detection";
     public static final String FIRST_DISEASE_SELECTION_HELPER = "Model_result_first_selection";
     public static final String SECOND_DISEASE_SELECTION_HELPER = "Modewl_second_choice";
+    public static final String CAPTURED_IMAGE_URL = "captured_image_url";
+    public static final String ISSUE_TO_ANSWER = "issue_to_answer";
 }

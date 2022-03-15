@@ -14,4 +14,30 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+    <style name="Theme.CreateIssueActivity"  parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryVariant">@color/top_color</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:textColorPrimary">@android:color/transparent</item>
+        <item name="android:textColor">#9E9E9E</item>
+        <item name="colorControlNormal">#9E9E9E</item>
+        <item name="backgroundColor">@color/top_color</item>
+        <item name="background">@android:color/transparent</item>
+    </style>
+
+    <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="Theme.CollapsedBar"  parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryVariant">@color/top_color</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:textColorPrimary">#9E9E9E</item>
+        <item name="android:textColor">#9E9E9E</item>
+        <item name="colorControlNormal">#9E9E9E</item>
+        <item name="backgroundColor">@color/top_color</item>
+        <item name="background">@android:color/transparent</item>
+    </style>
 </resources>

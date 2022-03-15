@@ -40,6 +40,7 @@ public class Issue implements Parcelable {
         crop = in.readString();
         issueStatus = in.readString();
         imageAvatarUrl = in.readString();
+        createdAt = in.readString();
         issueLikes = in.readString();
         issueDislikes = in.readString();
         issueAnswers = in.readString();
@@ -71,6 +72,7 @@ public class Issue implements Parcelable {
         parcel.writeString(crop);
         parcel.writeString(issueStatus);
         parcel.writeString(imageAvatarUrl);
+        parcel.writeString(createdAt);
         parcel.writeString(issueLikes);
         parcel.writeString(issueDislikes);
         parcel.writeString(issueAnswers);

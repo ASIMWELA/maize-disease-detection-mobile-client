@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.detection.diseases.maize.R;
+import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.CheckUserSession;
 import com.detection.diseases.maize.helpers.RealPathUtil;
 import com.detection.diseases.maize.helpers.SessionManager;
@@ -35,6 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -49,13 +51,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
+import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.SneakyThrows;
 
 public class CreateAnIssueActivity extends AppCompatActivity implements CreateIssueContract.View {
     private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 200;
     private ConstraintLayout bottomSheetView;
     private BottomSheetBehavior<?> bottomSheetBehavior;
-    private ImageView ivUpDown, iVSelectedImage, ivCancelImageSelection, ivOpenSelectImageTray;
+    private ImageView ivUpDown, iVSelectedImage, ivOpenSelectImageTray;
+    private CircleImageView ivCancelImageSelection;
     private GridView imageGridContainer;
     private final List<File> images = new ArrayList<>();
     private CircularProgressButton btnCreateIssue;
@@ -63,8 +67,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     private File fSelectedImage;
     private Chip cpBackArrow;
     private String crop, question, questionDescription;
-    private RequestParams data = new RequestParams();
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
     private Button btnOpenCropsDialog;
     private TextView tvDisplaySeletedCrop;
     private CreateIssuePresenter createIssuePresenter;
@@ -81,6 +84,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView);
         createIssuePresenter = new CreateIssuePresenter(this, this);
         SessionManager sessionManager = new SessionManager(this);
+
         loggedInUserModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
         token = sessionManager.getToken();
 
@@ -181,6 +185,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
         btnCreateIssue.setOnClickListener(v -> {
             if (!CheckUserSession.isUserLoggedIn(this)) {
+                Toast.makeText(this, "Login to take an action", Toast.LENGTH_SHORT).show();
 
             } else {
                 RequestParams data = new RequestParams();
@@ -197,6 +202,16 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
         });
 
+        //get image from the camera activity
+        String imageUrl = getIntent().getStringExtra(AppConstants.CAPTURED_IMAGE_URL);
+        if(imageUrl != null){
+            fSelectedImage = new File(imageUrl);
+            Picasso.get().load(fSelectedImage).fit().centerCrop().into(iVSelectedImage);
+            iVSelectedImage.setVisibility(View.VISIBLE);
+            bottomSheetBehavior.setHideable(true);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+            ivCancelImageSelection.setVisibility(View.VISIBLE);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -316,8 +331,14 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         question = null;
         questionDescription=null;
         fSelectedImage=null;
-
-        Toast.makeText(this, "Sucess :  " + response, Toast.LENGTH_SHORT).show();
+        tvDisplaySeletedCrop.setVisibility(View.GONE);
+        btnOpenCropsDialog.setVisibility(View.VISIBLE);
+        ivCancelImageSelection.setVisibility(View.GONE);
+        edIssueDescription.setText("");
+        edIssueQuestion.setText("");
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        iVSelectedImage.setVisibility(View.GONE);
+        Toast.makeText(this, "Issue Created", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -333,7 +354,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
     @Override
     public void hideProgress() {
-        btnCreateIssue.stopAnimation();
+        btnCreateIssue.revertAnimation();
     }
 
     @Override
