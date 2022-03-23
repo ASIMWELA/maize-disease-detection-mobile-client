@@ -2,6 +2,7 @@ package com.detection.diseases.maize.ui.community;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.detection.diseases.maize.helpers.TextValidator;
 import com.detection.diseases.maize.ui.community.model.CropsModel;
 import com.detection.diseases.maize.ui.community.model.GalleryImageModel;
 import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
+import com.detection.diseases.maize.ui.signin.SigninActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
@@ -185,8 +187,9 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
         btnCreateIssue.setOnClickListener(v -> {
             if (!CheckUserSession.isUserLoggedIn(this)) {
+                Intent i = new Intent(this, SigninActivity.class);
+                startActivity(i);
                 Toast.makeText(this, "Login to take an action", Toast.LENGTH_SHORT).show();
-
             } else {
                 RequestParams data = new RequestParams();
 

@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
@@ -174,7 +175,7 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                        captureImageUrl = outputFileResults.getSavedUri().getPath();
+                        captureImageUrl = Objects.requireNonNull(outputFileResults.getSavedUri()).getPath();
                         Picasso.get().load(outputFileResults.getSavedUri()).fit().centerCrop().into(previewCapturedImage);
                         previewCapturedImage.setVisibility(View.VISIBLE);
                         ivCaptureImage.setVisibility(View.GONE);

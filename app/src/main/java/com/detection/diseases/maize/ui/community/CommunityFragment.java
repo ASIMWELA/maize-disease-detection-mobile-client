@@ -139,7 +139,7 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
                         .crop(issueObject.getString("crop"))
                         .issueLikes(issueLikes > 0 ? String.valueOf(issueLikes) : "like")
                         .issueDislikes(issueDislikes > 0 ? String.valueOf(issueDislikes) : "dislike")
-                        .issueAnswers(issueObject.getInt("issueAnswers") + " answers")
+                        .issueAnswers(issueObject.getInt("issueAnswers")==1?issueObject.getInt("issueAnswers") + " answer" : issueObject.getInt("issueAnswers") + " answers")
                         .issueStatus(issueObject.getString("issueStatus"))
                         .question(issueObject.getString("question"))
                         .imageAvatarUrl(imageUrl)
