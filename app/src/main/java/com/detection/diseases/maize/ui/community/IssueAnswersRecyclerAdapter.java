@@ -47,7 +47,7 @@ public class IssueAnswersRecyclerAdapter extends RecyclerView.Adapter<IssueAnswe
         TextView title, content;
         public IssueAnswerHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.tv_title);
+            title = itemView.findViewById(R.id.tv_user_answered);
             content = itemView.findViewById(R.id.tv_content);
         }
     }

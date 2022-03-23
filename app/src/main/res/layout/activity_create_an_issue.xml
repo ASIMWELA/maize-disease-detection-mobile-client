@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="3dp"
     android:background="@color/light_grey"
     tools:context=".ui.community.CreateAnIssueActivity">
 
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         app:chipBackgroundColor="@color/light_grey"
         app:chipIcon="@drawable/ic_baseline_arrow_back_24"
-        app:chipIconSize="40dp"
+        app:chipIconSize="@dimen/back_icon_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

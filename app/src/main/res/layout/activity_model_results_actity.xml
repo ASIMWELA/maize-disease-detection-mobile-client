@@ -27,7 +27,7 @@
         android:buttonTint="#79FFFFFF"
         app:chipBackgroundColor="@color/colorOnSecondary"
         app:chipIcon="@drawable/ic_baseline_arrow_back_24"
-        app:chipIconSize="40dp"
+        app:chipIconSize="@dimen/back_icon_size"
         app:layout_constraintBottom_toTopOf="@+id/divider3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
