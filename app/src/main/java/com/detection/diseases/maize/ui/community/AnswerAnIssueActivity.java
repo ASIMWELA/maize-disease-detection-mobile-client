@@ -73,7 +73,7 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
     private ImageView ivIssueImage,ivDismissSelectedImage, ivDisplaySelectedImage, ivSendIssueAnswer, ivOpenGallley;
     private TextView tvTitle, tvQuestion, tvCreatorName, tvDisplayDate;
     private EditText edInputIssueAnswer;
-    private ProgressBar pbViewAnswerIssueProgress;
+    private ProgressBar pbViewAnswerIssueProgress, pbGetIssueAnswersProgressBar;
     private String selectedImageUri, answerContent;
 
 
@@ -253,6 +253,7 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         ivSendIssueAnswer = findViewById(R.id.iv_send_issue_answer);
         ivDismissSelectedImage = findViewById(R.id.iv_dismiss_selected_image);
         pbViewAnswerIssueProgress = findViewById(R.id.pb_show_loading);
+        pbGetIssueAnswersProgressBar = findViewById(R.id.pb_get_issue_answers_progress_bar);
 
     }
 

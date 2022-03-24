@@ -9,17 +9,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.AppConstants;
+import com.detection.diseases.maize.helpers.CheckUserSession;
+import com.detection.diseases.maize.helpers.SessionManager;
+import com.detection.diseases.maize.helpers.VolleyController;
 import com.detection.diseases.maize.ui.community.payload.Issue;
+import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
 import com.google.android.material.chip.Chip;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
@@ -27,8 +37,10 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import lombok.AccessLevel;
 import lombok.SneakyThrows;
@@ -39,12 +51,17 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
     final Context context;
     final List<Issue> issues;
     final List<Issue> searchedModels;
+    final Gson gson = new Gson();
+    final SessionManager sessionManager;
+    LoggedInUserModel user = null;
 
     public IssuesRecyclerViewAdapter(Context context, List<Issue> issues) {
         this.context = context;
         this.issues = issues;
         searchedModels = new ArrayList<>(issues);
+        sessionManager = new SessionManager(context);
     }
+
 
     @NonNull
     @Override
@@ -63,6 +80,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         Date createdData = sdf.parse(issue.getCreatedAt());
         LocalDate createdAt = createdData.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate now = LocalDate.now();
+
         long days = ChronoUnit.DAYS.between(createdAt, now);
         String daysToDisplay = null;
         if (days == 0) {
@@ -74,8 +92,8 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         if (days > 1) {
             daysToDisplay = days + " days ago";
         }
-        if(days>30){
-            daysToDisplay =createdData.getDay()+ "-"+ createdData.getMonth()+"-"+ createdData.getYear();
+        if (days > 30) {
+            daysToDisplay = createdData.getDay() + "-" + createdData.getMonth() + "-" + createdData.getYear();
         }
         holder.tvIssueCreator.setText(issue.getCreatedBy());
         holder.tvIssueCreatedAt.setText(daysToDisplay);
@@ -95,11 +113,56 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             holder.cpIssueStatus.setVisibility(View.VISIBLE);
         }
         holder.ivIssueCreator.setImageResource(R.drawable.ic_baseline_person_24);
-        holder.baseView.setOnClickListener(v->{
+        holder.baseView.setOnClickListener(v -> {
             Intent i = new Intent(context, AnswerAnIssueActivity.class);
             i.putExtra(AppConstants.ISSUE_TO_ANSWER, issue);
             context.startActivity(i);
         });
+
+        if (CheckUserSession.isUserLoggedIn(context)) {
+            user = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
+            if ((user.getFirstName() + " " + user.getLastName()).equals(issue.getCreatedBy())
+                    && !(issue.getIssueStatus().equals(IssueStatus.RESOLVED.name()))) {
+                holder.cpMarkAsResolved.setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (issue.getIssueStatus().equals(IssueStatus.RESOLVED.name())) {
+            holder.cpIssueStatus.setVisibility(View.VISIBLE);
+            holder.cpMarkAsResolved.setVisibility(View.GONE);
+        }
+
+        holder.cpMarkAsResolved.setOnClickListener(v -> {
+            holder.pgShoResolvePb.setVisibility(View.VISIBLE);
+            holder.cpMarkAsResolved.setVisibility(View.GONE);
+            JsonObjectRequest markResolved = new JsonObjectRequest(
+                    Request.Method.PUT,
+                    AppConstants.BASE_API_URL + "/community/issues/resolve-issue/" + issue.getUuid() + "/" + user.getUuid(),
+                    null,
+                    response -> {
+                        holder.pgShoResolvePb.setVisibility(View.GONE);
+                        holder.cpMarkAsResolved.setVisibility(View.GONE);
+                        holder.cpIssueStatus.setVisibility(View.VISIBLE);
+                        Toast.makeText(context, "Issue marked as resolved", Toast.LENGTH_SHORT).show();
+                    }, error -> {
+                        holder.pgShoResolvePb.setVisibility(View.GONE);
+                       holder.cpMarkAsResolved.setVisibility(View.VISIBLE);
+                       holder.cpIssueStatus.setVisibility(View.GONE);
+                       Toast.makeText(context, "We were unable to complete the action", Toast.LENGTH_SHORT).show();
+            }){
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer "+sessionManager.getToken());
+                    return  headers;
+                }
+            };
+
+            markResolved.setTag("send_resolve_issue");
+            VolleyController.getInstance(context).getRequestQueue().add(markResolved);
+
+        });
+
     }
 
     @Override
@@ -120,8 +183,9 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
                 ivIssueLikes,
                 ivIssueDislikes,
                 ivIssueCreator;
-        Chip cpIssueStatus;
+        Chip cpIssueStatus, cpMarkAsResolved;
         CardView baseView;
+        ProgressBar pgShoResolvePb;
 
         public IssuesViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +203,9 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             cpIssueStatus = itemView.findViewById(R.id.fg_community_cp_resolved);
             tvCrop = itemView.findViewById(R.id.tv_community_crop);
             baseView = itemView.findViewById(R.id.fg_community_issue_row);
+            cpMarkAsResolved = itemView.findViewById(R.id.cp_mark_as_resolved);
+            pgShoResolvePb = itemView.findViewById(R.id.pb_resolve_pb);
+
         }
     }
 
