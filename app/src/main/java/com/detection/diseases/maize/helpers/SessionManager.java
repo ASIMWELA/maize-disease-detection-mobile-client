@@ -10,8 +10,8 @@ import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SessionManager {
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    final SharedPreferences sharedPreferences;
+    final SharedPreferences.Editor editor;
 
     public SessionManager(Context context){
         sharedPreferences = context.getSharedPreferences("maize-disease", 0);

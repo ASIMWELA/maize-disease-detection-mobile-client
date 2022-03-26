@@ -14,9 +14,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class IssueAnswerModel {
-    String answerContent,answerBy, answerImage;
+    String answerContent,answerBy, imageAvatarLink;
     long answerLikes;
     long answerDislikes;
     String uuid;
-    Date createdAt;
+    String createdAt;
 }

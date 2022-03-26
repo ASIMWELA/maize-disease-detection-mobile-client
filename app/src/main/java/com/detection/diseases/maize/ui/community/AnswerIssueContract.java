@@ -14,10 +14,15 @@ public interface AnswerIssueContract {
         boolean validateInput();
         void onInputValidationFailed();
         void loadGalley();
+        void showGetIssueAnswerLoading();
+        void hideGetIssueAnswerLoader();
+        void onGetIssueAnswersError(VolleyError error);
+        void onGetIssueAnswerResponse(JSONObject response);
     }
 
     interface Presenter{
         void sendAnswer(RequestParams data, String issueUuid, String userUuid, String token);
         void initValidation();
+        void getIssueAnswers(String issueUuid);
     }
 }

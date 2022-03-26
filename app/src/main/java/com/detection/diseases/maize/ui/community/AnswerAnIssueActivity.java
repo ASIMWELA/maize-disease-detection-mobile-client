@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.detection.diseases.maize.R;
 import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.CheckUserSession;
@@ -41,6 +42,7 @@ import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,12 +72,12 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
     private RecyclerView recyclerView;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private Toolbar toolbar;
-    private ImageView ivIssueImage,ivDismissSelectedImage, ivDisplaySelectedImage, ivSendIssueAnswer, ivOpenGallley;
-    private TextView tvTitle, tvQuestion, tvCreatorName, tvDisplayDate;
+    private ImageView ivIssueImage, ivDismissSelectedImage, ivDisplaySelectedImage, ivSendIssueAnswer, ivOpenGallley;
+    private TextView tvTitle, tvQuestion, tvNoIssueAnswers, tvCreatorName, tvDisplayDate;
     private EditText edInputIssueAnswer;
     private ProgressBar pbViewAnswerIssueProgress, pbGetIssueAnswersProgressBar;
     private String selectedImageUri, answerContent;
-
+    private List<IssueAnswerModel> issueAnswerModelList = new ArrayList<>();
 
     @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -99,7 +101,7 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
 
         //initialise validation
         answerIssuePresenter.initValidation();
-
+        answerIssuePresenter.getIssueAnswers(issue.getUuid());
 
         ivSendIssueAnswer.setOnClickListener(v -> {
             if (!CheckUserSession.isUserLoggedIn(this)) {
@@ -135,12 +137,12 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
             }
         });
 
-        ivDismissSelectedImage.setOnClickListener(v->{
-            selectedImageUri=null;
+        ivDismissSelectedImage.setOnClickListener(v -> {
+            selectedImageUri = null;
             ivDisplaySelectedImage.setVisibility(View.GONE);
             ivDisplaySelectedImage.setImageDrawable(null);
             ivDismissSelectedImage.setVisibility(View.GONE);
-            
+
         });
         //capitalize the first char
         String formatedTitle = issue.getQuestion()
@@ -174,65 +176,8 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         tvDisplayDate.setText(daysToDisplay);
         Picasso.get().load(issue.getImageAvatarUrl()).fit().centerCrop().into(ivIssueImage);
 
-
-        List<IssueAnswerModel> answels = Stream.of(
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(),
-                IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build(), IssueAnswerModel.builder()
-                        .answerContent("That is great")
-                        .answerBy("Auga").build()
-        ).collect(Collectors.toList());
-
-        adapter = new IssueAnswersRecyclerAdapter(answels, this);
-        LinearLayoutManager r = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(r);
-        recyclerView.setAdapter(adapter);
-        ivOpenGallley.setOnClickListener(v->{
-            if(checkAndRequestPermissions()){
+        ivOpenGallley.setOnClickListener(v -> {
+            if (checkAndRequestPermissions()) {
                 loadGalley();
             }
         });
@@ -254,7 +199,7 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         ivDismissSelectedImage = findViewById(R.id.iv_dismiss_selected_image);
         pbViewAnswerIssueProgress = findViewById(R.id.pb_show_loading);
         pbGetIssueAnswersProgressBar = findViewById(R.id.pb_get_issue_answers_progress_bar);
-
+        tvNoIssueAnswers = findViewById(R.id.tvNoAswers);
     }
 
     @Override
@@ -313,6 +258,56 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         selectImage.setType("image/*");
         selectImage.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(selectImage, SELECT_IMAGE_CODE);
+    }
+
+    @Override
+    public void showGetIssueAnswerLoading() {
+        pbGetIssueAnswersProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideGetIssueAnswerLoader() {
+        pbGetIssueAnswersProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onGetIssueAnswersError(VolleyError error) {
+        Toast.makeText(this, "Error! Unable to get answers", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    @SneakyThrows
+    public void onGetIssueAnswerResponse(JSONObject response) {
+        JSONArray answersArray = response.getJSONObject("_embedded").getJSONArray("answers");
+        if (answersArray.length() == 0) {
+            tvNoIssueAnswers.setVisibility(View.VISIBLE);
+        } else {
+            for (int x = 0; x < answersArray.length(); x++) {
+                JSONObject issueObject = response.getJSONObject("_embedded")
+                        .getJSONArray("answers")
+                        .getJSONObject(x);
+                String imageUrl = null;
+                if (!issueObject.isNull("_links")) {
+                    if (!issueObject.getJSONObject("_links").isNull("answerImage")) {
+                        imageUrl = issueObject.getJSONObject("_links").getJSONObject("answerImage").getString("href");
+
+                    }
+                }
+                IssueAnswerModel answer = IssueAnswerModel.builder()
+                        .uuid(issueObject.getString("uuid"))
+                        .answerBy(issueObject.getString("answerBy"))
+                        .answerContent(issueObject.getString("answerContent"))
+                        .createdAt(issueObject.getString("createdAt"))
+                        .imageAvatarLink(imageUrl)
+                        .build();
+                issueAnswerModelList.add(answer);
+            }
+
+            adapter = new IssueAnswersRecyclerAdapter(issueAnswerModelList, this);
+            LinearLayoutManager r = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(r);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
 

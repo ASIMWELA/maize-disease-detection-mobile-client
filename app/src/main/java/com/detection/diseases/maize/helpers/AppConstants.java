@@ -16,4 +16,5 @@ public class AppConstants {
     public static final String CAPTURED_IMAGE_URL = "captured_image_url";
     public static final String ISSUE_TO_ANSWER = "issue_to_answer";
     public static final Object SEND_ISSUE_ANSWER = "ehueihdewodhwipqdjiqwioijdwodjqwpojdp";
+    public static final Object GET_ISSUE_ANSWERS = "hdddjehdlewjd;qewkljdbhqeli.djewp";
 }

@@ -110,7 +110,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             holder.ivIssueImage.setVisibility(View.GONE);
         }
         if (issue.getIssueStatus().equals(IssueStatus.RESOLVED.name())) {
-            holder.cpIssueStatus.setVisibility(View.VISIBLE);
+            holder.tvResolvedStatus.setVisibility(View.VISIBLE);
         }
         holder.ivIssueCreator.setImageResource(R.drawable.ic_baseline_person_24);
         holder.baseView.setOnClickListener(v -> {
@@ -128,7 +128,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         }
 
         if (issue.getIssueStatus().equals(IssueStatus.RESOLVED.name())) {
-            holder.cpIssueStatus.setVisibility(View.VISIBLE);
+            holder.tvResolvedStatus.setVisibility(View.VISIBLE);
             holder.cpMarkAsResolved.setVisibility(View.GONE);
         }
 
@@ -142,12 +142,12 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
                     response -> {
                         holder.pgShoResolvePb.setVisibility(View.GONE);
                         holder.cpMarkAsResolved.setVisibility(View.GONE);
-                        holder.cpIssueStatus.setVisibility(View.VISIBLE);
+                        holder.tvResolvedStatus.setVisibility(View.VISIBLE);
                         Toast.makeText(context, "Issue marked as resolved", Toast.LENGTH_SHORT).show();
                     }, error -> {
                         holder.pgShoResolvePb.setVisibility(View.GONE);
                        holder.cpMarkAsResolved.setVisibility(View.VISIBLE);
-                       holder.cpIssueStatus.setVisibility(View.GONE);
+                       holder.tvResolvedStatus.setVisibility(View.GONE);
                        Toast.makeText(context, "We were unable to complete the action", Toast.LENGTH_SHORT).show();
             }){
                 @Override
@@ -177,13 +177,13 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
                 tvIssueNumberOfAnswers,
                 tvIssueDesc,
                 tvIssueQuestion,
-                tvIssueCreatedAt, tvCrop;
+                tvIssueCreatedAt, tvCrop, tvResolvedStatus;
 
         ImageView ivIssueImage,
                 ivIssueLikes,
                 ivIssueDislikes,
                 ivIssueCreator;
-        Chip cpIssueStatus, cpMarkAsResolved;
+        Chip  cpMarkAsResolved;
         CardView baseView;
         ProgressBar pgShoResolvePb;
 
@@ -200,11 +200,11 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             ivIssueLikes = itemView.findViewById(R.id.fg_community_btn_like);
             ivIssueDislikes = itemView.findViewById(R.id.fg_community_issue_dislike);
             ivIssueCreator = itemView.findViewById(R.id.fg_communuty_issue_creator_avatar);
-            cpIssueStatus = itemView.findViewById(R.id.fg_community_cp_resolved);
             tvCrop = itemView.findViewById(R.id.tv_community_crop);
             baseView = itemView.findViewById(R.id.fg_community_issue_row);
             cpMarkAsResolved = itemView.findViewById(R.id.cp_mark_as_resolved);
             pgShoResolvePb = itemView.findViewById(R.id.pb_resolve_pb);
+            tvResolvedStatus = itemView.findViewById(R.id.tv_resolved_status);
 
         }
     }
