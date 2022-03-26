@@ -2,8 +2,11 @@ package com.detection.diseases.maize.ui.community;
 
 import android.content.Context;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.HttpAsyncHelper;
+import com.detection.diseases.maize.helpers.VolleyController;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -74,5 +77,24 @@ public class AnswerIssuePresenter implements AnswerIssueContract.Presenter {
     @Override
     public void initValidation() {
         view.validateInput();
+    }
+
+    @Override
+    public void getIssueAnswers(String issueUuid) {
+        view.showGetIssueAnswerLoading();
+        JsonObjectRequest serviceCategoriesRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                AppConstants.BASE_API_URL + "/community/answers/"+issueUuid+"?page=0&size=20",
+                null,
+                response -> {
+                    view.hideLoading();
+                    view.onGetIssueAnswerResponse(response);
+                    view.hideGetIssueAnswerLoader();
+                }, error -> {
+            view.hideGetIssueAnswerLoader();
+            view.onGetIssueAnswersError(error);
+        });
+        serviceCategoriesRequest.setTag(AppConstants.GET_ISSUE_ANSWERS);
+        VolleyController.getInstance(context).addToRequestQueue(serviceCategoriesRequest);
     }
 }
