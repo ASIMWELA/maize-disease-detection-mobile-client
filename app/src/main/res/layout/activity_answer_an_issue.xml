@@ -160,7 +160,7 @@
             android:background="@drawable/send_answer_input_backgound"
             android:ems="10"
             android:gravity="bottom"
-            android:hint="Type answer"
+            android:hint="Type answer. Try to be brief"
             android:inputType="text|textMultiLine|textCapSentences"
             android:maxLines="3"
             android:paddingStart="35dp"

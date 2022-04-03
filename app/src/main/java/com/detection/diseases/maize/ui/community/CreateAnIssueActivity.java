@@ -324,8 +324,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
     @Override
     public void onValidationFailure() {
-        Toast.makeText(this, stringData.toString() + "\n selected image" + fSelectedImage, Toast.LENGTH_SHORT).show();
-        // Toast.makeText(this, "Please fill the\nrequired fields", Toast.LENGTH_SHORT).show();
+             Toast.makeText(this, "Please fill all the\nrequired fields and attach\nan image", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -346,8 +345,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
     @Override
     public void onSendIssueError(String errorResponse) {
-
-        Toast.makeText(this, "Error: " + errorResponse, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Error: Unable to create issue", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -357,6 +355,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
 
     @Override
     public void hideProgress() {
+        btnCreateIssue.setBackgroundResource(R.drawable.round_btn_bg);
         btnCreateIssue.revertAnimation();
     }
 

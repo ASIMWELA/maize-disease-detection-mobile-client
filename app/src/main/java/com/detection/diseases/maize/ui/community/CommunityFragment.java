@@ -53,7 +53,6 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
     private TextView noIssuesMessage;
     private int page = 0, numberOfPages = 1;
     private Chip chBackChip;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -80,6 +79,8 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
 
 
 
+
+
 //        swipeRefreshLayout.setOnRefreshListener(() -> {
 //            issueList.clear();
 //            communityPresenter.getCommunityIssues(page,numberOfPages);
@@ -99,7 +100,13 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         issueList = new ArrayList<>();
         chBackChip = root.findViewById(R.id.community_chip_back);
         communityPresenter = new CommunityPresenter(this, requireContext());
-        swipeRefreshLayout = root.findViewById(R.id.swipte_to_refresh);
+
+        //set up the adapter
+        adapter = new IssuesRecyclerViewAdapter(requireContext(), issueList);
+        LinearLayoutManager r = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(r);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -147,13 +154,9 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
                         .build();
                 issueList.add(issue);
             }
-
+            adapter.notifyDataSetChanged();
         }
-        adapter = new IssuesRecyclerViewAdapter(requireContext(), issueList);
-        LinearLayoutManager r = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(r);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+
         etSearch.addTextChangedListener(new TextValidator(etSearch) {
             @Override
             public void validate() {
@@ -196,5 +199,9 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+    }
 }

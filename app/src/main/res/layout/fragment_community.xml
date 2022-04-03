@@ -45,41 +45,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipte_to_refresh"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/fg_community_nsc_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="48dp"
         android:layout_marginBottom="40dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/fg_community_nsc_view"
+        <LinearLayout
+            android:id="@+id/fg_community_vv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="45dp"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/fg_community_vv"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fg_community_issues_rv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fg_community_issues_rv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:nestedScrollingEnabled="false" />
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layoutAnimation="@anim/layout_anim_up"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <EditText
         android:id="@+id/fg_community_search_issue_tv"
