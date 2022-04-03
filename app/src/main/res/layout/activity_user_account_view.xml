@@ -56,6 +56,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manage Account"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/divider8"
+        app:layout_constraintStart_toEndOf="@+id/user_account_back"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/user_logged_out_view"
         android:layout_width="match_parent"

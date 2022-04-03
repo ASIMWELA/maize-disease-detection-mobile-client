@@ -6,15 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".ui.crops.CropsFragment">
 
+    <TextView
+        android:id="@+id/textView29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/alike_angular"
+        android:text="Maizoid"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/alike_angular"
+        android:text="Steps to cure your crops"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/colorOnSecondary"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:background="@color/colorOnSecondary"
         app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +45,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="@color/colorOnSecondary"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorOnSecondary">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -129,33 +152,20 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginEnd="16dp"
-                android:textSize="16sp"
                 android:layout_marginRight="16dp"
-                android:background="@drawable/round_btn_bg"
                 android:layout_marginBottom="16dp"
-                android:text="Capture image"
-                android:textColor="@color/white"
                 android:height="5dp"
+                android:background="@drawable/round_btn_bg"
+                android:text="Capture image"
                 android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/alike_angular"
-        android:text="Steps to cure your crops"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2" />
 
     <View
         android:id="@+id/divider2"
