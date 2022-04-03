@@ -25,6 +25,9 @@ import com.detection.diseases.maize.ui.signin.SigninActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AccountActivity extends Fragment {
 
@@ -40,6 +43,7 @@ public class AccountActivity extends Fragment {
     private ImageView ivOpenMenuVertLoggedInUser, ivOPenMenuVertLoggedoutUser;
     private PopupMenu loggedInUserMenu;
     private PopupMenu loggedOutUserMenu;
+    private CircleImageView ivLoggedInUser;
 
     @SuppressLint("NonConstantResourceId")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -135,6 +139,7 @@ public class AccountActivity extends Fragment {
         loggedInUserTabViewPager = root.findViewById(R.id.logged_in_user_fragmentsPager);
         ivOpenMenuVertLoggedInUser = root.findViewById(R.id.iv_fg_user_account_more_vert);
         ivOPenMenuVertLoggedoutUser =root.findViewById(R.id.iv_fg_user_account_logged_out_vert);
+        ivLoggedInUser = root.findViewById(R.id.iv_logged_in_auga);
     }
     @Override
     public void onResume() {
@@ -147,6 +152,9 @@ public class AccountActivity extends Fragment {
             tvUsername.setText(userModel.getFirstName() + " " + userModel.getLastName());
             ivOPenMenuVertLoggedoutUser.setVisibility(View.GONE);
             ivOpenMenuVertLoggedInUser.setVisibility(View.VISIBLE);
+            if(userModel.getEmail().equals("auga@gmail.com")){
+                Picasso.get().load(R.drawable.auga_disp).fit().centerCrop().into(ivLoggedInUser);
+            }
             }
 
     }

@@ -24,6 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.SneakyThrows;
 
 public class IssueAnswersRecyclerAdapter extends RecyclerView.Adapter<IssueAnswersRecyclerAdapter.IssueAnswerHolder> {
@@ -31,6 +32,11 @@ public class IssueAnswersRecyclerAdapter extends RecyclerView.Adapter<IssueAnswe
     private final List<IssueAnswerModel> issueAnswers;
     private final Context context;
 
+    /**
+     *
+     * @param issueAnswers
+     * @param context
+     */
     public IssueAnswersRecyclerAdapter(List<IssueAnswerModel> issueAnswers, Context context) {
         this.issueAnswers = issueAnswers;
         this.context = context;
@@ -76,6 +82,10 @@ public class IssueAnswersRecyclerAdapter extends RecyclerView.Adapter<IssueAnswe
             holder.answerImage.setVisibility(View.VISIBLE);
         }
 
+        if(answer.getAnswerBy().equals("Augustine Simwela")){
+            Picasso.get().load(R.drawable.auga_disp).fit().centerCrop().into(holder.creatorAvator);
+        }
+
     }
 
     @Override
@@ -86,12 +96,14 @@ public class IssueAnswersRecyclerAdapter extends RecyclerView.Adapter<IssueAnswe
     public static class IssueAnswerHolder extends RecyclerView.ViewHolder {
         TextView answeUser, content, tvCreated;
         ImageView answerImage;
+        CircleImageView creatorAvator;
         public IssueAnswerHolder(@NonNull View itemView) {
             super(itemView);
             answeUser = itemView.findViewById(R.id.tv_user_answered);
             content = itemView.findViewById(R.id.tv_content);
             answerImage = itemView.findViewById(R.id.iv_display_answer_image);
             tvCreated = itemView.findViewById(R.id.tv_answer_date);
+            creatorAvator = itemView.findViewById(R.id.fg_communuty_issue_creator_avatar);
         }
     }
 }

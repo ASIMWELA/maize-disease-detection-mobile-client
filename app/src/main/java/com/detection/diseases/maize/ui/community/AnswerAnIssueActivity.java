@@ -200,17 +200,43 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         pbViewAnswerIssueProgress = findViewById(R.id.pb_show_loading);
         pbGetIssueAnswersProgressBar = findViewById(R.id.pb_get_issue_answers_progress_bar);
         tvNoIssueAnswers = findViewById(R.id.tvNoAswers);
+
+
+        //init adapter
+        adapter = new IssueAnswersRecyclerAdapter(issueAnswerModelList, this);
+        LinearLayoutManager r = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(r);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
+    @SneakyThrows
     public void onAnswerSuccess(JSONObject response) {
         edInputIssueAnswer.setText("");
         ivDismissSelectedImage.setVisibility(View.GONE);
         ivDisplaySelectedImage.setVisibility(View.GONE);
 
+       //get the recent added
+        JSONObject issueObject = response.getJSONObject("_embedded")
+                .getJSONArray("answers")
+                .getJSONObject(0);
+        String imageUrl = null;
 
-        Toast.makeText(this, "Sucess " + response.toString(), Toast.LENGTH_SHORT).show();
+        if (!issueObject.isNull("_links")) {
+            if (!issueObject.getJSONObject("_links").isNull("answerImage")) {
+                imageUrl = issueObject.getJSONObject("_links").getJSONObject("answerImage").getString("href");
+            }
+        }
+        IssueAnswerModel answer = IssueAnswerModel.builder()
+                .uuid(issueObject.getString("uuid"))
+                .answerBy(issueObject.getString("answerBy"))
+                .answerContent(issueObject.getString("answerContent"))
+                .createdAt(issueObject.getString("createdAt"))
+                .imageAvatarLink(imageUrl)
+                .build();
 
+        issueAnswerModelList.add(0, answer);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -303,10 +329,7 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
                 issueAnswerModelList.add(answer);
             }
 
-            adapter = new IssueAnswersRecyclerAdapter(issueAnswerModelList, this);
-            LinearLayoutManager r = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(r);
-            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
     }
 

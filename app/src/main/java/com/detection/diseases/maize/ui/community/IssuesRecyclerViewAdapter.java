@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.AccessLevel;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
@@ -131,7 +132,9 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             holder.tvResolvedStatus.setVisibility(View.VISIBLE);
             holder.cpMarkAsResolved.setVisibility(View.GONE);
         }
-
+        if(issue.getCreatedBy().equals("Augustine Simwela")){
+            Picasso.get().load(R.drawable.auga_disp).fit().centerCrop().into(holder.ivIssueCreator);
+        }
         holder.cpMarkAsResolved.setOnClickListener(v -> {
             holder.pgShoResolvePb.setVisibility(View.VISIBLE);
             holder.cpMarkAsResolved.setVisibility(View.GONE);
@@ -186,6 +189,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         Chip  cpMarkAsResolved;
         CardView baseView;
         ProgressBar pgShoResolvePb;
+        CircleImageView createorAvator;
 
         public IssuesViewHolder(@NonNull View itemView) {
             super(itemView);
