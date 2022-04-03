@@ -20,6 +20,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="@color/light_grey"
+            android:padding="5dp"
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +31,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:text="Select a class that has images that look as close as your diseased leaf" />
         </androidx.cardview.widget.CardView>
 
@@ -152,7 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/top_color"
-                    android:text="Select class 1"
+                    android:text="Select class 2"
                     android:textColor="@color/material_on_background_emphasis_medium"
                     android:textStyle="bold"
                     app:chipBackgroundColor="@color/light_grey"

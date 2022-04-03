@@ -233,12 +233,14 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
     public void showProgressBar() {
         sendImage.setClickable(false);
         sendOveray.setVisibility(View.VISIBLE);
+        sendImage.setVisibility(View.GONE);
     }
 
     @Override
     public void hideProgressBar() {
         sendImage.setClickable(true);
         sendOveray.setVisibility(View.GONE);
+        sendImage.setVisibility(View.VISIBLE);
     }
 
     @Override
