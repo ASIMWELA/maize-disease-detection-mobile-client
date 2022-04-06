@@ -18,24 +18,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaizeDiseaseDetection"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.community.AnswerAnIssueActivity"
-            android:theme="@style/Theme.CreateIssueActivity">
+        <activity android:name=".ui.commons.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.community.AnswerAnIssueActivity"
+            android:theme="@style/Theme.CreateIssueActivity"></activity>
         <activity android:name=".ui.modelresults.ModelResultHelper" />
         <activity android:name=".ui.community.CreateAnIssueActivity" />
         <activity android:name=".ui.signin.SigninActivity" />
         <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.modelresults.ModelResultsActivity" />
         <activity android:name=".ui.camera.CameraActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".MainActivity"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

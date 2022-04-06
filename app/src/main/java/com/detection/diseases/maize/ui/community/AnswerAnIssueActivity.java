@@ -55,6 +55,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -171,8 +172,12 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
             daysToDisplay = days + " days ago";
         }
         if (days > 30) {
-            daysToDisplay = createdData.getDay() + "-" + createdData.getMonth() + "-" + createdData.getYear();
-        }
+            Calendar c = Calendar.getInstance();
+            c.setTime(createdData);
+            int year = c.get(Calendar.YEAR);
+            String month = c.get(Calendar.MONTH) < 10? "0"+c.get(Calendar.MONTH):c.get(Calendar.MONTH)+"";
+            String day  = c.get(Calendar.DAY_OF_MONTH) < 10? "0"+c.get(Calendar.DAY_OF_MONTH) : c.get(Calendar.DAY_OF_MONTH)+"" ;
+            daysToDisplay = day + "-" + month + "-" + year;     }
         tvDisplayDate.setText(daysToDisplay);
         Picasso.get().load(issue.getImageAvatarUrl()).fit().centerCrop().into(ivIssueImage);
 

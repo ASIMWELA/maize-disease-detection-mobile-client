@@ -1,13 +1,13 @@
 package com.detection.diseases.maize.ui.signin;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.detection.diseases.maize.R;
@@ -18,7 +18,6 @@ import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.helpers.TextValidator;
 import com.detection.diseases.maize.ui.signup.SignUpActivity;
 import com.google.android.material.chip.Chip;
-import com.kusu.loadingbutton.LoadingButton;
 
 import org.json.JSONObject;
 
@@ -29,7 +28,7 @@ public class SigninActivity extends AppCompatActivity implements SigninContract.
     private EditText edPassword, edEmail;
     private Chip cpBbacArrow;
     private TextView tvOpenSignUp;
-    private LoadingButton btnSendLoginRequest;
+    private Button btnSendLoginRequest;
     private String email, password;
     private FlagErrors flagErrors;
     private SessionManager sessionManager;
@@ -152,13 +151,13 @@ public class SigninActivity extends AppCompatActivity implements SigninContract.
     public void showLoading() {
         btnSendLoginRequest.setActivated(false);
         btnSendLoginRequest.setEnabled(false);
-        btnSendLoginRequest.showLoading();
+        btnSendLoginRequest.setText("Authenticating...");
     }
 
     @Override
     public void hideLoading() {
         btnSendLoginRequest.setActivated(true);
         btnSendLoginRequest.setEnabled(true);
-        btnSendLoginRequest.hideLoading();
+        btnSendLoginRequest.setText("Sign in");
     }
 }

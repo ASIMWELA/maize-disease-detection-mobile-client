@@ -38,7 +38,6 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/input_rounded_corners"
         android:drawableStart="@drawable/ic_baseline_person_24"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="2dp"
         android:ems="10"
         android:hint="first name"
@@ -46,7 +45,7 @@
         android:padding="@dimen/input_vertical_padding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView8" />
 
     <EditText
         android:id="@+id/sign_up_tv_last_name"
@@ -105,22 +104,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_email" />
 
-    <com.kusu.loadingbutton.LoadingButton
+    <Button
         android:id="@+id/sign_up_activity_btn_submit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Submit"
+        android:background="@drawable/round_btn_bg"
+        android:text="Sign up"
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_password"
-        app:lb_buttonColor="@color/teal_700"
-        app:lb_cornerRadius="32dp"
-        app:lb_isShadowEnable="false" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_tv_password" />
 
 
     <TextView
@@ -128,23 +125,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Join the community"
+        android:textColor="@color/material_on_background_disabled"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="@color/teal_700"
         app:layout_constraintBottom_toTopOf="@+id/divider4"
         app:layout_constraintStart_toEndOf="@+id/sign_up_cp_back"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView8"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Interact with the community by creating a\nfree account"
-        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_cp_back" />
+        app:layout_constraintTop_toBottomOf="@+id/divider4">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Interact in the community by creating an account"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

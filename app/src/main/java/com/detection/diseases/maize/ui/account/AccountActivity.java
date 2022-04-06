@@ -36,10 +36,9 @@ public class AccountActivity extends Fragment {
     private Chip backIcon;
     private TextView tvUsername, tvEmail;
     private ConstraintLayout loggedOutUserView, loggedInUserView;
-    private LoggedInUserModel userModel;
     private TabLayout loggedInTabs;
     private ViewPager loggedInUserTabViewPager;
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
     private ImageView ivOpenMenuVertLoggedInUser, ivOPenMenuVertLoggedoutUser;
     private PopupMenu loggedInUserMenu;
     private PopupMenu loggedOutUserMenu;
@@ -88,39 +87,36 @@ public class AccountActivity extends Fragment {
 
         loggedOutUserMenu = CustomOptionsMenu.prepareOptionsMenu(requireActivity(), ivOPenMenuVertLoggedoutUser, R.menu.logged_out_user_more_menu);
 
-        if(checkUserSession()){
+        if (checkUserSession()) {
             ivOPenMenuVertLoggedoutUser.setVisibility(View.GONE);
             ivOpenMenuVertLoggedInUser.setVisibility(View.VISIBLE);
         }
         loggedOutUserMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()){
-                case R.id.about_app_logged_out_user:
-                    Toast.makeText(requireActivity(), "Logged out user", Toast.LENGTH_SHORT).show();
-                    return true;
+            if (item.getItemId() == R.id.about_app_logged_out_user) {
+                Toast.makeText(requireActivity(), "Logged out user", Toast.LENGTH_SHORT).show();
+                return true;
             }
             return true;
         });
+
         loggedInUserMenu.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.log_out_user_account:
-                    loggedInUserView.setVisibility(View.GONE);
-                    loggedOutUserView.setVisibility(View.VISIBLE);
-                    sessionManager.setAccessToken(null);
-                    sessionManager.setLoggedInUser(null);
-                    ivOPenMenuVertLoggedoutUser.setVisibility(View.VISIBLE);
-                    ivOpenMenuVertLoggedInUser.setVisibility(View.GONE);
-                    return true;
-                case R.id.about_app:
-                    Toast.makeText(requireContext(), "About logged in user", Toast.LENGTH_SHORT).show();
-                    return true;
+            if (item.getItemId() == R.id.log_out_user_account) {
+                loggedInUserView.setVisibility(View.GONE);
+                loggedOutUserView.setVisibility(View.VISIBLE);
+                sessionManager.setAccessToken(null);
+                sessionManager.setLoggedInUser(null);
+                ivOPenMenuVertLoggedoutUser.setVisibility(View.VISIBLE);
+                ivOpenMenuVertLoggedInUser.setVisibility(View.GONE);
+                return true;
             }
             return true;
         });
 
         ivOpenMenuVertLoggedInUser.setOnClickListener(v -> {
             loggedInUserMenu.show();
+            loggedInUserMenu.setForceShowIcon(true);
         });
-        ivOPenMenuVertLoggedoutUser.setOnClickListener(v->{
+        ivOPenMenuVertLoggedoutUser.setOnClickListener(v -> {
             loggedOutUserMenu.show();
         });
 
@@ -138,24 +134,27 @@ public class AccountActivity extends Fragment {
         loggedInTabs = root.findViewById(R.id.logged_in_user_tab_layout);
         loggedInUserTabViewPager = root.findViewById(R.id.logged_in_user_fragmentsPager);
         ivOpenMenuVertLoggedInUser = root.findViewById(R.id.iv_fg_user_account_more_vert);
-        ivOPenMenuVertLoggedoutUser =root.findViewById(R.id.iv_fg_user_account_logged_out_vert);
+        ivOPenMenuVertLoggedoutUser = root.findViewById(R.id.iv_fg_user_account_logged_out_vert);
         ivLoggedInUser = root.findViewById(R.id.iv_logged_in_auga);
     }
+
     @Override
     public void onResume() {
         super.onResume();
         if (checkUserSession()) {
             loggedInUserView.setVisibility(View.VISIBLE);
             loggedOutUserView.setVisibility(View.GONE);
-            userModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
+            LoggedInUserModel userModel = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
             tvEmail.setText(userModel.getEmail());
             tvUsername.setText(userModel.getFirstName() + " " + userModel.getLastName());
             ivOPenMenuVertLoggedoutUser.setVisibility(View.GONE);
             ivOpenMenuVertLoggedInUser.setVisibility(View.VISIBLE);
-            if(userModel.getEmail().equals("auga@gmail.com")){
+            if (userModel.getEmail().equals("auga@gmail.com")) {
                 Picasso.get().load(R.drawable.auga_disp).fit().centerCrop().into(ivLoggedInUser);
+            }else {
+                ivLoggedInUser.setImageResource(R.drawable.ic_baseline_person_24_anonymous);
             }
-            }
+        }
 
     }
 
