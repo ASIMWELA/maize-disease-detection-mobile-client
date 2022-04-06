@@ -57,7 +57,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'br.com.simplepass:loading-button-android:2.2.0'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'com.github.koushikcse:LoadingButton:1.7'
     testImplementation 'junit:junit:4.+'
     implementation "androidx.viewpager:viewpager:1.0.0"
     implementation 'com.android.volley:volley:1.2.0'

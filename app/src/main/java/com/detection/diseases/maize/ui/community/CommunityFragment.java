@@ -15,12 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
 import com.detection.diseases.maize.R;
@@ -77,15 +74,6 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
             requireActivity().onBackPressed();
         });
 
-
-
-
-
-//        swipeRefreshLayout.setOnRefreshListener(() -> {
-//            issueList.clear();
-//            communityPresenter.getCommunityIssues(page,numberOfPages);
-//        });
-
         return root;
     }
 
@@ -101,12 +89,7 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         chBackChip = root.findViewById(R.id.community_chip_back);
         communityPresenter = new CommunityPresenter(this, requireContext());
 
-        //set up the adapter
-        adapter = new IssuesRecyclerViewAdapter(requireContext(), issueList);
-        LinearLayoutManager r = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(r);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+
     }
 
     @Override
@@ -146,7 +129,7 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
                         .crop(issueObject.getString("crop"))
                         .issueLikes(issueLikes > 0 ? String.valueOf(issueLikes) : "like")
                         .issueDislikes(issueDislikes > 0 ? String.valueOf(issueDislikes) : "dislike")
-                        .issueAnswers(issueObject.getInt("issueAnswers")==1?issueObject.getInt("issueAnswers") + " answer" : issueObject.getInt("issueAnswers") + " answers")
+                        .issueAnswers(issueObject.getInt("issueAnswers") + "")
                         .issueStatus(issueObject.getString("issueStatus"))
                         .question(issueObject.getString("question"))
                         .imageAvatarUrl(imageUrl)
@@ -154,20 +137,27 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
                         .build();
                 issueList.add(issue);
             }
-            adapter.notifyDataSetChanged();
+            //set up the adapter
+            adapter = new IssuesRecyclerViewAdapter(requireContext(), issueList);
+            LinearLayoutManager r = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(r);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(adapter);
+
+            etSearch.addTextChangedListener(new TextValidator(etSearch) {
+                @Override
+                public void validate() {
+                    if (etSearch.getText().toString().length() == 0) {
+                        adapter.searchIssue("");
+                    } else {
+                        String text = etSearch.getText().toString().toLowerCase(Locale.getDefault());
+                        adapter.searchIssue(text);
+                    }
+                }
+            });
         }
 
-        etSearch.addTextChangedListener(new TextValidator(etSearch) {
-            @Override
-            public void validate() {
-                if (etSearch.getText().toString().length() == 0) {
-                    adapter.searchIssue("");
-                } else {
-                    String text = etSearch.getText().toString().toLowerCase(Locale.getDefault());
-                    adapter.searchIssue(text);
-                }
-            }
-        });
+
     }
 
     @Override

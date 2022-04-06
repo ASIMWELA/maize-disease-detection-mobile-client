@@ -36,6 +36,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,13 +95,22 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             daysToDisplay = days + " days ago";
         }
         if (days > 30) {
-            daysToDisplay = createdData.getDay() + "-" + createdData.getMonth() + "-" + createdData.getYear();
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(createdData);
+            int year = c.get(Calendar.YEAR);
+            String month = c.get(Calendar.MONTH) < 10 ? "0" + c.get(Calendar.MONTH) : c.get(Calendar.MONTH) + "";
+            String day = c.get(Calendar.DAY_OF_MONTH) < 10 ? "0" + c.get(Calendar.DAY_OF_MONTH) : c.get(Calendar.DAY_OF_MONTH) + "";
+            daysToDisplay = day + "-" + month + "-" + year;
         }
+
+        int issueAnswers = Integer.parseInt(issue.getIssueAnswers());
+
         holder.tvIssueCreator.setText(issue.getCreatedBy());
         holder.tvIssueCreatedAt.setText(daysToDisplay);
         holder.tvIssueQuestion.setText(issue.getQuestion());
         holder.tvIssueDesc.setText(issue.getQuestionDescription());
-        holder.tvIssueNumberOfAnswers.setText(issue.getIssueAnswers());
+        holder.tvIssueNumberOfAnswers.setText(issueAnswers == 1 ? issueAnswers + " answer" : issueAnswers + " answers");
         holder.tvIssueLikes.setText(issue.getIssueLikes());
         holder.tvIssueDislikes.setText(issue.getIssueDislikes());
         holder.tvCrop.setText(issue.getCrop());
@@ -123,7 +133,8 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         if (CheckUserSession.isUserLoggedIn(context)) {
             user = gson.fromJson(sessionManager.getLoggedInUser(), LoggedInUserModel.class);
             if ((user.getFirstName() + " " + user.getLastName()).equals(issue.getCreatedBy())
-                    && !(issue.getIssueStatus().equals(IssueStatus.RESOLVED.name()))) {
+                    && !(issue.getIssueStatus().equals(IssueStatus.RESOLVED.name()))
+                    && issueAnswers > 0) {
                 holder.cpMarkAsResolved.setVisibility(View.VISIBLE);
             }
         }
@@ -132,7 +143,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
             holder.tvResolvedStatus.setVisibility(View.VISIBLE);
             holder.cpMarkAsResolved.setVisibility(View.GONE);
         }
-        if(issue.getCreatedBy().equals("Augustine Simwela")){
+        if (issue.getCreatedBy().equals("Augustine Simwela")) {
             Picasso.get().load(R.drawable.auga_disp).fit().centerCrop().into(holder.ivIssueCreator);
         }
         holder.cpMarkAsResolved.setOnClickListener(v -> {
@@ -148,16 +159,16 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
                         holder.tvResolvedStatus.setVisibility(View.VISIBLE);
                         Toast.makeText(context, "Issue marked as resolved", Toast.LENGTH_SHORT).show();
                     }, error -> {
-                        holder.pgShoResolvePb.setVisibility(View.GONE);
-                       holder.cpMarkAsResolved.setVisibility(View.VISIBLE);
-                       holder.tvResolvedStatus.setVisibility(View.GONE);
-                       Toast.makeText(context, "We were unable to complete the action", Toast.LENGTH_SHORT).show();
-            }){
+                holder.pgShoResolvePb.setVisibility(View.GONE);
+                holder.cpMarkAsResolved.setVisibility(View.VISIBLE);
+                holder.tvResolvedStatus.setVisibility(View.GONE);
+                Toast.makeText(context, "We were unable to complete the action", Toast.LENGTH_SHORT).show();
+            }) {
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "Bearer "+sessionManager.getToken());
-                    return  headers;
+                    headers.put("Authorization", "Bearer " + sessionManager.getToken());
+                    return headers;
                 }
             };
 
@@ -186,7 +197,7 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
                 ivIssueLikes,
                 ivIssueDislikes,
                 ivIssueCreator;
-        Chip  cpMarkAsResolved;
+        Chip cpMarkAsResolved;
         CardView baseView;
         ProgressBar pgShoResolvePb;
         CircleImageView createorAvator;
