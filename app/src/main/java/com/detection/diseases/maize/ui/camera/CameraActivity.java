@@ -69,17 +69,73 @@ import java.util.stream.Stream;
 
 import lombok.SneakyThrows;
 
+/**
+ * @author Augustine
+ *
+ * This class handles all tasks related to capturing an image and sending it to a remote API
+ *
+ * It also affords loading an image from gallery
+ */
 public class CameraActivity extends AppCompatActivity implements CameraActivityContract.View {
+
+    /**
+     * Code for waiting activity results after accepting requested permissions
+     */
     private static final int SELECT_IMAGE_CODE = 2;
+
+    /**
+     * Camera Preview use case for CameraX
+     *
+     * @see androidx.camera.core.CameraX
+     *
+     */
     private PreviewView cameraPreview;
+
+    /**
+     * Image views for holding capture image icon, loading image from gallery and showing hint
+     */
     private ImageView ivCaptureImage, ivLoadGallery, ivShowHint;
+
+    /**
+     * A View for previewing captured image or loaded image
+     */
     private RoundedImageView previewCapturedImage;
+
+    /**
+     * Button for triggering sending an image to a remote API
+     */
     private ImageButton sendImage;
+
+    /**
+     * A Camera Provider that acts same as  Java RX
+     *
+     * @see androidx.camera.core.CameraX
+     *
+     */
     private ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture;
+
+    /**
+     * Capture image use case
+     */
     private ImageCapture imageCapture;
+
+    /**
+     * A Presenter for this Activity
+     *
+     * @see CameraActivityPresenter
+     */
     private CameraActivityPresenter cameraActivityPresenter;
+
+
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+    /**
+     * Link to a file that is captured of loaded
+     */
     private String captureImageUrl = null;
+
+    /**
+     * A blur view that overlays when send image request is triggered
+     */
     private ConstraintLayout sendOveray;
     private final Gson gson = new Gson();
 
@@ -144,6 +200,9 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     }
 
+    /**
+     * Initialise all view of this actitivy
+     */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initViews() {
         cameraPreview = findViewById(R.id.camera_preview);
@@ -200,6 +259,9 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     }
 
+    /**
+     * Load an image from gallery
+     */
     @Override
     public void loadGalley() {
         Intent selectImage = new Intent();
@@ -208,6 +270,15 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         startActivityForResult(selectImage, SELECT_IMAGE_CODE);
     }
 
+    /**
+     * Start a camera
+     *
+     * Allows to open and capture an image
+     *
+     * @param cameraProvider a ProcessCameraProvider object that binds camerax use cases to a lifecycle
+     *
+     * @see ProcessCameraProvider
+     */
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -229,6 +300,9 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
 
     }
 
+    /**
+     * Show progress bar for sending image to a remote API
+     */
     @Override
     public void showProgressBar() {
         sendImage.setClickable(false);
@@ -236,6 +310,12 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         sendImage.setVisibility(View.GONE);
     }
 
+
+    /**
+     * Hide progress bar of sending image to remote API.
+     *
+     * Triggered when sending is successfull or fails
+     */
     @Override
     public void hideProgressBar() {
         sendImage.setClickable(true);
@@ -243,6 +323,11 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         sendImage.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * A Callback triggered when uploading an image to API is successful
+     *
+     * @param response A JSONObject containing top two results of the diseases
+     */
     @Override
     @SneakyThrows
     public void onUploadSucess(String response) {
@@ -276,16 +361,30 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         
     }
 
+    /**
+     * Triggered when uploading an image to a remote API fails
+     *
+     * @param errorResponse A Stringfied error object
+     */
     @Override
     public void onUploadError(String errorResponse) {
         Toast.makeText(this, "Error" + errorResponse, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Return an asynchronous Camera axecutor
+     * @return {@link Executor}
+     */
     public Executor getExecutor() {
         return ContextCompat.getMainExecutor(this);
     }
 
 
+    /**
+     * Request camera and external storage permission
+     *
+     * @return true if permission granted otherwise wise false
+     */
     public boolean checkAndRequestPermissions() {
         int extstorePermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -311,6 +410,9 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
     }
 
 
+    /**
+     * Override backpress functionality
+     */
     @Override
     public void onBackPressed() {
         if (previewCapturedImage.getVisibility() == View.VISIBLE) {
@@ -326,6 +428,15 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
         }
     }
 
+    /**
+     * Wait for the requested results
+     *
+     * @param requestCode waiting code
+     *
+     * @param resultCode An integer in the enum from activity results
+     *
+     * @param data an Intent object that contains the requested data if the request was successful
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -348,6 +459,13 @@ public class CameraActivity extends AppCompatActivity implements CameraActivityC
     }
 
 
+    /**
+     * A helper method to build a dialog to pop up upon disease detection failure
+     *
+     * @return an AlertDialog object
+     *
+     * @see AlertDialog
+     */
     private AlertDialog buildDialog() {
         AlertDialog.Builder searchDialog = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();

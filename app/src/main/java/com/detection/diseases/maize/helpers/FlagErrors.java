@@ -25,19 +25,37 @@ import java.nio.charset.StandardCharsets;
 
 import lombok.SneakyThrows;
 
+/**
+ * @author Augustine
+ * </p>
+ * A Utility class that help in flagging errors
+ */
 public class FlagErrors {
 
-    Context context;
-    Activity activity;
-    TextView tvGeneralError;
-    TextView errorTitle;
-    Button btnDismisDialog, btnCreateIssue;
+    /**
+     * Defines the context where the errors is flagged
+     */
+    private final Context context;
+    /**
+     * Defines the activity where the errors is flagged
+     */
+    private final Activity activity;
 
+    /**
+     * A Creates an object of this class
+     * @param context The context where the errors are flagged from
+     * @param activity The activity where the errors are flagged from
+     */
     public FlagErrors(Context context, Activity activity) {
         this.context = context;
         this.activity = activity;
     }
 
+    /**
+     * A Utility function that creates an Popup Dialog
+     *
+     * @param apiError Error object of type {@link VolleyError}
+     */
     @SuppressLint({"InflateParams", "SetTextI18n"})
     @SneakyThrows
     public void flagApiError(VolleyError apiError){
@@ -45,8 +63,8 @@ public class FlagErrors {
         LayoutInflater inflater = activity.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.api_app_dialog_error, null);
         searchDialog.setView(dialogView);
-        tvGeneralError = dialogView.findViewById(R.id.error_dialog_error_content);
-        btnDismisDialog = dialogView.findViewById(R.id.error_dialog_dismiss_dialog);
+        TextView tvGeneralError = dialogView.findViewById(R.id.error_dialog_error_content);
+        Button btnDismisDialog = dialogView.findViewById(R.id.error_dialog_dismiss_dialog);
         AlertDialog r = searchDialog.create();
         r.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         r.setCanceledOnTouchOutside(false);

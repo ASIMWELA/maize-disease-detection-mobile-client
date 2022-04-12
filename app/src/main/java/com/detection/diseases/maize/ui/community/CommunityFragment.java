@@ -36,21 +36,89 @@ import java.util.Locale;
 
 import lombok.SneakyThrows;
 
+/**
+ * @author Augustine
+ *
+ * A Fragment responsible for all community section interaction on issues
+ *
+ * Responsible for displaying issues, liking issue, marking an issue as resolved, etc
+ */
 public class CommunityFragment extends Fragment implements CommunityContract.View {
 
+    /**
+     * A presenter object responsible for updating the view. See {@link CommunityPresenter}
+     */
     private CommunityPresenter communityPresenter;
+
+    /**
+     * A recycler view for holding community issues
+     */
     private RecyclerView recyclerView;
+
+    /**
+     * An editText responsible for searching community issues
+     */
     private EditText etSearch;
+
+    /**
+     * A nested Scroll View responsible for pagination
+     */
     private NestedScrollView nestedScrollView;
+
+    /**
+     * Showing get issues request progress
+     */
     private ProgressBar progressBar;
+
+    /**
+     * A Chip view responsible for opening community section
+     */
     private Chip askCommunity;
+
+    /**
+     * A Root view for this view. Responsible for attaching a snackBar for displaying Http request errors
+     */
     private ConstraintLayout communityRootView;
+
+    /**
+     * An adapter that adapts A single community Issue Row into a view inflated into a recycler view.
+     *
+     * For more see {@link RecyclerView}
+     */
     private IssuesRecyclerViewAdapter adapter;
+
+    /**
+     * A list holding community issues
+     */
     List<Issue> issueList;
+
+    /**
+     * A TextView for displaying a message if there are no issues created in the app
+     */
     private TextView noIssuesMessage;
+
+    /**
+     * Default page number and number of pages
+     */
     private int page = 0, numberOfPages = 1;
+
+    /**
+     * A Chip to hold a custom back arrow
+     */
     private Chip chBackChip;
 
+
+    /**
+     * Creates the view of this fragment
+     *
+     * @param inflater A layout inflater responsible for adding a layour view to this flagment
+     *
+     * @param container A Base view group for this Fragment
+     *
+     * @param savedInstanceState A bundle containing previous state of the fragment
+     *
+     * @return View
+     */
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_community, container, false);
@@ -77,6 +145,11 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
         return root;
     }
 
+    /**
+     * Initialise all the views
+     *
+     * @param root A view that holds all the child views of the fragment
+     */
     private void initComponent(View root) {
         recyclerView = root.findViewById(R.id.fg_community_issues_rv);
         etSearch = root.findViewById(R.id.fg_community_search_issue_tv);
@@ -92,17 +165,24 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
 
     }
 
+    /**
+     * A Method invoked when there is an error when getting Community issues
+     *
+     * @param volleyError an object containg error details. See {@link VolleyError}
+     */
     @Override
     public void onError(VolleyError volleyError) {
         Toast.makeText(requireActivity(), volleyError.toString(), Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onViewDestroyed() {
 
-
-    }
-
+    /**
+     * A mothod invoked when a get Issues request is successful
+     *
+     * @param response A JSONObject containing a a list of community issues
+     *
+     * Configures the adapter and recycler view for the community issues
+     */
     @Override
     @SneakyThrows
     public void onResponse(JSONObject response) {
@@ -160,38 +240,36 @@ public class CommunityFragment extends Fragment implements CommunityContract.Vie
 
     }
 
+    /**
+     * Shows the progress of get Issues request
+     */
     @Override
     public void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
+
+    /**
+     * Hides the progress of get Issues request
+     *
+     * Invoked when there is an error or the Get Issues request is successful
+     */
     @Override
     public void hideLoading() {
         progressBar.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
 
-    }
-
+    /**
+     * Performing a clean sleet for the fragment
+     *
+     * Releasing all the resources held by the fragment before detaching it
+     */
     @Override
     public void onDetach() {
         super.onDetach();
         VolleyController.getInstance(requireContext()).getRequestQueue().cancelAll(AppConstants.GET_COMMUNITY_ISSUES);
         VolleyController.getInstance(requireContext()).getRequestQueue().cancelAll("send_resolve_issue");
-
-    }
-
-    @Override
-    public void stopReshresh() {
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
     }
 }

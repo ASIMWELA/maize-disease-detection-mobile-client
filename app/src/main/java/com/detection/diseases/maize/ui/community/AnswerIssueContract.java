@@ -5,7 +5,17 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+/**
+ * @author Augustine
+ *
+ * A Contract for answering issues activity
+ */
 public interface AnswerIssueContract {
+
+    /**
+     * For description on all the methods look at {@link AnswerAnIssueActivity}
+     *
+     */
     interface View{
         void onAnswerSuccess(JSONObject response);
         void onAnswerError(String error);
@@ -20,6 +30,9 @@ public interface AnswerIssueContract {
         void onGetIssueAnswerResponse(JSONObject response);
     }
 
+    /**
+     * For description on all the methods look at {@link AnswerIssuePresenter}
+     */
     interface Presenter{
         void sendAnswer(RequestParams data, String issueUuid, String userUuid, String token);
         void initValidation();

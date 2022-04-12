@@ -38,7 +38,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 import com.loopj.android.http.RequestParams;
-import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -56,10 +55,33 @@ import br.com.simplepass.loadingbutton.customViews.CircularProgressButton;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.SneakyThrows;
 
+/**
+ * @author Augustine
+ *
+ * An activity responsible for creating issues in the community
+ *
+ */
 public class CreateAnIssueActivity extends AppCompatActivity implements CreateIssueContract.View {
-    private static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 200;
+    /**
+     * A unique code responsible for requesting permission to read external storage
+     */
+    private static final int REQUEST_READ_EXTERNAL_STORAGE_FOR_GETTING_ISSUE_IMAGE = 200;
+
+    /**
+     * A constraint view with a bottom sheet behaviour anabled
+     */
     private ConstraintLayout bottomSheetView;
+
+    /**
+     * A Bottom sheet behaviour responsible for hiding an issue image when the activity is scrolled upward
+     *
+     *
+     */
     private BottomSheetBehavior<?> bottomSheetBehavior;
+
+    /**
+     * ImageViews for
+     */
     private ImageView ivUpDown, iVSelectedImage, ivOpenSelectImageTray;
     private CircleImageView ivCancelImageSelection;
     private GridView imageGridContainer;
@@ -255,7 +277,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(this, listPermissionsNeeded
                             .toArray(new String[0]),
-                    REQUEST_ID_MULTIPLE_PERMISSIONS);
+                    REQUEST_READ_EXTERNAL_STORAGE_FOR_GETTING_ISSUE_IMAGE);
             return false;
         }
         return true;
@@ -266,7 +288,7 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_ID_MULTIPLE_PERMISSIONS) {
+        if (requestCode == REQUEST_READ_EXTERNAL_STORAGE_FOR_GETTING_ISSUE_IMAGE) {
             if (ContextCompat.checkSelfPermission(CreateAnIssueActivity.this,
                     Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getApplicationContext(),

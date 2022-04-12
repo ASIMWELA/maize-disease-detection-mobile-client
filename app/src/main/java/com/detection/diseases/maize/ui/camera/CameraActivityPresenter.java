@@ -18,32 +18,76 @@ import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * @author Augustine
+ *
+ * Camera activity presenter
+ *
+ * Updates the view when actions that request the view to be changed are fired
+ *
+ *
+ */
 public class CameraActivityPresenter implements CameraActivityContract.Presenter {
 
+    /**
+     *A View object that determines which and how to update the view
+     */
     private final CameraActivityContract.View view;
+
+    /**
+     * Context where the presenter is initialised
+     *
+     * @see Context
+     */
     private final Context context;
 
+
+    /**
+     * Constructor to create an object of this class
+     *
+     * @param view The view where the object will be created
+     *
+     * @param context The context where the object will be created
+     */
     public CameraActivityPresenter(CameraActivityContract.View view, Context context) {
         this.view = view;
         this.context = context;
     }
 
 
+    /**
+     * Loads galley when invoked
+     *
+     * Invoked in a button click listener
+     */
     @Override
     public void loadGalleyBtnClicked() {
         view.loadGalley();
     }
 
+    /**
+     * Captures an image when invoked
+     *
+     * Invoked in a button click listener
+     */
     @Override
     public void capturePictureBtnClicked() {
         view.capturePicture();
     }
 
+    /**
+     * Pops up a dialogView when invoked. Shows the steps to follow when using the activity camera
+     */
     @Override
     public void showHintClicked() {
         view.showHint();
     }
 
+    /**
+     * A post request for a diseased leaf.
+     *
+     * @param file An image file that has to be uploaded
+     */
     @Override
     public void uploadFile(File file) {
         RequestParams params = new RequestParams();

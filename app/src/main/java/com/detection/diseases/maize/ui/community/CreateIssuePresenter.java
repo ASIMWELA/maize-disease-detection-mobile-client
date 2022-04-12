@@ -22,6 +22,7 @@ public class CreateIssuePresenter implements CreateIssueContract.Presenter {
         this.view = view;
     }
 
+
     @Override
     public void sendIssueRequest(RequestParams data,String userUuid, String token) {
         if (view.validateInputs()) {

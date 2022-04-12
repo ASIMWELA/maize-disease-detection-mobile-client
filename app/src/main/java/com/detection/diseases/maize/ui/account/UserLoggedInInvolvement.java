@@ -15,9 +15,25 @@ import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
 import com.google.gson.Gson;
 
+/**
+ * @author Augustine
+ *
+ * This fragment contains logic for managing user involveement in the community section
+ *
+ */
 public class UserLoggedInInvolvement extends Fragment {
-    SessionManager sessionManager;
-    TextView tvUserName;
+
+    /**
+     * Session Manager for a logged in user.
+     *
+     * Retrieves a logged in user from session
+     */
+    private SessionManager sessionManager;
+
+    /**
+     * A view for displaying a loged in user in the user involvement fragment
+     */
+    private TextView tvUserName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +45,11 @@ public class UserLoggedInInvolvement extends Fragment {
         return view;
     }
 
+    /**
+     * Set Text on the tvUserName text
+     *
+     *
+     */
     @Override
     @SuppressLint("SetTextI18n")
     public void onResume() {
