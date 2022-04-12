@@ -29,8 +29,16 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * @author Augustine
+ *
+ * Manages all tasks associated with user account
+ *
+ */
 public class AccountActivity extends Fragment {
-
+    /**
+     * A helper class which manages user session of the application
+     */
     private SessionManager sessionManager;
     private Button openLoginActivity;
     private Chip backIcon;
@@ -124,6 +132,11 @@ public class AccountActivity extends Fragment {
         return root;
     }
 
+    /**
+     * Initialise views of this class
+     *
+     * @param root The base view of this fragment
+     */
     private void initViews(View root) {
         backIcon = root.findViewById(R.id.user_account_back);
         loggedOutUserView = root.findViewById(R.id.user_logged_out_view);
@@ -158,6 +171,11 @@ public class AccountActivity extends Fragment {
 
     }
 
+    /**
+     * Check if the user is logged in or not
+     *
+     * @return true if user is logged in else false
+     */
     public boolean checkUserSession() {
         return sessionManager.getLoggedInUser() != null && sessionManager.getToken() != null;
     }

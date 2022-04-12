@@ -9,8 +9,20 @@ import android.os.Handler;
 import com.detection.diseases.maize.MainActivity;
 import com.detection.diseases.maize.R;
 
+/**
+ * @author Augustine
+ *
+ * A Splash screen activity
+ *
+ * Loads before the landing activity
+ *
+ * Shows the apps motto and logo
+ */
 public class SplashScreenActivity extends AppCompatActivity {
 
+    /**
+     * Creates a thread
+     */
     Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +34,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             Intent intent=new Intent(SplashScreenActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-        },1500);
+        },1000);
 
     }
 }

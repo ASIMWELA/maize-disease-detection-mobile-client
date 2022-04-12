@@ -66,12 +66,34 @@ import lombok.SneakyThrows;
 
 import static com.detection.diseases.maize.ui.camera.CameraActivity.REQUEST_ID_MULTIPLE_PERMISSIONS;
 
+/**
+ * @author Augustine
+ *
+ * An activity responsible for creating managing issue answers
+ */
 public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIssueContract.View {
 
+    /**
+     * A Waiting code for image selection
+     */
     private static final int SELECT_IMAGE_CODE = 100;
+
+    /**
+     * A recycler Adapter that adapts {@link IssueAnswerModel} to an adapter
+     */
     private IssueAnswersRecyclerAdapter adapter;
+
+    /**
+     * The base view of the recyclerView
+     */
     private RecyclerView recyclerView;
+
+    /**
+     * Collapsing toolbar for behaviour of a of hidding issue image and loading the bar
+     */
     private CollapsingToolbarLayout collapsingToolbarLayout;
+
+
     private Toolbar toolbar;
     private ImageView ivIssueImage, ivDismissSelectedImage, ivDisplaySelectedImage, ivSendIssueAnswer, ivOpenGallley;
     private TextView tvTitle, tvQuestion, tvNoIssueAnswers, tvCreatorName, tvDisplayDate;
@@ -188,6 +210,10 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         });
     }
 
+
+    /**
+     * Initialise all the views of the this activity
+     */
     private void initViews() {
         recyclerView = findViewById(R.id.rv_issue_answers);
         collapsingToolbarLayout = findViewById(R.id.collaspring_tool_ba);
@@ -214,6 +240,11 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         recyclerView.setAdapter(adapter);
     }
 
+    /**
+     * Invoked upon successfully answering an issue
+     *
+     * @param response A JSONObject of the answered issue
+     */
     @Override
     @SneakyThrows
     public void onAnswerSuccess(JSONObject response) {
@@ -244,6 +275,12 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Invoked when there is an API error when sending an answer to an issue
+     *
+     *
+     * @param error A stringified error object
+     */
     @Override
     public void onAnswerError(String error) {
         Toast.makeText(this, "Error" + error, Toast.LENGTH_SHORT).show();
@@ -251,18 +288,29 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
 
     }
 
+    /**
+     * Show progress of answer issue Request
+     */
     @Override
     public void showLoading() {
         ivSendIssueAnswer.setVisibility(View.GONE);
         pbViewAnswerIssueProgress.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Hide progress of answer issue Request
+     */
     @Override
     public void hideLoading() {
         pbViewAnswerIssueProgress.setVisibility(View.GONE);
         ivSendIssueAnswer.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Validate user input
+     *
+     * @return true if all the inputs are valid otherwise false
+     */
     @Override
     public boolean validateInput() {
         edInputIssueAnswer.addTextChangedListener(new TextValidator(edInputIssueAnswer) {
@@ -278,11 +326,17 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         return answerContent != null;
     }
 
+    /**
+     * Invoked when user inputs are invalid
+     */
     @Override
     public void onInputValidationFailed() {
         Toast.makeText(this, "Please provide and answer", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Loads gallery to pick an image for issue
+     */
     @Override
     public void loadGalley() {
         Intent selectImage = new Intent();
@@ -291,21 +345,42 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         startActivityForResult(selectImage, SELECT_IMAGE_CODE);
     }
 
+
+    /**
+     * Show loading for getting issue answers
+     */
     @Override
     public void showGetIssueAnswerLoading() {
         pbGetIssueAnswersProgressBar.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Hide loading for getting issue answers
+     *
+     * Invoked when there is an API error or the issue answers are retrieved
+     *
+     * @see AnswerIssuePresenter
+     */
     @Override
     public void hideGetIssueAnswerLoader() {
         pbGetIssueAnswersProgressBar.setVisibility(View.GONE);
     }
 
+    /**
+     * Invoked when get issues flags error
+     *
+     * @param error A VolleyError object that contains error details
+     */
     @Override
     public void onGetIssueAnswersError(VolleyError error) {
         Toast.makeText(this, "Error! Unable to get answers", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Invoked when getting issue answers is successful
+     *
+     * @param response A JSONObect that contains a list of one issue answers
+     */
     @Override
     @SneakyThrows
     public void onGetIssueAnswerResponse(JSONObject response) {
@@ -338,7 +413,11 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         }
     }
 
-
+    /**
+     * Request peremission to read external storage
+     *
+     * @return true if permission is granted false otherwise
+     */
     public boolean checkAndRequestPermissions() {
         int extstorePermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -357,7 +436,6 @@ public class AnswerAnIssueActivity extends AppCompatActivity implements AnswerIs
         }
         return true;
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -1,0 +1,13 @@
+com.detection.diseases.maize
+com.detection.diseases.maize.helpers
+com.detection.diseases.maize.ui.account
+com.detection.diseases.maize.ui.camera
+com.detection.diseases.maize.ui.commons
+com.detection.diseases.maize.ui.community
+com.detection.diseases.maize.ui.community.model
+com.detection.diseases.maize.ui.community.payload
+com.detection.diseases.maize.ui.crops
+com.detection.diseases.maize.ui.modelresults
+com.detection.diseases.maize.ui.modelresults.model
+com.detection.diseases.maize.ui.signin
+com.detection.diseases.maize.ui.signup

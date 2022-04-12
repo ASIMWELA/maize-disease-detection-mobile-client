@@ -13,6 +13,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * @author Augustine
+ *
+ * An issue model
+ *
+ *Defines a structure of a model that comes from the remote API
+ */
 @Getter
 @Setter
 @Builder
