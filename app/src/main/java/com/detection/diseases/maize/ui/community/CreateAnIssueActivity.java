@@ -80,25 +80,106 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
     private BottomSheetBehavior<?> bottomSheetBehavior;
 
     /**
-     * ImageViews for
+     * ImageViews for holding icons for:
+     *
+     *  upDown: sets bottom sheet to slide up or down
+     *
+     *  SelectedImage: Previews a selected image for creating an issue
+     *
+     *  OpenSelectImageTray: Opens a bottom sheet when it was a hide mode
      */
     private ImageView ivUpDown, iVSelectedImage, ivOpenSelectImageTray;
+
+    /**
+     * Reverts a selected image for an issue
+     *
+     * Allows an instant reversible action on selecting an image for an issue
+     */
     private CircleImageView ivCancelImageSelection;
+
+    /**
+     * Displaying loaded gallery images into a grid view and attaching it to a bottom sheet
+     */
     private GridView imageGridContainer;
+    /**
+     * A List representing all gallery images
+     */
     private final List<File> images = new ArrayList<>();
+
+    /**
+     * Triggers the send request for an issue
+     */
     private CircularProgressButton btnCreateIssue;
+
+    /**
+     * Edit txts for getting user inputs
+     *
+     * edIssueQuestion: Get an issue question
+     *
+     * edIssueDescription: Get the question description
+     */
     private EditText edIssueQuestion, edIssueDescription;
+
+    /**
+     * A file that holds a selected file for an issue.
+     */
     private File fSelectedImage;
+
+    /**
+     * A custom back arrow that allows back press on a non toolbar fragment
+     */
     private Chip cpBackArrow;
+
+    /**
+     * Strings holding values for issues
+     *
+     * crop: Crop name
+     *
+     * question: Question of the issue. From getText().toString() from edIssueQuestion
+     */
     private String crop, question, questionDescription;
+
+    /**
+     * Used to get a user from session by directly converting from a string into a {@link LoggedInUserModel}
+     */
     private final Gson gson = new Gson();
+
+    /**
+     * Btn for opening a dialog box for selecting a crop name
+     */
     private Button btnOpenCropsDialog;
+
+    /**
+     * A Textview for displaying a selected crop
+     */
     private TextView tvDisplaySeletedCrop;
+
+    /**
+     * A presenter for updating the view
+     * @see CreateIssuePresenter
+     */
     private CreateIssuePresenter createIssuePresenter;
+
+    /**
+     * An authorization token for an authorised user
+     */
     private String token;
+
+    /**
+     * A logged in user object
+     */
     private LoggedInUserModel loggedInUserModel;
+
+    /**
+     * A Json obect to hold the data to send to a remote API
+     */
     JSONObject stringData = new JSONObject();
 
+    /**
+     * Creates an activity
+     *
+     * @param savedInstanceState a bundle containing a previous saved state
+     */
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,6 +320,9 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         }
     }
 
+    /**
+     * Sets up loaded gallery images into an adapter
+     */
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void loadImagesAndAttachToAdapter() {
         images.addAll(RealPathUtil.getAllShownImagesPath(this));
@@ -251,6 +335,9 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         imageGridContainer.setAdapter(gridAdapter);
     }
 
+    /**
+     * Initialise all views of the activity
+     */
     private void initViews() {
         bottomSheetView = findViewById(R.id.images_bottom_sheet_view);
         ivUpDown = findViewById(R.id.bttom_sheet_up_arrow);
@@ -266,6 +353,11 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         tvDisplaySeletedCrop = findViewById(R.id.tv_display_selected_crop);
     }
 
+    /**
+     * Request permissions from the user
+     *
+     * @return true of granted false otherwise
+     */
     public boolean checkAndRequestPermissions() {
         int extstorePermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -301,6 +393,12 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         }
 
     }
+
+    /**
+     * Validate all EditText input
+     *
+     * @return true if all are valid, false otherwise
+     */
 
     @Override
     public boolean validateInputs() {
@@ -344,11 +442,19 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
                 && fSelectedImage != null;
     }
 
+    /**
+     * Invocked when there are some invalid inputs
+     */
     @Override
     public void onValidationFailure() {
              Toast.makeText(this, "Please fill all the\nrequired fields and attach\nan image", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Invoked when send issue request  is successful
+     *
+     * @param response A stringified object of issues
+     */
     @Override
     public void onSendIssueSuccess(String response) {
         crop = null;
@@ -365,16 +471,27 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         Toast.makeText(this, "Issue Created", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Invoked when send Issues request results into an error
+     *
+     * @param errorResponse A String fied error object
+     */
     @Override
     public void onSendIssueError(String errorResponse) {
         Toast.makeText(this, "Error: Unable to create issue", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Show send Issue request progress
+     */
     @Override
     public void showProgress() {
         btnCreateIssue.startAnimation();
     }
 
+    /**
+     * hide send Issue request progress
+     */
     @Override
     public void hideProgress() {
         btnCreateIssue.setBackgroundResource(R.drawable.round_btn_bg);
@@ -387,6 +504,11 @@ public class CreateAnIssueActivity extends AppCompatActivity implements CreateIs
         btnCreateIssue.dispose();
     }
 
+    /**
+     * Build an an alert dialog for holding crops
+     *
+     * @return {@link AlertDialog}
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SneakyThrows
     private AlertDialog buildDialog() {

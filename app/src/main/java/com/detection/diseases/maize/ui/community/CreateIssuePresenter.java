@@ -13,16 +13,46 @@ import java.nio.charset.StandardCharsets;
 
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * @author Augustine
+ *
+ * Responsible for updating {@link CreateAnIssueActivity view}
+ */
 public class CreateIssuePresenter implements CreateIssueContract.Presenter {
+    /**
+     * The context of the presenter
+     */
     private final Context context;
+
+    /**
+     * The view to be updated
+     */
     private final CreateIssueContract.View view;
 
+    /**
+     * The constructor for creating objects of this class
+     *
+     * @param context The presenter context
+     *
+     * @param view The view to be updated
+     */
     public CreateIssuePresenter(Context context, CreateIssueContract.View view) {
         this.context = context;
         this.view = view;
     }
 
 
+    /**
+     * Create a request of sending issues to a Remote api
+     *
+     * Uses {@link HttpAsyncHelper} as an http client which is an implementation of {@link AsyncHttpClient}
+     *
+     * @param data Issue data, image and issue question, question dec and crop. uses {@link RequestParams}
+     *
+     * @param userUuid The unique identifier who creates the issue
+     *
+     * @param token An authorization token for the user to be allowed creating the issue
+     */
     @Override
     public void sendIssueRequest(RequestParams data,String userUuid, String token) {
         if (view.validateInputs()) {
@@ -58,6 +88,9 @@ public class CreateIssuePresenter implements CreateIssueContract.Presenter {
 
     }
 
+    /**
+     * Kick starts input validation upon lauching the activity
+     */
     @Override
     public void initValidation() {
         view.validateInputs();
