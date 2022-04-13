@@ -28,21 +28,43 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import lombok.SneakyThrows;
 
+/**
+ * @author Augustine
+ *
+ * Adapts issue answers to a recycler view with a custom loaded xml view file
+ */
 public class IssueAnswersRecyclerAdapter extends RecyclerView.Adapter<IssueAnswersRecyclerAdapter.IssueAnswerHolder> {
 
+    /**
+     * A list of answers
+     */
     private final List<IssueAnswerModel> issueAnswers;
+
+    /**
+     * The context where the answers will be initialised
+     */
     private final Context context;
 
     /**
+     *A constructor. Enable building objects with initial list of issuAnswerModel and Context
      *
-     * @param issueAnswers
-     * @param context
+     * @param issueAnswers List of {@link IssueAnswerModel}
+     * @param context The context where the answers will be initialised
      */
     public IssueAnswersRecyclerAdapter(List<IssueAnswerModel> issueAnswers, Context context) {
         this.issueAnswers = issueAnswers;
         this.context = context;
     }
 
+    /**
+     * Inflates a view and return the associated view holder. The view stands for a single answer row
+     *
+     * @param parent The parent view group for the row
+     *
+     * @param viewType
+     *
+     * @return {@link IssueAnswerHolder}
+     */
     @NonNull
     @Override
     public IssueAnswerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -89,11 +111,22 @@ public class IssueAnswersRecyclerAdapter extends RecyclerView.Adapter<IssueAnswe
 
     }
 
+    /**
+     * Keeps track of how many issue answers are there for easy recycling
+     *
+     * @return Total number of answers for a particular issue
+     */
     @Override
     public int getItemCount() {
         return issueAnswers.size();
     }
 
+    /**
+     * A view holder for the adapter.
+     *
+     * @see androidx.recyclerview.widget.RecyclerView.ViewHolder
+     * @see androidx.recyclerview.widget.RecyclerView.Adapter
+     */
     public static class IssueAnswerHolder extends RecyclerView.ViewHolder {
         TextView answeUser, content, tvCreated;
         ImageView answerImage;

@@ -26,6 +26,7 @@ import com.detection.diseases.maize.helpers.AppConstants;
 import com.detection.diseases.maize.helpers.CheckUserSession;
 import com.detection.diseases.maize.helpers.SessionManager;
 import com.detection.diseases.maize.helpers.VolleyController;
+import com.detection.diseases.maize.ui.community.model.IssueAnswerModel;
 import com.detection.diseases.maize.ui.community.payload.Issue;
 import com.detection.diseases.maize.ui.signin.LoggedInUserModel;
 import com.google.android.material.chip.Chip;
@@ -48,15 +49,49 @@ import lombok.AccessLevel;
 import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 
+/**
+ * @author Augustine
+ *
+ * Adapts issues to a recycler view with a custom loaded xml view file
+ */
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecyclerViewAdapter.IssuesViewHolder> {
+    /**
+     * Context where the adapter is created
+     */
     final Context context;
+
+    /**
+     * The issue list that are populated into the view
+     */
     final List<Issue> issues;
+
+    /**
+     * Issues that are upated when they meet the search criteria
+     */
     final List<Issue> searchedModels;
+
+    /**
+     * Allows getting a user from session
+     */
     final Gson gson = new Gson();
+
+    /**
+     * Keeps track of user session
+     */
     final SessionManager sessionManager;
+
+    /**
+     * The actual logged in user model
+     */
     LoggedInUserModel user = null;
 
+    /**
+     *A constructor. Enable building objects with initial list of issuAnswerModel and Context
+     *
+     * @param issues List of {@link Issue}
+     * @param context The context where the answers will be initialised
+     */
     public IssuesRecyclerViewAdapter(Context context, List<Issue> issues) {
         this.context = context;
         this.issues = issues;
@@ -64,6 +99,15 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         sessionManager = new SessionManager(context);
     }
 
+    /**
+     * Inflates a view and return the associated view holder. The view stands for a single answer row
+     *
+     * @param parent The parent view group for the row
+     *
+     * @param viewType
+     *
+     * @return {@link com.detection.diseases.maize.ui.community.IssuesRecyclerViewAdapter.IssuesViewHolder}
+     */
 
     @NonNull
     @Override
@@ -178,7 +222,11 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         });
 
     }
-
+    /**
+     * Keeps track of how many issues are there for easy recycling
+     *
+     * @return Total number of answers for a particular issue
+     */
     @Override
     public int getItemCount() {
         return issues.size();
@@ -224,6 +272,11 @@ public class IssuesRecyclerViewAdapter extends RecyclerView.Adapter<IssuesRecycl
         }
     }
 
+    /**
+     * Seachh issues based on the input text.
+     *
+     * @param charText Text to look for in the crops or the issue creator
+     */
     public void searchIssue(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         issues.clear();

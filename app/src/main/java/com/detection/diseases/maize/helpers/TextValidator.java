@@ -4,11 +4,25 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+/**
+ * @author Augustine
+ *
+ * A  Custom text validator .
+ *
+ * Helps in live validation of user inputs on EditText and also live searching
+ */
 public abstract class TextValidator implements TextWatcher {
-    private final EditText editText;
+    /**
+     * Constructor for creating object of this class
+     *
+     * @param editText Attach the validator this text field
+     */
     public TextValidator(EditText editText) {
-        this.editText = editText;
     }
+
+    /**
+     * Custom method to be implemented for validating inputs
+     */
     public abstract void validate();
 
     @Override
