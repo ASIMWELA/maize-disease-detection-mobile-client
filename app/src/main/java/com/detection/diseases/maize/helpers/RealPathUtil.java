@@ -16,8 +16,22 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Augustine
+ *
+ * A Utility class for accessing real path of an image from gallery
+ */
 public class RealPathUtil {
 
+    /**
+     * Get path for devices running sdk 19 and above
+     *
+     * @param context The context where the class is used
+     *
+     * @param uri the uri to get the path from
+     *
+     * @return A string representing the path
+     */
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(Context context, Uri uri) {
         String filePath = "";
@@ -44,6 +58,15 @@ public class RealPathUtil {
     }
 
 
+    /**
+     * Get path for devices running sdk between 11 and 18
+     *
+     * @param context The context where the class is used
+     *
+     * @param contentUri the uri to get the path from
+     *
+     * @return A string representing the path
+     */
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -63,6 +86,13 @@ public class RealPathUtil {
         return result;
     }
 
+    /**
+     * Get all path of images from gallery
+     *
+     * @param activity The activity that requests access for images from gallery
+     *
+     * @return List image Files representing images
+     */
     @SuppressLint("Recycle")
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public static List<File> getAllShownImagesPath(Activity activity) {
