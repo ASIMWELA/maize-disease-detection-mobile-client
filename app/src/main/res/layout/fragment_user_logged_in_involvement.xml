@@ -9,7 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.account.UserLoggedInInvolvement">
+        tools:context=".usecases.account.UserLoggedInInvolvement">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

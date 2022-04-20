@@ -20,22 +20,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaizeDiseaseDetection"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.commons.SplashScreenActivity">
+        <activity android:name=".usecases.commons.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.community.AnswerAnIssueActivity"
+            android:name=".usecases.community.AnswerAnIssueActivity"
             android:theme="@style/Theme.CreateIssueActivity"></activity>
-        <activity android:name=".ui.modelresults.ModelResultHelper" />
-        <activity android:name=".ui.community.CreateAnIssueActivity" />
-        <activity android:name=".ui.signin.SigninActivity" />
-        <activity android:name=".ui.signup.SignUpActivity" />
-        <activity android:name=".ui.modelresults.ModelResultsActivity" />
-        <activity android:name=".ui.camera.CameraActivity" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".usecases.modelresults.ModelResultHelper" />
+        <activity android:name=".usecases.community.CreateAnIssueActivity" />
+        <activity android:name=".usecases.signin.SigninActivity" />
+        <activity android:name=".usecases.signup.SignUpActivity" />
+        <activity android:name=".usecases.modelresults.ModelResultsActivity" />
+        <activity android:name=".usecases.camera.CameraActivity" />
+        <activity android:name=".usecases.MainActivity"/>
 
 
         <meta-data

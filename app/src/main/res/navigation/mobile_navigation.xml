@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_crops"
-        android:name="com.detection.diseases.maize.ui.crops.CropsFragment"
+        android:name="com.detection.diseases.maize.usecases.crops.CropsFragment"
         android:label="@string/title_crops"
         tools:layout="@layout/fragment_crops" />
 
     <fragment
         android:id="@+id/navigation_community"
-        android:name="com.detection.diseases.maize.ui.community.CommunityFragment"
+        android:name="com.detection.diseases.maize.usecases.community.CommunityFragment"
         android:label="@string/title_community"
         tools:layout="@layout/fragment_community" />
 
     <fragment
         android:id="@+id/navigation_account"
-        android:name="com.detection.diseases.maize.ui.account.AccountActivity"
+        android:name="com.detection.diseases.maize.usecases.account.AccountActivity"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_signin" />
 </navigation>

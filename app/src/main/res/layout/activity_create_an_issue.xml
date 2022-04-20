@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
-    tools:context=".ui.community.CreateAnIssueActivity">
+    tools:context=".usecases.community.CreateAnIssueActivity">
 
     <com.google.android.material.chip.Chip
         android:id="@+id/create_issue_back"
